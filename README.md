@@ -10,7 +10,7 @@ Throughout the course, various projects are developed to solidify the understand
 
 **Description:** A simple number guessing game where the player tries to guess a randomly generated number between 1 and 20. The game provides feedback to the player whether the guess is too high or too low, and keeps track of the number of attempts.
 
-**URL:** [Live Demo](st-atanasov-guess-my-number.vercel.app)
+**URL:** [Live Demo](https://st-atanasov-guess-my-number.vercel.app)
 
 **Repository Location:** [Project Code](https://github.com/CoolShadow1/The_Complete_JavaScript_Course/tree/main/05.%20DOM%20and%20Events%20Fundamentals/Projects/%231%20Guess%20My%20Number)
 <!--
