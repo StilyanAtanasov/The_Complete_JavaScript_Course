@@ -48,6 +48,7 @@ function handleInvalidGuess(message) {
 
 function handleCorrect() {
   elements.body.style.backgroundColor = colours.green;
+  elements.number.style.width = `30rem`;
   elements.number.textContent = number;
   elements.message.textContent = messages.correct;
 
@@ -108,6 +109,7 @@ document.querySelector(`.again`).addEventListener(`click`, function () {
 
   // Reset design
   elements.body.style.backgroundColor = colours.grey;
+  elements.number.style.width = `15rem`;
   elements.message.textContent = `Start guessing...`;
   elements.score.textContent = score;
   elements.number.textContent = `?`;
