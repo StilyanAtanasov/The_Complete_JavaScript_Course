@@ -29,17 +29,21 @@ const colours = {
 
 let number = Math.floor(Math.random() * 20) + 1;
 let gameRunning = true;
+let score = 20;
+let highscore = 0;
+elements.score.textContent = score;
+elements.highscore.textContent = highscore;
 elements.guessMessage.style.visibility = `hidden`;
 
 // ----- Functions -----
-const handleScore = () => document.querySelector(`.score`).textContent--;
+const handleScore = () => (elements.score.textContent = --score);
 const setGuessMessage = (guess) => (elements.userGuess.textContent = guess);
 const isInRange = (guess) => guess >= 1 && guess <= 20;
 
 function handleInvalidGuess(message) {
   elements.message.textContent = message;
   elements.guessMessage.style.visibility = `hidden`;
-  elements.guess.value = undefined;
+  elements.guess.value = ``;
 }
 
 function handleCorrect() {
@@ -62,7 +66,10 @@ function handleLower() {
 }
 
 function handleHighscore() {
-  if (Number(elements.score.textContent) > Number(elements.highscore.textContent)) elements.highscore.textContent = elements.score.textContent;
+  if (score > highscore) {
+    highscore = score;
+    elements.highscore.textContent = highscore;
+  }
 }
 
 function handleGuessMessage() {
@@ -80,7 +87,7 @@ document.querySelector(`.check`).addEventListener(`click`, function () {
   if (!gameRunning) return;
 
   const guess = Number(elements.guess.value);
-  if (!guess) return handleInvalidGuess(messages.empty);
+  if (!elements.guess.value) return handleInvalidGuess(messages.empty);
   if (!isInRange(guess)) return handleInvalidGuess(messages.invalidNumber);
 
   handleGuessMessage();
@@ -88,20 +95,21 @@ document.querySelector(`.check`).addEventListener(`click`, function () {
   if (guess === number) handleCorrect();
   else guess < number ? handleLower() : handleHigher();
 
-  if (Number(elements.score.textContent) === 0) handleLoss();
+  if (score === 0) handleLoss();
 
   setGuessMessage(guess);
   elements.guess.value = ``;
 });
 
 document.querySelector(`.again`).addEventListener(`click`, function () {
+  number = Math.floor(Math.random() * 20) + 1;
+  gameRunning = true;
+  score = 20;
+
   // Reset design
   elements.body.style.backgroundColor = colours.grey;
   elements.message.textContent = `Start guessing...`;
-  elements.score.textContent = 20;
+  elements.score.textContent = score;
   elements.number.textContent = `?`;
   elements.guessMessage.style.visibility = `hidden`;
-
-  number = Math.floor(Math.random() * 20) + 1;
-  gameRunning = true;
 });
