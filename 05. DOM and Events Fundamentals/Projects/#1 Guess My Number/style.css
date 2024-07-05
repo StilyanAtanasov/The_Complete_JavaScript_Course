@@ -7,8 +7,9 @@
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 10px;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 body {
@@ -40,6 +41,8 @@ main {
 }
 
 .right {
+  display: flex;
+  flex-direction: column;
   width: 52rem;
   font-size: 2rem;
 }
@@ -117,4 +120,82 @@ h1 {
 
 .label-score {
   margin-bottom: 2rem;
+}
+
+/* Phones */
+@media (max-width: 750px) {
+  html {
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 550px) {
+  html {
+    font-size: 6.5px;
+  }
+}
+
+@media (max-width: 450px) {
+  html {
+    font-size: 8px;
+  }
+
+  main {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .right {
+    align-items: center;
+  }
+
+  .left,
+  .right {
+    margin-top: 5rem;
+    width: auto;
+  }
+
+  .guessMessage {
+    margin-bottom: 3rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .between {
+    position: fixed;
+    top: auto;
+    bottom: 2rem;
+  }
+}
+
+@media (max-width: 450px) and (max-height: 600px) {
+  html {
+    font-size: 5.5px;
+  }
+}
+
+@media (max-width: 450px) and (max-height: 700px) {
+  html {
+    font-size: 6px;
+  }
+}
+
+/* Large screens */
+@media (min-width: 2000px) or (min-height: 1500px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 3000px) or (min-height: 2000px) {
+  html {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 4000px) {
+  html {
+    font-size: 30px;
+  }
 }
