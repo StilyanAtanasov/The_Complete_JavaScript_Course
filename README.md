@@ -4,7 +4,8 @@ This repository contains personal solutions to the assignments and coding challe
 
 ## Projects
 
-Throughout the course, various projects are developed to solidify the understanding of JavaScript concepts. Below is a list of the projects with brief descriptions and links to the respective sections in this repository.
+Throughout the course, various projects are developed to solidify the understanding of JavaScript concepts. Below is a list of the projects with brief descriptions and links to the respective sections in this repository. 
+NOTE: Some projects are further modified and improved by me and in some aspects may differ from the orinal course tasks!
 
 ### 1. Guess My Number!
 
@@ -13,15 +14,15 @@ Throughout the course, various projects are developed to solidify the understand
 **URL:** [Live Demo](https://st-atanasov-guess-my-number.vercel.app)
 
 **Repository Location:** [Project Code](https://github.com/CoolShadow1/The_Complete_JavaScript_Course/tree/main/05.%20DOM%20and%20Events%20Fundamentals/Projects/%231%20Guess%20My%20Number)
-<!--
+
 ### 2. Modal Window
 
-**Description:** A project demonstrating the use of JavaScript to create and manage a modal window. This project includes opening and closing the modal, as well as handling overlay and escape key functionalities.
+**Description:** A project demonstrating the use of JavaScript to create and manage a modal window. This project includes opening and closing the modal, as well as handling overlay and escape key functionalities. The project also gives relevant information about modal windows in three sections: explanation, fun facts and best practices.
 
-**URL:** [Live Demo](#)
+**URL:** [Live Demo](https://modal-windows.vercel.app/)
 
-**Repository Location:** [Project Code](#)
-
+**Repository Location:** [Project Code](https://github.com/CoolShadow1/The_Complete_JavaScript_Course/tree/main/05.%20DOM%20and%20Events%20Fundamentals/Projects/%232%20Modal%20Windows)
+<!--
 ### 3. Pig Game
 
 **Description:** An interactive two-player dice game where players take turns to roll a die. Players can hold their score or risk rolling again to accumulate points, but rolling a one loses the turn and points for that round.
