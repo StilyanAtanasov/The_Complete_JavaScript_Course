@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Modal windows</title>
+  </head>
+  <body>
+    <header>
+      <h1 class="heading">Modal Windows 🪟</h1>
+    </header>
+    <main>
+      <button id="explanation" class="show-modal">Explanation 🧑‍🎓</button>
+      <button id="funFacts" class="show-modal">Fun Facts 😁</button>
+      <button id="bestPractices" class="show-modal">Best Practices 💯</button>
+
+      <section class="modal hidden">
+        <div class="close-modal-box">
+          <button class="close-modal">&times;</button>
+          <span class="escapeBtnSign"> [Esc]</span>
+        </div>
+        <h1 class="modal-heading"></h1>
+        <article class="textBox">
+          <p class="modal-text"></p>
+        </article>
+      </section>
+      <div class="overlay hidden"></div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
