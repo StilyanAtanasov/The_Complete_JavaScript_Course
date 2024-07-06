@@ -171,11 +171,19 @@ h1 {
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 400px) and (min-height: 700px) {
   .between {
-    position: fixed;
-    top: auto;
-    bottom: 2rem;
+    font-size: 1.2rem;
+  }
+  .again {
+    font-size: 1.5rem;
+    padding: 1.5rem 2.25rem;
+  }
+}
+
+@media (max-width: 350px) and (min-height: 700px) {
+  .between {
+    font-size: 1rem;
   }
 }
 
