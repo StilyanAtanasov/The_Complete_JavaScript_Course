@@ -27,7 +27,7 @@ NOTE: Some projects are further modified and improved by me and in some aspects 
 <!--
 ### 3. Pig Game
 
-**Description:** An interactive two-player dice game where players take turns to roll a die. Players can hold their score or risk rolling again to accumulate points, but rolling a one loses the turn and points for that round.
+**Description:** An interactive two-player dice game where players take turns to roll a dice. Players can hold their score or risk rolling again to accumulate points, but rolling a one loses the turn and points for that round.
 
 **URL:** [Live Demo](#)
 
