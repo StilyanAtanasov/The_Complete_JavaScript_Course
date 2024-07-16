@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Patua+One&display=swap");
 
 * {
   margin: 0;
@@ -58,7 +57,6 @@ header {
 }
 
 .heading {
-  /* font-family: "Patua One"; */
   font-size: 35rem;
   font-weight: 900;
   letter-spacing: 2rem;
@@ -181,9 +179,10 @@ header {
 
 .btn--instructions {
   position: absolute;
-  top: 2rem;
-  right: 3rem;
+  margin-bottom: 60rem;
   z-index: 10;
+  width: 30%;
+  max-width: 90rem;
 }
 
 .btn:active {
