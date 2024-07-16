@@ -29,7 +29,7 @@ NOTE: Some projects are further modified and improved by me and in some aspects 
 
 **Description:** An interactive two-player dice game where players take turns rolling the dice. Players can choose to hold their score or risk rolling again to accumulate points. Rolling a one forfeits the turn and points for that round. The first player to reach 100 points wins!
 
-**URL:** [Live Demo](#) [Available Soon]
+**URL:** [Live Demo](https://st-atanasov-pig-game.vercel.app/)
 
 **Repository Location:** [Project Code](https://github.com/CoolShadow1/The_Complete_JavaScript_Course/tree/main/05.%20DOM%20and%20Events%20Fundamentals/Projects/03.%20Pig%20Game)
 <!--
