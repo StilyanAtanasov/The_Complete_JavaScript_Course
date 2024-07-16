@@ -11,6 +11,7 @@ const elements = {
   btnHold: document.querySelector(`.btn--hold`),
   btnStart: document.querySelector(`.btn--restart`),
   btnInstruction: document.querySelector(`.btn--instructions`),
+  btnCloseModal: document.querySelector(`.close-modal`),
   player1Section: document.getElementById(`player--1`),
   player2Section: document.getElementById(`player--2`),
   currentSign: document.querySelector(`.current-sign`),
@@ -38,6 +39,7 @@ let gameRunning = false; // Determines if there is game left to play. If the gam
 // ----- Functions -----
 const rollDice = () => Math.floor(Math.random() * 6 + 1);
 const selectFirstPlayer = () => Math.floor(Math.random() * 2 + 1);
+const setGameBoard = () => (elements.btnStart.textContent = buttonsTexts.btnStart.start);
 const startGame = () => (elements.btnStart.textContent = buttonsTexts.btnStart.restart);
 
 function restartGame() {
@@ -92,7 +94,19 @@ function onBlur(element, defaultName) {
   if (element.value === ``) element.value = defaultName;
 }
 
+function showModal() {
+  elements.modal.classList.remove(`hidden`);
+  elements.overlay.classList.remove(`hidden`);
+}
+
+function hideModal() {
+  elements.modal.classList.add(`hidden`);
+  elements.overlay.classList.add(`hidden`);
+}
+
 // ----- Game Logic -----
+setGameBoard();
+
 elements.btnRoll.addEventListener(`click`, function () {
   if (gameRunning) {
     const dice = rollDice();
@@ -124,13 +138,13 @@ elements.btnStart.addEventListener(`click`, function () {
 });
 
 elements.btnInstruction.addEventListener(`click`, function () {
-  if (elements.modal.classList.contains(`hidden`)) {
-    elements.modal.classList.remove(`hidden`);
-    elements.overlay.classList.remove(`hidden`);
-  } else {
-    elements.modal.classList.add(`hidden`);
-    elements.overlay.classList.add(`hidden`);
-  }
+  if (elements.modal.classList.contains(`hidden`)) showModal();
+  else hideModal();
 });
 
-document.addEventListener(`keydown`, function () {});
+elements.btnCloseModal.addEventListener(`click`, hideModal);
+elements.overlay.addEventListener(`click`, hideModal);
+
+document.addEventListener(`keydown`, function (e) {
+  if (e.key === `Escape` && !elements.modal.classList.contains(`hidden`)) hideModal();
+});

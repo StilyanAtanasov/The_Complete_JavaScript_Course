@@ -13,20 +13,23 @@
       <button class="btn btn--instructions">📖 How To Play</button>
 
       <section class="modal hidden">
-        <div class="close-modal-box">
-          <button class="close-modal">&times;</button>
-          <span class="escapeBtnSign"> [Esc]</span>
-        </div>
-        <h1 class="modal-heading"></h1>
+        <h1 class="modal-heading">Game Rules 📑</h1>
         <article class="textBox">
-          <p class="modal-text"></p>
+          <p class="modal-text">
+            An interactive two-player dice game where players take turns rolling a dice. Players accumulate points but lose their turn and points for the round if they roll a one. The game continues
+            until one player reaches 100 points. Click '✅ Start game' to begin and '🔄 New game' to restart. Players can change their username if they want before and during the play as well just by
+            clicking over the current player username and typing a new one.
+          </p>
         </article>
+        <div class="btnBox">
+          <button class="btn close-modal">👌 Ok</button>
+        </div>
       </section>
       <div class="overlay hidden"></div>
     </header>
     <main>
       <section class="player" id="player--1">
-        <input type="text" class="name" value="Player 1" maxlength="8" onfocus="onFocus(this, 'Player 1');" onblur="onBlur(this, 'Player 1');" />
+        <input type="text" class="name" value="Player 1" maxlength="10" onfocus="onFocus(this, 'Player 1');" onblur="onBlur(this, 'Player 1');" />
         <p class="score" id="score--1">0</p>
         <div class="current">
           <p class="current-label">Current</p>
@@ -34,7 +37,7 @@
         </div>
       </section>
       <section class="player" id="player--2">
-        <input type="text" class="name" value="Player 2" maxlength="8" onfocus="onFocus(this, 'Player 2');" onblur="onBlur(this, 'Player 2');" />
+        <input type="text" class="name" value="Player 2" maxlength="10" onfocus="onFocus(this, 'Player 2');" onblur="onBlur(this, 'Player 2');" />
         <p class="score" id="score--2">0</p>
         <div class="current">
           <p class="current-label">Current</p>
