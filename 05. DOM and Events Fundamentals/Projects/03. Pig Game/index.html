@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/images/pig.ico" type="image/png" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>Pig Game</title>
+  </head>
+  <body>
+    <header>
+      <h1 class="heading">Pig Game</h1>
+      <button class="btn btn--instructions">📖 How To Play</button>
+
+      <section class="modal hidden">
+        <div class="close-modal-box">
+          <button class="close-modal">&times;</button>
+          <span class="escapeBtnSign"> [Esc]</span>
+        </div>
+        <h1 class="modal-heading"></h1>
+        <article class="textBox">
+          <p class="modal-text"></p>
+        </article>
+      </section>
+      <div class="overlay hidden"></div>
+    </header>
+    <main>
+      <section class="player" id="player--1">
+        <input type="text" class="name" value="Player 1" maxlength="8" onfocus="onFocus(this, 'Player 1');" onblur="onBlur(this, 'Player 1');" />
+        <p class="score" id="score--1">0</p>
+        <div class="current">
+          <p class="current-label">Current</p>
+          <p class="current-score" id="current--1">0</p>
+        </div>
+      </section>
+      <section class="player" id="player--2">
+        <input type="text" class="name" value="Player 2" maxlength="8" onfocus="onFocus(this, 'Player 2');" onblur="onBlur(this, 'Player 2');" />
+        <p class="score" id="score--2">0</p>
+        <div class="current">
+          <p class="current-label">Current</p>
+          <p class="current-score" id="current--2">0</p>
+        </div>
+      </section>
+
+      <span class="current-sign invisible">⏳ Your Turn</span>
+      <img src="#" alt="Playing dice" class="dice hidden" />
+      <button class="btn btn--restart">✅ Start game</button>
+      <button class="btn btn--roll">🎲 Roll dice</button>
+      <button class="btn btn--hold">📥 Hold</button>
+    </main>
+
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>

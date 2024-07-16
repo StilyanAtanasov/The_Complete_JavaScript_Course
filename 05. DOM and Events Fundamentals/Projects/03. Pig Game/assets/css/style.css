@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Patua+One&display=swap");
 
 * {
   margin: 0;
@@ -7,7 +8,7 @@
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 10px;
   box-sizing: border-box;
 }
 
@@ -34,6 +35,7 @@ main {
   border-radius: 9px;
   overflow: hidden;
   display: flex;
+  opacity: 0.9;
 }
 
 .player {
@@ -46,6 +48,27 @@ main {
 }
 
 /* ELEMENTS */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.heading {
+  /* font-family: "Patua One"; */
+  font-size: 35rem;
+  font-weight: 900;
+  letter-spacing: 2rem;
+  text-transform: uppercase;
+  color: #813248;
+  text-shadow: -1px -1px 3rem rgba(255, 255, 255, 0.07), 1px -1px 3rem rgba(255, 255, 255, 0.07), -1px 1px 3rem rgba(255, 255, 255, 0.07), 1px 1px 3rem rgba(255, 255, 255, 0.07);
+  opacity: 0.85;
+  z-index: -1;
+}
+
 .name {
   position: relative;
   font-size: 4rem;
@@ -53,7 +76,12 @@ main {
   letter-spacing: 1px;
   word-spacing: 2px;
   font-weight: 300;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+  max-width: 27rem;
 }
 
 .score {
@@ -88,6 +116,18 @@ main {
   transition: all 0.75s;
 }
 
+.current-sign {
+  position: absolute;
+  font-weight: 600;
+  font-size: 2rem;
+  margin: 2rem 4rem 2rem 3rem;
+  text-align: center;
+  transform: translateX(2rem);
+  opacity: 1;
+  visibility: visible;
+  transition: all 500ms linear;
+}
+
 .current-label {
   text-transform: uppercase;
   margin-bottom: 1rem;
@@ -113,11 +153,9 @@ main {
   cursor: pointer;
   font-weight: 400;
   transition: all 0.2s;
-
   background-color: white;
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
-
   padding: 0.7rem 2.5rem;
   border-radius: 50rem;
   box-shadow: 0 1.75rem 3.5rem rgba(0, 0, 0, 0.1);
@@ -139,6 +177,13 @@ main {
 
 .btn--hold {
   top: 46.1rem;
+}
+
+.btn--instructions {
+  position: absolute;
+  top: 2rem;
+  right: 3rem;
+  z-index: 10;
 }
 
 .btn:active {
@@ -168,6 +213,95 @@ main {
   color: #c7365f;
 }
 
+/* MODAL WINDOW */
+.close-modal-box {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 1.2rem;
+  right: 2rem;
+  cursor: pointer;
+}
+
+.close-modal {
+  font-size: 5rem;
+  color: #333;
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: all 250ms linear;
+}
+
+.close-modal-box:hover .close-modal {
+  color: #c7365f;
+  transform: rotate(180deg);
+  scale: 1.2;
+}
+
+.escapeBtnSign {
+  font-size: 2rem;
+  margin-left: 0.7rem;
+  transition: all 250ms linear;
+}
+
+.close-modal-box:hover .escapeBtnSign {
+  transform: scale(1.1);
+  color: #c7365fdc;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  background-color: white;
+  padding: 6rem;
+  border-radius: 5px;
+  box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
+  z-index: 10;
+
+  font-size: 1.8rem;
+}
+
+.modal-text {
+  text-align: justify;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 5;
+}
+
+/* ADDITIONAL */
 .hidden {
   display: none;
+}
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.left {
+  left: 1rem;
+  right: auto;
+  transform: translateX(0);
+}
+
+.right {
+  left: auto;
+  right: 3rem;
+  transform: translateX(4rem);
 }
