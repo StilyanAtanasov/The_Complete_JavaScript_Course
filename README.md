@@ -24,15 +24,15 @@ NOTE: Some projects are further modified and improved by me and in some aspects 
 **URL:** [Live Demo](https://modal-windows.vercel.app/)
 
 **Repository Location:** [Project Code](https://github.com/CoolShadow1/The_Complete_JavaScript_Course/tree/main/05.%20DOM%20and%20Events%20Fundamentals/Projects/%232%20Modal%20Windows)
-<!--
+
 ### 3. Pig Game
 
-**Description:** An interactive two-player dice game where players take turns to roll a dice. Players can hold their score or risk rolling again to accumulate points, but rolling a one loses the turn and points for that round.
+**Description:** An interactive two-player dice game where players take turns rolling the dice. Players can choose to hold their score or risk rolling again to accumulate points. Rolling a one forfeits the turn and points for that round. The first player to reach 100 points wins!
 
-**URL:** [Live Demo](#)
+**URL:** [Live Demo](#) [Available Soon]
 
-**Repository Location:** [Project Code](#)
-
+**Repository Location:** [Project Code](https://github.com/CoolShadow1/The_Complete_JavaScript_Course/tree/main/05.%20DOM%20and%20Events%20Fundamentals/Projects/03.%20Pig%20Game)
+<!--
 ### 4. Bankist
 
 **Description:** A simplified online banking application that includes functionalities such as login, money transfers, loan requests, and account closures. This project emphasizes DOM manipulation and event handling.
