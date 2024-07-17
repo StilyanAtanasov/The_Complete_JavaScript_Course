@@ -13,22 +13,22 @@
 }
 
 @media (min-width: 2800px) {
-    html {
-      font-size: 14px;
-    }
+  html {
+    font-size: 14px;
   }
+}
 
-  @media (min-width: 3300px) {
-    html {
-      font-size: 16px;
-    }
+@media (min-width: 3300px) {
+  html {
+    font-size: 16px;
   }
+}
 
-  @media (min-width: 3700px) {
-    html {
-      font-size: 18px;
-    }
+@media (min-width: 3700px) {
+  html {
+    font-size: 18px;
   }
+}
 
 /* SMALLER RESOLUTIONS */
 @media (max-width: 1850px) {
@@ -92,7 +92,7 @@
 /* PHONE RESOLUTIONS */
 @media (max-width: 550px) {
   html {
-    font-size: 5px;
+    font-size: 5.5px;
   }
 
   body {
@@ -102,12 +102,16 @@
     gap: 8rem;
   }
 
+  main {
+    margin-bottom: 10rem;
+  }
+
   header {
     display: flex;
     position: static;
     width: auto;
     height: 10%;
-    margin-bottom: 15rem;
+    margin: 15rem 0;
   }
 
   .heading {
@@ -123,13 +127,11 @@
   }
 
   .btn {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
-}
 
-@media (max-width: 450px) {
-  html {
-    font-size: 4.5px;
+  .player {
+    padding: 12rem;
   }
 
   #player--1 {
@@ -141,6 +143,22 @@
   }
 }
 
+@media (max-width: 500px) {
+  html {
+    font-size: 5px;
+  }
+}
+
+@media (max-width: 450px) {
+  html {
+    font-size: 4.5px;
+  }
+
+  .btn {
+    font-size: 2.8rem;
+  }
+}
+
 @media (max-width: 400px) {
   html {
     font-size: 4px;
@@ -148,6 +166,12 @@
 }
 
 @media (max-width: 360px) {
+  html {
+    font-size: 3.8px;
+  }
+}
+
+@media (max-width: 340px) {
   html {
     font-size: 3.5px;
   }
