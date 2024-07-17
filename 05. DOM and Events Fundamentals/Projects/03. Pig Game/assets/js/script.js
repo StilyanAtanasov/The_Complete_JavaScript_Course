@@ -82,6 +82,7 @@ function displayDice(diceValue) {
 
 function handleWin() {
   elements[`player${currentPlayer}Section`].classList.add(`player--winner`);
+  elements.dice.classList.add(`hidden`);
   elements.currentSign.classList.add(`invisible`);
   gameRunning = false;
 }
@@ -94,14 +95,9 @@ function onBlur(element, defaultName) {
   if (element.value === ``) element.value = defaultName;
 }
 
-function showModal() {
-  elements.modal.classList.remove(`hidden`);
-  elements.overlay.classList.remove(`hidden`);
-}
-
-function hideModal() {
-  elements.modal.classList.add(`hidden`);
-  elements.overlay.classList.add(`hidden`);
+function toggleModal() {
+  elements.modal.classList.toggle(`hidden`);
+  elements.overlay.classList.toggle(`hidden`);
 }
 
 // ----- Game Logic -----
@@ -122,7 +118,7 @@ elements.btnHold.addEventListener(`click`, function () {
   if (gameRunning) {
     scores[`player${currentPlayer}`] += currentScore;
     elements[`player${currentPlayer}Score`].textContent = scores[`player${currentPlayer}`];
-    if (scores[`player${currentPlayer}`] >= 100) return handleWin();
+    if (scores[`player${currentPlayer}`] >= 20) return handleWin();
 
     switchPlayers();
   }
@@ -137,14 +133,11 @@ elements.btnStart.addEventListener(`click`, function () {
   restartGame();
 });
 
-elements.btnInstruction.addEventListener(`click`, function () {
-  if (elements.modal.classList.contains(`hidden`)) showModal();
-  else hideModal();
-});
+elements.btnInstruction.addEventListener(`click`, toggleModal);
 
-elements.btnCloseModal.addEventListener(`click`, hideModal);
-elements.overlay.addEventListener(`click`, hideModal);
+elements.btnCloseModal.addEventListener(`click`, toggleModal);
+elements.overlay.addEventListener(`click`, toggleModal);
 
 document.addEventListener(`keydown`, function (e) {
-  if (e.key === `Escape` && !elements.modal.classList.contains(`hidden`)) hideModal();
+  if (e.key === `Escape` && !elements.modal.classList.contains(`hidden`)) toggleModal();
 });
