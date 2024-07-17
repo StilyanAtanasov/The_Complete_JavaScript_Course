@@ -119,6 +119,10 @@
     opacity: 0.9;
   }
 
+  .modal {
+    font-size: 2.5rem;
+  }
+
   .btn--instructions {
     position: absolute;
     top: 5rem;
@@ -154,25 +158,58 @@
     font-size: 4.5px;
   }
 
+  .player {
+    padding-bottom: 8rem;
+  }
+
+  .name {
+    font-size: 4.2rem;
+    max-width: 30rem;
+  }
+
+  .current {
+    padding: 3.5rem 5rem;
+    width: auto;
+  }
+
+  .current-label {
+    font-size: 2.5rem;
+  }
+
+  .current-score {
+    font-size: 5rem;
+  }
+
   .btn {
     font-size: 2.8rem;
+    padding: 1.2rem 2.6rem;
+  }
+
+  .btn--hold {
+    top: 48rem;
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 420px) {
   html {
     font-size: 4px;
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 380px) {
   html {
     font-size: 3.8px;
   }
 }
 
-@media (max-width: 340px) {
+@media (max-width: 365px) {
   html {
     font-size: 3.5px;
+  }
+}
+
+@media (max-width: 335px) {
+  html {
+    font-size: 3.2px;
   }
 }
