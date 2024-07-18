@@ -1,8 +1,8 @@
 "use strict";
 
-// --- Using Google, StackOverflow and MDN
+// ----- Using Google, StackOverflow and MDN -----
 
-// -- PROBLEM 1:
+// --- PROBLEM 1: ---
 // We work for a company building a smart home thermometer.
 // Our most recent task is this: "Given an array of temperatures of one day, calculate the temperature amplitude.
 // Keep in mind that sometimes there might be a sensor error."
@@ -46,7 +46,7 @@ function findTempAmplitude(tempsArr) {
 
 console.log(findTempAmplitude(temperatures));
 
-// -- PROBLEM 2:
+// --- PROBLEM 2: ---
 // Function should now receive 2 arrays of temps
 
 // 1) Understanding the problem
