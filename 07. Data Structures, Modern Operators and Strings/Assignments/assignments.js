@@ -235,5 +235,49 @@ function printBookInfo({ title, author, year = `year unknown` }) {
   console.log(`${title} by ${author}, ${year}`);
 }
 
-printBookInfo({ title: "Algorithms", author: "Robert Sedgewick", year: "2011" });
-printBookInfo({ title: "Algorithms", author: "Robert Sedgewick" });
+printBookInfo({ title: `Algorithms`, author: `Robert Sedgewick`, year: `2011` });
+printBookInfo({ title: `Algorithms`, author: `Robert Sedgewick` });
+
+// ----- The Spread Operator -----
+
+// --- 3.1 ---
+const bookAuthors = [...books[0].author, ...books[1].author];
+
+// --- 3.2 ---
+const spellWord = (word) => console.log(...word);
+spellWord(`JavaScript`);
+
+// ----- Rest Pattern and Parameters -----
+
+// --- 4.1 ---
+const [mainKeyword, ...rest] = books[0].keywords;
+
+// --- 4.2 ---
+const { publisher: bookPublisher, ...restOfTheBook } = books[1];
+
+// --- 4.3 ---
+const printBookAuthorsCount = (title, ...authors) => console.log(`The book "${title}" has ${authors.length} authors`);
+printBookAuthorsCount(`Algorithms`, `Robert Sedgewick`, `Kevin Wayne`);
+
+// ----- Short Circuiting (&& and ||) -----
+
+// --- 5.1 ---
+const hasExamplesInJava = (bookObj) => bookObj.programmingLanguage === `Java` || `no data available`;
+hasExamplesInJava(books[0]);
+hasExamplesInJava(books[1]);
+
+// --- 5.2 ---
+for (let i = 0; i < books.length; i++) books[i].onlineContent && console.log(`"${books[i].title}" provides online content`);
+
+// ----- The Nullish Coalescing Operator (??) -----
+
+// --- 6.1 ---
+for (let i = 0; i < books.length; i++) books[i].onlineContent ?? console.log(`"${books[i].title}" provides no data about its online content`);
+
+// ----- Logical Assignments Operators -----
+
+// --- 7.1 ---
+for (let i = 0; i < books.length; i++) books[i].edition ??= 1;
+
+// --- 7.2 ---
+for (let i = 0; i < books.length; i++) books[i].thirdParty.goodreads.rating < 4.2 && (books[i].highlighted &&= false);
