@@ -210,10 +210,10 @@ const [fiveStarRatings, oneStarRatings, threeStarRatings = 0] = ratingStars;
 // ----- Destructuring Objects -----
 
 // --- 2.1 ---
-const { title, author, ISBN } = books[0];
+const { title, author, ISBN } = firstBook;
 
 // --- 2.2 ---
-const { keywords: tags } = books[0];
+const { keywords: tags } = firstBook;
 
 // --- 2.3 ---
 const { language, programmingLanguage = `unknown` } = books[6];
@@ -221,14 +221,14 @@ const { language, programmingLanguage = `unknown` } = books[6];
 // --- 2.4 ---
 let bookTitle = `unknown`;
 let bookAuthor = `unknown`;
-({ title: bookTitle, author: bookAuthor } = books[0]);
+({ title: bookTitle, author: bookAuthor } = firstBook);
 
 // --- 2.5 ---
 const {
   thirdParty: {
     goodreads: { rating: bookRating },
   },
-} = books[0];
+} = firstBook;
 
 // --- 2.6 ---
 function printBookInfo({ title, author, year = `year unknown` }) {
@@ -241,7 +241,7 @@ printBookInfo({ title: `Algorithms`, author: `Robert Sedgewick` });
 // ----- The Spread Operator -----
 
 // --- 3.1 ---
-const bookAuthors = [...books[0].author, ...books[1].author];
+const bookAuthors = [...firstBook.author, ...books[1].author];
 
 // --- 3.2 ---
 const spellWord = (word) => console.log(...word);
@@ -250,7 +250,7 @@ spellWord(`JavaScript`);
 // ----- Rest Pattern and Parameters -----
 
 // --- 4.1 ---
-const [mainKeyword, ...rest] = books[0].keywords;
+const [mainKeyword, ...rest] = firstBook.keywords;
 
 // --- 4.2 ---
 const { publisher: bookPublisher, ...restOfTheBook } = books[1];
@@ -263,7 +263,7 @@ printBookAuthorsCount(`Algorithms`, `Robert Sedgewick`, `Kevin Wayne`);
 
 // --- 5.1 ---
 const hasExamplesInJava = (bookObj) => bookObj.programmingLanguage === `Java` || `no data available`;
-hasExamplesInJava(books[0]);
+hasExamplesInJava(firstBook);
 hasExamplesInJava(books[1]);
 
 // --- 5.2 ---
@@ -323,20 +323,20 @@ const newBook2 = {
 
 // --- 10.1 ---
 const getFirstKeyword = (book) => console.log(book.keywords?.[0]);
-getFirstKeyword(books[0]);
+getFirstKeyword(firstBook);
 getFirstKeyword(newBook2); // from previous tasks
 
 // ----- Looping Objects: Object Keys, Values and Entries -----
 
 // --- 11.1 ---
 const entries = [];
-for (const key of Object.keys(books[0].thirdParty.goodreads)) entries.push([key]);
+for (const key of Object.keys(firstBook.thirdParty.goodreads)) entries.push([key]);
 
 // --- 11.2 ---
-for (const [i, value] of Object.values(books[0].thirdParty.goodreads).entries()) entries[i].push(value);
+for (const [i, value] of Object.values(firstBook.thirdParty.goodreads).entries()) entries[i].push(value);
 
 // --- 11.3 ---
-const entries2 = Object.entries(books[0].thirdParty.goodreads);
+const entries2 = Object.entries(firstBook.thirdParty.goodreads);
 
 // --- 11.4 ---
 console.log(entries);
@@ -387,7 +387,86 @@ bookMap.has(`author`) && console.log(`The author of the book is known`);
 // ----- Maps: Iteration -----
 
 // --- 14.1 ---
-const firstBookMap = new Map(Object.entries(books[0]));
+const firstBookMap = new Map(Object.entries(firstBook));
 
 // --- 14.2 ---
 for (const [key, value] of firstBookMap) typeof value === `number` && console.log(key);
+
+// ----- Working with Strings - Part 1 -----
+
+// --- 15.1 ---
+console.log(firstBook.ISBN[6], firstBook.ISBN[4], firstBook.ISBN[9], firstBook.ISBN[8]);
+
+// --- 15.2 ---
+const quote = `A computer once beat me at chess, but it was no match for me at kick boxing`;
+console.log(quote.indexOf(`chess`));
+
+// --- 15.3 ---
+console.log(quote.slice(quote.indexOf(`boxing`)));
+
+// --- 15.4 ---
+const isContributor = (authorName) => authorName.slice(authorName.lastIndexOf(` `) + 1) === `(Contributor)`;
+isContributor(`Julie Sussman (Contributor)`);
+isContributor(`Robert Sedgewick`);
+
+// ----- Working with Strings - Part 2 -----
+
+// --- 16.1 ---
+function normalizeAuthorName(authorName) {
+  authorName = authorName.replace(`(Contributor)`, ``).trim().toLowerCase();
+
+  const surnameStart = authorName.indexOf(` `) + 1;
+  return authorName.replace(authorName[0], authorName[0].toUpperCase()).replace(authorName[surnameStart], authorName[surnameStart].toUpperCase());
+}
+
+normalizeAuthorName(`  JuliE sussMan (Contributor)`);
+
+// --- 16.2 ---
+const newBookTitle = books[1].title.replace(`Programs`, `Software`);
+
+// --- 16.3 ---
+function logBookTheme(bookTitle) {
+  bookTitle = bookTitle.toLowerCase();
+
+  if (bookTitle.startsWith(`computer`)) {
+    console.log(`This book is about computers`);
+  } else if (bookTitle.includes(`algorithms`) && bookTitle.includes(`structures`)) {
+    console.log(`This book is about algorithms and data structures`);
+  } else if ((bookTitle.endsWith(`system`) || bookTitle.endsWith(`systems`)) && !bookTitle.includes(`operating`)) {
+    console.log(`This book is about some systems, but definitely not about operating systems`);
+  }
+}
+
+// ----- Working with Strings - Part 3 -----
+
+// --- 17.1 ---
+const bookCategories = "science;computing;computer science;algorithms;business;operating systems;networking;electronics";
+function logBookCategories(bookCategories) {
+  for (const category of bookCategories.split(`;`)) console.log(category);
+}
+
+logBookCategories(bookCategories);
+
+// --- 17.2 ---
+function getKeywordsAsString(booksArr) {
+  const uniqueKeywords = new Set();
+  for (const book of booksArr) for (const keyword of book.keywords) uniqueKeywords.add(keyword);
+
+  return [...uniqueKeywords].join(`;`);
+}
+
+getKeywordsAsString(books);
+
+// --- 17.3 ---
+const bookChapters = [
+  ["The Basics", 14],
+  ["Sorting", 254],
+  ["Searching", 372],
+  ["Graphs", 526],
+  ["Strings", 706],
+];
+function logBookChapters(bookChapters) {
+  for (const [name, page] of bookChapters) console.log(`${name.padEnd(20, `_`)} ${page}`);
+}
+
+logBookChapters(bookChapters);
