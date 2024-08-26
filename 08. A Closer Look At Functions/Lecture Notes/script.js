@@ -1,6 +1,7 @@
+/* ---------- A Closer Look At Functions ----------
+
 "use strict";
 
-/*
 // ----- Default Parameters -----
 const bookings = [];
 

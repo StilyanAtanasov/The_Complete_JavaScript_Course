@@ -1,3 +1,5 @@
+/* ---------- Data Structures, Modern Operators and Strings ----------
+
 "use strict";
 
 const weekdays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
@@ -44,7 +46,6 @@ const restaurant = {
   },
 };
 
-/*
 // ----- Destructuring Arrays -----
 const arr = [2, 3, 4];
 const a = arr[0];
