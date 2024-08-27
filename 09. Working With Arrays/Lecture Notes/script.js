@@ -92,7 +92,7 @@ currenciesUnique.forEach(function (value, _, map) {
   console.log(`${value}: ${value}`);
 });
 
-// The map Method
+// ----- The map Method -----
 const eurToUsd = 1.1;
 
 // const movementsUSD = movements.map(function (mov) {
@@ -117,7 +117,7 @@ const movementsDescriptions = movements.map(
 console.log(movementsDescriptions);
 
 
-// The filter Method
+// ----- The filter Method -----
 const deposits = movements.filter(function (mov, i, arr) {
   return mov > 0;
 });
@@ -132,7 +132,7 @@ const withdrawals = movements.filter(mov => mov < 0);
 console.log(withdrawals);
 
 
-// The reduce Method
+// ----- The reduce Method -----
 console.log(movements);
 
 // accumulator -> SNOWBALL
@@ -154,7 +154,7 @@ const max = movements.reduce((acc, mov) => {
 }, movements[0]);
 console.log(max);
 
-// The Magic of Chaining Methods
+// ----- The Magic of Chaining Methods -----
 const eurToUsd = 1.1;
 console.log(movements);
 
@@ -169,7 +169,7 @@ const totalDepositsUSD = movements
   .reduce((acc, mov) => acc + mov, 0);
 console.log(totalDepositsUSD);
 
-// The find Method
+// ----- The find Method -----
 const firstWithdrawal = movements.find(mov => mov < 0);
 console.log(movements);
 console.log(firstWithdrawal);
@@ -180,7 +180,7 @@ const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 console.log(account);
 
 
-// some and every
+// ----- some and every -----
 console.log(movements);
 
 // EQUALITY
@@ -203,7 +203,7 @@ console.log(movements.every(deposit));
 console.log(movements.filter(deposit));
 
 
-// flat and flatMap
+// ----- flat and flatMap -----
 const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
 console.log(arr.flat());
 
@@ -224,8 +224,7 @@ const overalBalance2 = accounts
 console.log(overalBalance2);
 
 
-// Sorting Arrays
-
+// ----- Sorting Arrays -----
 // Strings
 const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
 console.log(owners.sort());
@@ -254,7 +253,7 @@ movements.sort((a, b) => b - a);
 console.log(movements);
 
 
-// More Ways of Creating and Filling Arrays
+// ----- More Ways of Creating and Filling Arrays -----
 const arr = [1, 2, 3, 4, 5, 6, 7];
 console.log(new Array(1, 2, 3, 4, 5, 6, 7));
 
@@ -286,8 +285,7 @@ labelBalance.addEventListener('click', function () {
   const movementsUI2 = [...document.querySelectorAll('.movements__value')];
 });
 
-// Array Methods Practice
-
+// ----- Array Methods Practice -----
 // 1.
 const bankDepositSum = accounts
   .flatMap((acc) => acc.movements)
@@ -343,5 +341,4 @@ const convertTitleCase = function (title) {
 console.log(convertTitleCase("this is a nice title"));
 console.log(convertTitleCase("this is a LONG title but not too long"));
 console.log(convertTitleCase("and here is another title with an EXAMPLE"));
-
 */

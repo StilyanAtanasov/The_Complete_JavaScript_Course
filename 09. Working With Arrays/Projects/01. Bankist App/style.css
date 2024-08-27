@@ -86,9 +86,7 @@ nav {
   grid-template-columns: 4fr 3fr;
   grid-template-rows: auto repeat(3, 15rem) auto;
   gap: 2rem;
-
-  /* opacity: 0; */
-  transition: all 1s;
+  transition: all 1s ease;
 }
 
 .balance {
@@ -210,7 +208,7 @@ nav {
   background-image: linear-gradient(to top left, #ffb003, #ffcb03);
 }
 
-.operation--loan {
+.operation--deposit {
   background-image: linear-gradient(to top left, #39b385, #9be15d);
 }
 
@@ -233,10 +231,10 @@ h2 {
 }
 
 /* Exceptions for interst */
-.form.form--loan {
+.form.form--deposit {
   grid-template-columns: 2.5fr 1fr 2.5fr;
 }
-.form__label--loan {
+.form__label--deposit {
   grid-row: 2;
 }
 /* End exceptions */
@@ -287,4 +285,10 @@ h2 {
 
 .timer {
   font-weight: 600;
+}
+
+.hidden {
+  scale: 0;
+  visibility: hidden;
+  opacity: 0;
 }
