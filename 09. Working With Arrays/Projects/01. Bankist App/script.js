@@ -1,7 +1,7 @@
 "use strict";
 
 // ----- Global Variables -----
-let currentAccountIndex;
+let currentAccount;
 
 // ----- Data -----
 const accounts = [
@@ -50,6 +50,7 @@ const accounts = [
 ];
 
 const messages = {
+  login: `Log in to get started`,
   welcome(name) {
     return `Good Day, ${name}!`;
   },
@@ -89,19 +90,26 @@ const elements = {
 };
 
 // ----- Functions -----
-const updateAccountBalance = account => (accounts[account].balance = calcBalance(account));
-const calcBalance = account => accounts[account].movements.reduce((acc, mov) => acc + mov, 0);
+const updateAccountBalance = account => (account.balance = calcBalance(account));
+const calcBalance = account => account.movements.reduce((acc, mov) => acc + mov, 0);
 const displayBalance = balance => (elements.labels.balance.textContent = `${balance} €`);
-const calcIn = account => accounts[account].movements.reduce((acc, mov) => (mov > 0 ? acc + mov : acc), 0);
+const calcIn = account => account.movements.reduce((acc, mov) => (mov > 0 ? acc + mov : acc), 0);
 const displayIn = sumIn => (elements.labels.sumIn.textContent = `${sumIn} €`);
-const calcOut = account => accounts[account].movements.reduce((acc, mov) => (mov < 0 ? acc + mov : acc), 0);
+const calcOut = account => account.movements.reduce((acc, mov) => (mov < 0 ? acc + mov : acc), 0);
 const displayOut = sumOut => (elements.labels.sumOut.textContent = `${Math.abs(sumOut)} €`);
 const calcInterest = (P, R, T = 1) => P * R * T;
 const displayInterest = interest => (elements.labels.sumInterest.textContent = `${interest} €`);
+const validateCredentials = (username, password) => (accounts.find(acc => acc.username === username && acc.pin === password) !== undefined ? true : false);
 
 function handleLoginUI() {
   elements.containers.app.classList.remove(`hidden`);
-  elements.labels.welcome.textContent = messages.welcome(accounts[currentAccountIndex].owner.split(` `)[0]);
+  elements.labels.welcome.textContent = messages.welcome(currentAccount.owner.split(` `)[0]);
+}
+
+function handleLogOutUI() {
+  elements.containers.movements.innerHTML = ``;
+  elements.containers.app.classList.add(`hidden`);
+  elements.labels.welcome.textContent = messages.login;
 }
 
 function displayMovements(movements) {
@@ -118,25 +126,30 @@ function displayMovements(movements) {
   });
 }
 
+function sortMovements(movements) {
+  elements.containers.movements.innerHTML = ``;
+}
+
 function login() {
+  debugger;
   const username = elements.inputs.loginUsername.value;
   const password = Number(elements.inputs.loginPin.value);
 
-  if (accounts.filter(acc => acc.username === username && acc.pin === password).length != 1) return;
+  if (!validateCredentials(username, password)) return;
 
-  currentAccountIndex = accounts.findIndex(acc => acc.username === username);
+  currentAccount = accounts.find(acc => acc.username === username);
   handleLoginUI();
-  updateAccountBalance(currentAccountIndex);
-  updateUI(currentAccountIndex);
+  updateAccountBalance(currentAccount);
+  updateUI(currentAccount);
 }
 
 function deposit() {
   const amount = Number(elements.inputs.depositAmount.value);
   if (amount <= 0) return;
 
-  accounts[currentAccountIndex].movements.push(amount);
-  updateAccountBalance(currentAccountIndex);
-  updateUI(currentAccountIndex);
+  currentAccount.movements.push(amount);
+  updateAccountBalance(currentAccount);
+  updateUI(currentAccount);
 }
 
 function tranfer() {
@@ -144,21 +157,29 @@ function tranfer() {
   const amount = Number(elements.inputs.transferAmount.value);
 
   const recipientIndex = accounts.findIndex(acc => acc.username === recipient);
-  if (amount <= 0 || recipient === accounts[currentAccountIndex].username || recipientIndex === -1) return;
+  if (amount <= 0 || recipient === currentAccount.username || recipientIndex === -1) return;
 
-  accounts[currentAccountIndex].movements.push(-1 * amount);
+  currentAccount.movements.push(-1 * amount);
   accounts[recipientIndex].movements.push(amount);
-  updateAccountBalance(currentAccountIndex);
-  updateUI(currentAccountIndex);
+  updateAccountBalance(currentAccount);
+  updateUI(currentAccount);
 }
 
-function updateUI(accountIndex) {
-  const account = accounts[accountIndex];
+function closeAccount() {
+  const username = elements.inputs.closeUsername.value;
+  const password = Number(elements.inputs.closePin.value);
 
+  if (username !== currentAccount.username || password !== currentAccount.pin) return;
+
+  accounts.splice(accounts.indexOf(currentAccount), 1);
+  handleLogOutUI();
+}
+
+function updateUI(account) {
   displayMovements(account.movements);
   displayBalance(account.balance);
-  displayIn(calcIn(accountIndex));
-  displayOut(calcOut(accountIndex));
+  displayIn(calcIn(account));
+  displayOut(calcOut(account));
   displayInterest(calcInterest(account.balance, account.interestRate));
 }
 
@@ -168,3 +189,4 @@ function updateUI(accountIndex) {
 elements.buttons.login.addEventListener(`click`, login);
 elements.buttons.deposit.addEventListener(`click`, deposit);
 elements.buttons.transfer.addEventListener(`click`, tranfer);
+elements.buttons.close.addEventListener(`click`, closeAccount);
