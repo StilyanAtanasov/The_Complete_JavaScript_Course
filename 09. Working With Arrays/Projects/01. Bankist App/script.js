@@ -2,6 +2,7 @@
 
 // ----- Global Variables -----
 let currentAccount;
+let currentMovementsSortState = 0;
 
 // ----- Data -----
 const accounts = [
@@ -55,6 +56,12 @@ const messages = {
     return `Good Day, ${name}!`;
   },
 };
+
+const sortFunctions = new Map([
+  [0, `none`],
+  [1, movements => movements.sort((a, b) => a - b)], // Ascending
+  [2, movements => movements.sort((a, b) => b - a)], // Descending
+]);
 
 // ----- Elements -----
 const elements = {
@@ -126,12 +133,13 @@ function displayMovements(movements) {
   });
 }
 
-function sortMovements(movements) {
-  elements.containers.movements.innerHTML = ``;
+function sortMovements(movements, sortFunction = sortFunctions.get(0)) {
+  if (sortFunction === sortFunctions.get(0)) return movements;
+
+  return sortFunction(movements.slice());
 }
 
 function login() {
-  debugger;
   const username = elements.inputs.loginUsername.value;
   const password = Number(elements.inputs.loginPin.value);
 
@@ -190,3 +198,6 @@ elements.buttons.login.addEventListener(`click`, login);
 elements.buttons.deposit.addEventListener(`click`, deposit);
 elements.buttons.transfer.addEventListener(`click`, tranfer);
 elements.buttons.close.addEventListener(`click`, closeAccount);
+elements.buttons.sort.addEventListener(`click`, () =>
+  displayMovements(sortMovements(currentAccount.movements, sortFunctions.get(currentMovementsSortState === 2 ? (currentMovementsSortState = 0) : ++currentMovementsSortState)))
+);
