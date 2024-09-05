@@ -201,6 +201,12 @@ const elements = {
     movements: document.querySelector(`.movements`),
     popup: document.querySelector(`.popup`),
   },
+  forms: {
+    deposit: document.querySelector(`.form--deposit`),
+    withdraw: document.querySelector(`.form--withdraw`),
+    transfer: document.querySelector(`.form--transfer`),
+    close: document.querySelector(`.form--close`),
+  },
   labels: {
     welcome: document.querySelector(`.welcome`),
     date: document.querySelector(`.date`),
@@ -322,17 +328,16 @@ function login(e) {
 }
 
 function validateDeposit() {
-  const input1 = elements.inputs.depositAmount.value;
-  if (input1 === ``) return;
-  const amount = Number(input1);
+  elements.buttons.deposit.blur();
+  const amount = Number(elements.inputs.depositAmount.value);
 
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.deposit));
   if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.deposit));
   if (amount > maxDeposit) return error(messages.errors.invalidAmount.movementLimit(operations.deposit));
 
-  displayPopup(messages.popup.builtMessage(messages.popup.deposit(amount)));
   actionOnConfirm = () => deposit(amount);
   elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
+  displayPopup(messages.popup.builtMessage(messages.popup.deposit(amount)));
 }
 
 function deposit(amount) {
@@ -343,17 +348,15 @@ function deposit(amount) {
 }
 
 function validateWithdrawal() {
-  const input1 = elements.inputs.withdrawalAmount.value;
-  if (input1 === ``) return;
-
-  const amount = Number(input1);
+  elements.buttons.withdraw.blur();
+  const amount = Number(elements.inputs.withdrawalAmount.value);
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.withdraw));
   if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.withdraw));
   if (amount > currentAccount.balance) return error(messages.errors.invalidAmount.insufficientBalance());
 
-  displayPopup(messages.popup.builtMessage(messages.popup.withdraw(amount)));
   actionOnConfirm = () => withdraw(amount);
   elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
+  displayPopup(messages.popup.builtMessage(messages.popup.withdraw(amount)));
 }
 
 function withdraw(amount) {
@@ -364,12 +367,9 @@ function withdraw(amount) {
 }
 
 function validateTransfer() {
-  const input1 = elements.inputs.transferTo.value;
-  const input2 = elements.inputs.transferAmount.value;
-  if (input1 === `` || input2 === ``) return;
-
-  const recipient = input1;
-  const amount = Number(input2);
+  elements.buttons.transfer.blur();
+  const recipient = elements.inputs.transferTo.value;
+  const amount = Number(elements.inputs.transferAmount.value);
 
   if (recipient === currentAccount.username) return error(messages.errors.invalidCredentials.selfTransfer());
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.transfer));
@@ -380,9 +380,9 @@ function validateTransfer() {
   const recipientIndex = accounts.findIndex(acc => acc.username === recipient);
   if (recipientIndex === -1) return error(messages.errors.invalidCredentials.username(recipient));
 
-  displayPopup(messages.popup.builtMessage(messages.popup.transfer(accounts[recipientIndex].owner, amount)));
   actionOnConfirm = () => transfer(recipientIndex, amount);
   elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
+  displayPopup(messages.popup.builtMessage(messages.popup.transfer(accounts[recipientIndex].owner, amount)));
 }
 
 function transfer(recipientIndex, amount) {
@@ -394,18 +394,15 @@ function transfer(recipientIndex, amount) {
 }
 
 function validateAccountClosure() {
-  const input1 = elements.inputs.closeUsername.value;
-  const input2 = elements.inputs.closePin.value;
-  if (input1 === `` || input2 === ``) return;
-
-  const username = input1;
-  const password = Number(input2);
+  elements.buttons.close.blur();
+  const username = elements.inputs.closeUsername.value;
+  const password = Number(elements.inputs.closePin.value);
 
   if (username !== currentAccount.username || password !== currentAccount.pin) return error(messages.errors.invalidCredentials.credentials());
 
-  displayPopup(messages.popup.builtMessage(messages.popup.closeAccount()));
   actionOnConfirm = () => closeAccount();
   elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
+  displayPopup(messages.popup.builtMessage(messages.popup.closeAccount()));
 }
 
 function closeAccount() {
@@ -451,16 +448,16 @@ function hidePopup() {
 }
 
 function error(error) {
-  displayPopup(`Error: ${error}`);
   elements.containers.popup.classList.add(`error`);
   elements.buttons.popupConfirm.textContent = `OK`;
+  displayPopup(`Error: ${error}`);
   actionOnConfirm = () => hidePopup();
   elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
 }
 
 // ----- App Logic -----
-
 // ----- Event Listeners -----
+for (const form of Object.values(elements.forms)) form.addEventListener(`submit`, e => e.preventDefault());
 elements.buttons.login.addEventListener(`click`, login);
 document.addEventListener(`keydown`, e => e.key === `Enter` && currentAccount === undefined && login(e));
 elements.buttons.deposit.addEventListener(`click`, validateDeposit);
@@ -482,4 +479,4 @@ elements.other.overlay.addEventListener(`click`, hidePopup);
 document.addEventListener(`keydown`, e => e.key === `Escape` && popupActive && hidePopup());
 document.addEventListener(`keydown`, e => e.key === `Enter` && popupActive && actionOnConfirm());
 
-// TODO Toggle, prevent default operations, simplify operations, add errors, sign up
+// TODO Toggle, simplify operations, sign up

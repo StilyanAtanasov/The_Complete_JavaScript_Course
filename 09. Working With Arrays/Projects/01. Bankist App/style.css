@@ -211,9 +211,10 @@ nav {
   border: 1px solid #888;
   border-radius: 15px;
   background-color: #f8f6f6;
-  transition: all 500ms;
+  color: #333;
   padding: 4rem 8rem;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.12);
+  transition: all 500ms;
 }
 
 .popup__message {
@@ -552,7 +553,8 @@ h2 {
   left: 17rem;
 }
 
-.form__input:focus ~ .form__label {
+.form__input:focus ~ .form__label,
+.form__input:not(:placeholder-shown) ~ .form__label {
   bottom: -2rem;
   font-weight: bold;
 }
