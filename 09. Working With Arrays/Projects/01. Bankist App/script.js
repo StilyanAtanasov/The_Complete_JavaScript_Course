@@ -8,7 +8,7 @@ const minMovementAmount = 5;
 const accounts = [
   {
     owner: `Jonas Schmedtmann`,
-    username: `JSCHMEDTMANN875392`,
+    username: `JSCHMEDTMANN000001`,
     movements: [
       { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 200 },
       { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 450 },
@@ -24,7 +24,7 @@ const accounts = [
   },
   {
     owner: `Jessica Davis`,
-    username: `JDAVIS136754`,
+    username: `JDAVIS000001`,
     movements: [
       { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 5000 },
       { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 3400 },
@@ -40,7 +40,7 @@ const accounts = [
   },
   {
     owner: `Steven Williams`,
-    username: `SWILLIAMS927463`,
+    username: `SWILLIAMS000001`,
     movements: [
       { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 200 },
       { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -200 },
@@ -56,7 +56,7 @@ const accounts = [
   },
   {
     owner: `Sarah Smith`,
-    username: `SSMITH234578`,
+    username: `SSMITH000001`,
     movements: [
       { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 430 },
       { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 1000 },
@@ -69,7 +69,7 @@ const accounts = [
   },
   {
     owner: `Stilyan Atanasov`,
-    username: `SATANASOV578932`,
+    username: `SATANASOV000001`,
     movements: [
       { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 1000 },
       { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 12000 },
@@ -86,7 +86,7 @@ const accounts = [
   },
   {
     owner: `Antoan Atanasov`,
-    username: `AATANASOV489562`,
+    username: `AATANASOV000001`,
     movements: [
       { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 1000 },
       { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 12000 },
@@ -190,6 +190,8 @@ let currentAccount;
 let actionOnConfirm;
 let currentMovementsSortState = defaultMovementsSortState;
 let currentTheme = defaultTheme;
+let loggingIn = true;
+let signingUpStep = 0; // 0 -> not-signing up, 1 -> step 1, 2 -> step 2
 let popupActive = false;
 
 // ----- Elements -----
@@ -200,8 +202,12 @@ const elements = {
     app: document.querySelector(`.app`),
     movements: document.querySelector(`.movements`),
     popup: document.querySelector(`.popup`),
+    summary: document.querySelector(`.summary`),
   },
   forms: {
+    logIn: document.querySelector(`.login-form.login`),
+    signUp: document.querySelector(`.login-form.signup`),
+    signUpPIN: document.querySelector(`.login-form.pin`),
     deposit: document.querySelector(`.form--deposit`),
     withdraw: document.querySelector(`.form--withdraw`),
     transfer: document.querySelector(`.form--transfer`),
@@ -220,6 +226,10 @@ const elements = {
   inputs: {
     loginUsername: document.querySelector(`.login__input--user`),
     loginPin: document.querySelector(`.login__input--pin`),
+    signUpFirstName: document.querySelector(`.login__input--first-name`),
+    signUpLastName: document.querySelector(`.login__input--last-name`),
+    signUpPIN: document.querySelector(`.login__input--pin-create`),
+    signUpPINConfirm: document.querySelector(`.login__input--pin-confirm`),
     transferTo: document.querySelector(`.form__input--to`),
     transferAmount: document.querySelector(`.form__input--amount`),
     depositAmount: document.querySelector(`.form__input--deposit-amount`),
@@ -229,6 +239,10 @@ const elements = {
   },
   buttons: {
     login: document.querySelector(`.btn--login`),
+    signup: document.querySelector(`.btn--signup`),
+    logInPage: document.querySelector(`.btn--login-page`),
+    signUpPage: document.querySelector(`.btn--signup-page`),
+    signUpNext: document.querySelector(`.btn--signup-next`),
     logout: document.querySelector(`.btn--logout`),
     transfer: document.querySelector(`.form__btn--transfer`),
     deposit: document.querySelector(`.form__btn--deposit`),
@@ -284,26 +298,39 @@ function handleLogOutUI() {
   elements.containers.app.classList.add(`hidden`);
   elements.containers.nav.classList.add(`hidden`);
   elements.containers.login.classList.remove(`hidden`);
+  elements.forms.signUpPIN.classList.add(`slide-left`);
+  elements.forms.signUp.classList.remove(`scale-down`);
+  elements.forms.signUp.classList.add(`slide-left`);
+  elements.forms.logIn.classList.remove(`slide-right`);
   elements.labels.welcome.textContent = ``;
   currentMovementsSortState = defaultMovementsSortState;
   currentTheme = defaultTheme;
+  loggingIn = true;
+  signingUpStep = 0;
   changeTheme(currentTheme);
 }
 
 function displayMovements(movements) {
   emptyMovementsContainer();
+  elements.containers.movements.classList.remove(`empty`);
+  elements.containers.summary.classList.remove(`hidden`);
 
-  movements.forEach(function (movement) {
-    const movementType = movement.type;
-    const movementHTML = `<div class="movements__row">
-                            <div class="movements__type ${movementType}">${movementType}</div>
-                            <div class="movements__description">${movement.description}</div>
-                            <div class="movements__date">${movement.date}</div>
-                            <div class="movements__value">${movement.amount} €</div>
-                          </div>`;
+  if (movements.length === 0) {
+    elements.containers.movements.classList.add(`empty`);
+    elements.containers.summary.classList.add(`hidden`);
+  } else {
+    movements.forEach(function (movement) {
+      const movementType = movement.type;
+      const movementHTML = `<div class="movements__row">
+                              <div class="movements__type ${movementType}">${movementType}</div>
+                              <div class="movements__description">${movement.description}</div>
+                              <div class="movements__date">${movement.date}</div>
+                              <div class="movements__value">${movement.amount} €</div>
+                            </div>`;
 
-    elements.other.faderTop.insertAdjacentHTML(`afterend`, movementHTML);
-  });
+      elements.other.faderTop.insertAdjacentHTML(`afterend`, movementHTML);
+    });
+  }
 }
 
 function sortMovements(movements, sortFunction = sortFunctions.get(0).sortFunction) {
@@ -313,18 +340,70 @@ function sortMovements(movements, sortFunction = sortFunctions.get(0).sortFuncti
   return sortFunction(movements.slice());
 }
 
-function login(e) {
+function validateLogin(e) {
   e.preventDefault();
   const username = elements.inputs.loginUsername.value;
   const password = Number(elements.inputs.loginPin.value);
 
   if (!validateCredentials(username, password)) return;
 
+  login(username);
+}
+
+function login(username) {
   currentAccount = accounts.find(acc => acc.username === username);
+  loggingIn = false;
   clearFields(`loginUsername`, `loginPin`);
   handleLoginUI();
   updateAccountBalance(currentAccount);
   updateUI(currentAccount);
+}
+
+function createAccountStep1() {
+  const firstName = elements.inputs.signUpFirstName.value;
+  const lastName = elements.inputs.signUpLastName.value;
+
+  if (firstName === `` || lastName === ``) return; // TODO
+
+  accounts.push({
+    owner: `${firstName} ${lastName}`,
+    username: createUsername(firstName, lastName),
+    movements: [],
+    interestRate: 0.01,
+  });
+
+  displaySignUpNextPage();
+  signingUpStep = 2;
+}
+
+function createAccountStep2() {
+  const createPIN = elements.inputs.signUpPIN.value;
+  const confirmPIN = elements.inputs.signUpPINConfirm.value;
+
+  if (createPIN.length !== 4 || confirmPIN.length !== 4 || createPIN !== confirmPIN) return; // TODO
+
+  const PIN = Number(createPIN);
+  if (isNaN(PIN)) return;
+
+  accounts.at(-1).pin = PIN;
+  console.log(accounts.at(-1));
+
+  login(accounts.at(-1).username);
+}
+
+function createUsername(firstName, lastName) {
+  let username = (firstName[0] + lastName).toUpperCase();
+  let equalUsersCount = 1;
+  accounts.forEach(
+    acc =>
+      acc.username
+        .split(``)
+        .filter(char => isNaN(char))
+        .join(``) === username && equalUsersCount++
+  );
+
+  const usernameNumber = equalUsersCount.toString().padStart(6, `0`);
+  return username + usernameNumber;
 }
 
 function validateDeposit() {
@@ -455,11 +534,30 @@ function error(error) {
   elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
 }
 
+function switchLoginPage() {
+  elements.forms.logIn.classList.toggle(`slide-right`);
+  elements.forms.signUp.classList.toggle(`slide-left`);
+
+  loggingIn = !loggingIn;
+  signingUpStep = signingUpStep === 1 ? 0 : 1;
+}
+
+function displaySignUpNextPage() {
+  elements.forms.signUp.classList.add(`scale-down`);
+  elements.forms.signUpPIN.classList.remove(`slide-left`);
+}
+
 // ----- App Logic -----
 // ----- Event Listeners -----
 for (const form of Object.values(elements.forms)) form.addEventListener(`submit`, e => e.preventDefault());
-elements.buttons.login.addEventListener(`click`, login);
-document.addEventListener(`keydown`, e => e.key === `Enter` && currentAccount === undefined && login(e));
+elements.buttons.login.addEventListener(`click`, validateLogin);
+document.addEventListener(`keydown`, e => e.key === `Enter` && loggingIn && validateLogin(e));
+elements.buttons.signUpPage.addEventListener(`click`, switchLoginPage);
+elements.buttons.logInPage.addEventListener(`click`, switchLoginPage);
+elements.buttons.signUpNext.addEventListener(`click`, createAccountStep1);
+document.addEventListener(`keydown`, e => e.key === `Enter` && signingUpStep === 1 && createAccountStep1());
+elements.buttons.signup.addEventListener(`click`, createAccountStep2);
+document.addEventListener(`keydown`, e => e.key === `Enter` && signingUpStep === 2 && createAccountStep2());
 elements.buttons.deposit.addEventListener(`click`, validateDeposit);
 elements.buttons.withdraw.addEventListener(`click`, validateWithdrawal);
 elements.buttons.transfer.addEventListener(`click`, validateTransfer);
@@ -479,4 +577,4 @@ elements.other.overlay.addEventListener(`click`, hidePopup);
 document.addEventListener(`keydown`, e => e.key === `Escape` && popupActive && hidePopup());
 document.addEventListener(`keydown`, e => e.key === `Enter` && popupActive && actionOnConfirm());
 
-// TODO Toggle, simplify operations, sign up
+// TODO simplify operations, sign up field clearing, save theme

@@ -22,28 +22,65 @@
           <span class="theme">Theme: <i class="fa-regular fa-brightness"></i></span>
         </li>
         <hr />
-        <li><button class="btn--logout">Logout</button></li>
+        <li><button class="btn btn--logout">Logout</button></li>
       </ul>
     </nav>
 
     <div class="login-container">
       <div class="login-box">
-        <h1>Login</h1>
-        <img src="logo-dark.png" alt="Logo" class="logo" />
-        <form>
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Username" class="login__input--user" />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="PIN" maxlength="4" class="login__input--pin" />
-          </div>
-          <button type="submit" class="btn--login">Login</button>
-          <div class="signup-link">
-            <p>Don't have an account: <a href="#">SIGN UP</a></p>
-          </div>
-        </form>
+        <div class="login-form pin slide-left">
+          <h1>Create PIN</h1>
+          <img src="logo-dark.png" alt="Logo" class="logo" />
+          <form>
+            <div class="form-group">
+              <input type="password" id="create--pin" placeholder="" maxlength="4" class="login__input login__input--pin-create" />
+              <label class="login__label" for="create--pin">Create PIN</label>
+            </div>
+            <div class="form-group">
+              <input type="password" id="confirm--pin" placeholder="" maxlength="4" class="login__input login__input--pin-confirm" />
+              <label class="login__label" for="confirm--pin">Confirm PIN</label>
+            </div>
+            <button type="reset" class="btn btn--signup">Create Account</button>
+          </form>
+        </div>
+        <div class="login-form signup slide-left">
+          <h1>Sign Up</h1>
+          <img src="logo-dark.png" alt="Logo" class="logo" />
+          <form>
+            <div class="form-group">
+              <input type="text" id="firstname" placeholder="" class="login__input login__input--first-name" />
+              <label class="login__label" for="firstname">First name</label>
+            </div>
+            <div class="form-group">
+              <input type="text" id="surname" placeholder="" class="login__input login__input--last-name" />
+              <label class="login__label" for="surname">Last name</label>
+            </div>
+            <button type="reset" class="btn btn--signup-next">Next</button>
+            <div class="signup-link">
+              <p>Already have an account: <a href="#" class="btn--login-page">LOG IN</a></p>
+            </div>
+          </form>
+        </div>
+
+        <img src="splash.png" alt="splash image" />
+        <div class="login-form login">
+          <h1>Log In</h1>
+          <img src="logo-dark.png" alt="Logo" class="logo" />
+          <form>
+            <div class="form-group">
+              <input type="text" id="username" placeholder="" class="login__input login__input--user" />
+              <label class="login__label" for="username">Username</label>
+            </div>
+            <div class="form-group">
+              <input type="password" id="password" placeholder="" maxlength="4" class="login__input login__input--pin" />
+              <label class="login__label" for="password">PIN</label>
+            </div>
+            <button type="reset" class="btn btn--login">Login</button>
+            <div class="signup-link">
+              <p>Don't have an account: <a href="#" class="btn--signup-page">SIGN UP</a></p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -52,8 +89,8 @@
         <img src="logo-dark.png" alt="Logo" class="logo" />
         <p class="popup__message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, nihil!</p>
         <div class="popup__btns--container">
-          <button class="popup__btn--confirm">Confirm</button>
-          <button class="popup__btn--cancel">Cancel</button>
+          <button class="btn popup__btn--confirm">Confirm</button>
+          <button class="btn popup__btn--cancel">Cancel</button>
         </div>
         <span class="popup__btn--close"><i class="fa-solid fa-x"></i></span>
       </section>
@@ -81,6 +118,7 @@
 
       <div class="movements">
         <div class="fader fader--top"></div>
+        <p>You have not made any movement yet!</p>
         <div class="fader fader--bottom"></div>
       </div>
 
