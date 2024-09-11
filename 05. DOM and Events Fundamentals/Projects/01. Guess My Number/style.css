@@ -122,6 +122,13 @@ h1 {
   margin-bottom: 2rem;
 }
 
+footer {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  font-size: 0.9rem;
+}
+
 /* Phones */
 @media (max-width: 750px) {
   html {

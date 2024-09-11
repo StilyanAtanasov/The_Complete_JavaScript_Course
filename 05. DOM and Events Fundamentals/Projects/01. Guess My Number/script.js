@@ -31,7 +31,7 @@ const colours = {
 const getRandomNumber = () => Math.floor(Math.random() * 20) + 1;
 let number = getRandomNumber();
 let gameRunning = true;
-let score = 20;
+let score = 10;
 let highscore = 0;
 elements.score.textContent = score;
 elements.highscore.textContent = highscore;
@@ -39,16 +39,16 @@ elements.guessMessage.style.visibility = `hidden`;
 
 // ----- Functions -----
 const handleScore = () => (elements.score.textContent = --score);
-const setGuessMessage = (guess) => (elements.userGuess.textContent = guess);
-const setMessage = (message) => (elements.message.textContent = message);
-const isInRange = (guess) => guess >= 1 && guess <= 20;
-const setBodyBackgroundColor = (color) => (elements.body.style.backgroundColor = color);
-const setNumberTextContent = (content) => (elements.number.textContent = content);
-const setNumberWidth = (width) => (elements.number.style.width = width);
-const setGuessMessageVisibility = (visibility) => (elements.guessMessage.style.visibility = visibility);
-const setGuessValue = (value) => (elements.guess.value = value);
+const setGuessMessage = guess => (elements.userGuess.textContent = guess);
+const setMessage = message => (elements.message.textContent = message);
+const isInRange = guess => guess >= 1 && guess <= 20;
+const setBodyBackgroundColor = color => (elements.body.style.backgroundColor = color);
+const setNumberTextContent = content => (elements.number.textContent = content);
+const setNumberWidth = width => (elements.number.style.width = width);
+const setGuessMessageVisibility = visibility => (elements.guessMessage.style.visibility = visibility);
+const setGuessValue = value => (elements.guess.value = value);
 
-const handleInvalidGuess = (message) => {
+const handleInvalidGuess = message => {
   setMessage(message);
   setGuessMessageVisibility(`hidden`);
   setGuessValue(``);
@@ -114,7 +114,7 @@ document.querySelector(`.check`).addEventListener(`click`, () => {
 document.querySelector(`.again`).addEventListener(`click`, () => {
   number = getRandomNumber();
   gameRunning = true;
-  score = 20;
+  score = 10;
 
   // Reset design
   setBodyBackgroundColor(colours.grey);
