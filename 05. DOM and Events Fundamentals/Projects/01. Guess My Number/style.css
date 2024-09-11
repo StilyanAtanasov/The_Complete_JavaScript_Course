@@ -176,6 +176,10 @@ footer {
   .guessMessage {
     margin-bottom: 3rem;
   }
+
+  footer {
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 400px) and (min-height: 700px) {
@@ -185,6 +189,10 @@ footer {
   .again {
     font-size: 1.5rem;
     padding: 1.5rem 2.25rem;
+  }
+
+  footer {
+    font-size: 0.7rem;
   }
 }
 
