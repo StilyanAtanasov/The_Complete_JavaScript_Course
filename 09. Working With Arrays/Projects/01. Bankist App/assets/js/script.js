@@ -356,12 +356,13 @@ function sortMovements(movements, sortFunction = sortFunctions.get(0).sortFuncti
 }
 
 function validateLogin(e) {
-  return login(`SATANASOV000001`); // TODO
   e.preventDefault();
   const username = elements.inputs.loginUsername.value;
   const password = Number(elements.inputs.loginPin.value);
 
   if (!validateCredentials(username, password)) return;
+
+  login(username);
 }
 
 function login(username) {
