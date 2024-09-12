@@ -1,0 +1,282 @@
+/* ----- Large Resolutions ----- */
+/* TODO */
+
+/* ----- Small Resolutions ----- */
+@media (max-width: 1500px) {
+  html {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 1100px) {
+  html {
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 930px) {
+  html {
+    font-size: 7px;
+  }
+}
+
+@media (max-width: 800px) {
+  html {
+    font-size: 8px;
+  }
+
+  .login-box > img {
+    display: none;
+  }
+
+  .login-box {
+    width: 50rem;
+  }
+
+  .login-form {
+    position: absolute;
+    width: 50rem;
+    height: 65rem;
+    border-radius: 15px;
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+    width: 90vw;
+    margin: 7rem auto;
+  }
+
+  .titles {
+    padding-bottom: 1rem;
+  }
+
+  .movements {
+    height: 50vh;
+    font-size: 1.15rem;
+  }
+
+  .balance {
+    position: relative;
+    z-index: 11;
+  }
+
+  .operation {
+    width: 80%;
+    align-self: center;
+    transition: all 300ms;
+    transform: translateY(100vh);
+    width: 0.1rem;
+    padding: 0;
+    position: absolute;
+    top: 30rem;
+    z-index: 10;
+    font-size: 1.5rem;
+  }
+
+  .operation-xmark {
+    display: block;
+  }
+
+  .slide-up {
+    display: block;
+    width: 44rem;
+    height: 15rem;
+    padding: 3rem 4rem;
+    transform: translateY(0);
+  }
+
+  .operation--deposit.slide-up {
+    height: 23rem;
+  }
+
+  .btn--sort {
+    font-size: 1.5rem;
+  }
+
+  .operation--btns {
+    display: grid;
+  }
+
+  .logout-timer {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .popup {
+    width: 60rem;
+  }
+}
+
+@media (max-width: 550px) {
+  .popup {
+    width: 50rem;
+  }
+}
+
+@media (max-width: 500px) {
+  html {
+    font-size: 7px;
+  }
+
+  .settings--menu {
+    list-style-type: none;
+    position: absolute;
+    top: 2rem;
+    left: 20%;
+    display: flex;
+    gap: 5rem;
+    width: 50vw;
+    padding: 1rem;
+    margin: 0 auto;
+    border: none;
+    transition: all 300ms;
+    transform: translate(0, -100vh);
+  }
+
+  .settings--menu hr {
+    display: none;
+  }
+
+  .hide-up {
+    transform: translateY(-100vh);
+  }
+
+  .reveal-left {
+    transform: translateX(0);
+  }
+
+  .titles {
+    grid-template-columns: 80fr 1fr 80fr 1fr 80fr;
+  }
+
+  .titles p:nth-child(1),
+  .titles hr:nth-child(2),
+  .movements__type {
+    display: none;
+  }
+
+  .titles p:nth-child(3) {
+    text-align: start;
+  }
+
+  .movements__row {
+    grid-template-columns: repeat(3, 1fr);
+    font-size: 1.3rem;
+  }
+
+  .movements__description {
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .movements__value {
+    font-weight: 500;
+  }
+
+  .movements__description.deposit,
+  .movements__value.deposit {
+    color: #66c873;
+  }
+
+  .movements__description.transfer {
+    color: #ffcb03;
+  }
+
+  .movements__description.withdrawal,
+  .movements__value.transfer,
+  .movements__value.withdrawal {
+    color: #f5465d;
+  }
+
+  .summary__label {
+    font-size: 1.4rem;
+  }
+
+  .summary__value {
+    font-size: 2.4rem;
+  }
+
+  .btn--sort {
+    font-size: 1.7rem;
+  }
+
+  .operation--btns {
+    scale: 1.1;
+  }
+
+  .operation--btns div {
+    flex-direction: column;
+  }
+
+  .signup-link p {
+    font-size: 1.6rem;
+  }
+
+  .logout-timer {
+    font-size: 1.5rem;
+  }
+
+  footer {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .summary__label {
+    font-size: 1.24rem;
+  }
+
+  .summary__value {
+    font-size: 2.24rem;
+  }
+
+  .btn--sort {
+    font-size: 1.64rem;
+  }
+}
+
+@media (max-width: 400px) {
+  html {
+    font-size: 6px;
+  }
+
+  .operation--btns {
+    scale: 1.2;
+  }
+
+  .summary__label {
+    font-size: 1.4rem;
+  }
+
+  .summary__value {
+    font-size: 2.4rem;
+  }
+
+  .summary {
+    gap: 4rem;
+  }
+
+  .summary div {
+    flex-direction: column-reverse;
+  }
+
+  .btn--sort {
+    font-size: 1.7rem;
+  }
+
+  .login__label {
+    transform: translateY(-3.2rem);
+  }
+
+  .logout-timer {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 300px) {
+  html {
+    font-size: 5px;
+  }
+}

@@ -145,7 +145,7 @@ const themes = {
     color: `#444`,
     faderTop: `linear-gradient(to top, #ffffff00, #ffffff)`,
     faderBottom: `linear-gradient(to bottom, #ffffff00, #ffffff)`,
-    logoSrc: `logo-dark.png`,
+    logoSrc: `assets/images/logo-dark.png`,
   },
   dark: {
     icon: `Theme: <i class="fa-regular fa-moon" />`,
@@ -154,7 +154,7 @@ const themes = {
     color: `#f8f6f6`,
     faderTop: `linear-gradient(to top, #ffffff00, #292929)`,
     faderBottom: `linear-gradient(to bottom, #ffffff00, #292929)`,
-    logoSrc: `logo-bright.png`,
+    logoSrc: `assets/images/logo-bright.png`,
   },
 };
 
@@ -185,6 +185,8 @@ const sortFunctions = new Map([
 // ----- Global Variables -----
 const defaultTheme = themes.bright;
 const defaultMovementsSortState = 0;
+const screenWidth = window.innerWidth;
+const isMobile = screenWidth <= 800;
 
 let currentAccount;
 let actionOnConfirm;
@@ -197,12 +199,14 @@ let popupActive = false;
 // ----- Elements -----
 const elements = {
   containers: {
+    body: document.querySelector(`.body`),
     login: document.querySelector(`.login-container`),
     nav: document.querySelector(`.nav`),
     app: document.querySelector(`.app`),
     movements: document.querySelector(`.movements`),
     popup: document.querySelector(`.popup`),
     summary: document.querySelector(`.summary`),
+    operationBtns: document.querySelector(`.operation--btns`),
   },
   forms: {
     logIn: document.querySelector(`.login-form.login`),
@@ -212,6 +216,11 @@ const elements = {
     withdraw: document.querySelector(`.form--withdraw`),
     transfer: document.querySelector(`.form--transfer`),
     close: document.querySelector(`.form--close`),
+  },
+  operations: {
+    deposit: document.querySelector(`.operation--deposit`),
+    transfer: document.querySelector(`.operation--transfer`),
+    close: document.querySelector(`.operation--close`),
   },
   labels: {
     welcome: document.querySelector(`.welcome`),
@@ -255,6 +264,12 @@ const elements = {
     popupConfirm: document.querySelector(`.popup__btn--confirm`),
     popupCancel: document.querySelector(`.popup__btn--cancel`),
     popupClose: document.querySelector(`.popup__btn--close`),
+    operationDeposit: document.querySelector(`.btn-circle.deposit`),
+    operationTransfer: document.querySelector(`.btn-circle.transfer`),
+    operationClose: document.querySelector(`.btn-circle.close`),
+    operationDepositXMark: document.querySelector(`.operation--deposit .operation-xmark`),
+    operationTransferXMark: document.querySelector(`.operation--transfer .operation-xmark`),
+    operationCloseXMark: document.querySelector(`.operation--close .operation-xmark`),
   },
   other: {
     logo: document.querySelector(`.logo`),
@@ -323,9 +338,9 @@ function displayMovements(movements) {
       const movementType = movement.type;
       const movementHTML = `<div class="movements__row">
                               <div class="movements__type ${movementType}">${movementType}</div>
-                              <div class="movements__description">${movement.description}</div>
+                              <div class="movements__description ${movementType}">${movement.description}</div>
                               <div class="movements__date">${movement.date}</div>
-                              <div class="movements__value">${movement.amount} €</div>
+                              <div class="movements__value ${movementType}">${movement.amount} €</div>
                             </div>`;
 
       elements.other.faderTop.insertAdjacentHTML(`afterend`, movementHTML);
@@ -341,13 +356,12 @@ function sortMovements(movements, sortFunction = sortFunctions.get(0).sortFuncti
 }
 
 function validateLogin(e) {
+  return login(`SATANASOV000001`); // TODO
   e.preventDefault();
   const username = elements.inputs.loginUsername.value;
   const password = Number(elements.inputs.loginPin.value);
 
   if (!validateCredentials(username, password)) return;
-
-  login(username);
 }
 
 function login(username) {
@@ -408,6 +422,8 @@ function createUsername(firstName, lastName) {
 
 function validateDeposit() {
   elements.buttons.deposit.blur();
+  if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
+
   const amount = Number(elements.inputs.depositAmount.value);
 
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.deposit));
@@ -428,6 +444,8 @@ function deposit(amount) {
 
 function validateWithdrawal() {
   elements.buttons.withdraw.blur();
+  if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
+
   const amount = Number(elements.inputs.withdrawalAmount.value);
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.withdraw));
   if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.withdraw));
@@ -447,6 +465,8 @@ function withdraw(amount) {
 
 function validateTransfer() {
   elements.buttons.transfer.blur();
+  if (elements.operations.transfer.classList.contains(`slide-up`)) toggleOperation(elements.operations.transfer);
+
   const recipient = elements.inputs.transferTo.value;
   const amount = Number(elements.inputs.transferAmount.value);
 
@@ -474,6 +494,8 @@ function transfer(recipientIndex, amount) {
 
 function validateAccountClosure() {
   elements.buttons.close.blur();
+  if (elements.operations.close.classList.contains(`slide-up`)) toggleOperation(elements.operations.close);
+
   const username = elements.inputs.closeUsername.value;
   const password = Number(elements.inputs.closePin.value);
 
@@ -500,8 +522,8 @@ function updateUI(account) {
 
 function changeTheme(theme) {
   elements.buttons.theme.innerHTML = theme.icon;
-  document.body.style.backgroundColor = theme.backgroundColor;
-  document.body.style.color = theme.color;
+  elements.containers.body.style.backgroundColor = theme.backgroundColor;
+  elements.containers.body.style.color = theme.color;
   elements.containers.movements.style.backgroundColor = theme.movementsBackgroundColor;
   elements.other.faderTop.style.backgroundImage = theme.faderTop;
   elements.other.faderBottom.style.backgroundImage = theme.faderBottom;
@@ -547,8 +569,18 @@ function displaySignUpNextPage() {
   elements.forms.signUpPIN.classList.remove(`slide-left`);
 }
 
+function toggleOperation(operation) {
+  operation.classList.toggle(`slide-up`);
+  elements.other.overlay.classList.toggle(`hidden`);
+}
+
+function hideSettings() {
+  elements.buttons.settingsMenu.classList.toggle(`reveal-left`);
+  elements.labels.welcome.classList.toggle(`hide-up`);
+}
+
 // ----- App Logic -----
-// ----- Event Listeners -----
+// --- Event Listeners ---
 for (const form of Object.values(elements.forms)) form.addEventListener(`submit`, e => e.preventDefault());
 elements.buttons.login.addEventListener(`click`, validateLogin);
 document.addEventListener(`keydown`, e => e.key === `Enter` && loggingIn && validateLogin(e));
@@ -566,15 +598,26 @@ elements.buttons.theme.addEventListener(`click`, () => changeTheme(swapTheme()))
 elements.buttons.sort.addEventListener(`click`, () =>
   displayMovements(sortMovements(currentAccount.movements, sortFunctions.get(currentMovementsSortState === 2 ? (currentMovementsSortState = 0) : ++currentMovementsSortState).sortFunction))
 );
-elements.buttons.settings.addEventListener(`mouseover`, () => elements.buttons.settingsMenu.classList.remove(`hide--right`));
-elements.buttons.settings.addEventListener(`mouseout`, () => elements.buttons.settingsMenu.classList.add(`hide--right`));
-elements.buttons.settingsMenu.addEventListener("mouseenter", () => elements.buttons.settingsMenu.classList.remove("hide--right"));
-elements.buttons.settingsMenu.addEventListener("mouseleave", () => elements.buttons.settingsMenu.classList.add("hide--right"));
 elements.buttons.logout.addEventListener(`click`, handleLogOutUI);
 elements.buttons.popupCancel.addEventListener(`click`, hidePopup);
 elements.buttons.popupClose.addEventListener(`click`, hidePopup);
-elements.other.overlay.addEventListener(`click`, hidePopup);
+elements.other.overlay.addEventListener(`click`, () => popupActive && hidePopup());
 document.addEventListener(`keydown`, e => e.key === `Escape` && popupActive && hidePopup());
 document.addEventListener(`keydown`, e => e.key === `Enter` && popupActive && actionOnConfirm());
 
-// TODO simplify operations, sign up field clearing, save theme
+elements.buttons.settings.addEventListener(`click`, () => isMobile && hideSettings());
+elements.buttons.settings.addEventListener(`click`, () => !isMobile && elements.buttons.settingsMenu.classList.toggle(`reveal-left`));
+elements.buttons.settingsMenu.addEventListener(`click`, () => !isMobile && elements.buttons.settingsMenu.classList.add(`reveal-left`));
+document.addEventListener(
+  "mousedown",
+  (event, menu = elements.buttons.settingsMenu) => !isMobile && !elements.buttons.settings.contains(event.target) && !menu.contains(event.target) && menu.classList.remove("reveal-left")
+);
+
+elements.buttons.operationDeposit.addEventListener(`click`, () => toggleOperation(elements.operations.deposit));
+elements.buttons.operationTransfer.addEventListener(`click`, () => toggleOperation(elements.operations.transfer));
+elements.buttons.operationClose.addEventListener(`click`, () => toggleOperation(elements.operations.close));
+elements.buttons.operationDepositXMark.addEventListener(`click`, () => toggleOperation(elements.operations.deposit));
+elements.buttons.operationTransferXMark.addEventListener(`click`, () => toggleOperation(elements.operations.transfer));
+elements.buttons.operationCloseXMark.addEventListener(`click`, () => toggleOperation(elements.operations.close));
+
+// TODO simplify operations, sign up field clearing, save theme, overlay bug, form submit BUG, dark theme popup
