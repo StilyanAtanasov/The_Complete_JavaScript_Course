@@ -4,6 +4,29 @@
 const maxDeposit = 10000;
 const minMovementAmount = 5;
 
+const themes = {
+  bright: {
+    icon: `Theme: <i class="fa-regular fa-brightness" />`,
+    backgroundColor: `#f8f6f6`,
+    movementsBackgroundColor: `#ffffff`,
+    popupBackgroundColor: ` #f8f6f6`,
+    color: `#444`,
+    faderTop: `linear-gradient(to top, #ffffff00, #ffffff)`,
+    faderBottom: `linear-gradient(to bottom, #ffffff00, #ffffff)`,
+    logoSrc: `assets/images/logo-dark.png`,
+  },
+  dark: {
+    icon: `Theme: <i class="fa-regular fa-moon" />`,
+    backgroundColor: `#1b1b1b`,
+    movementsBackgroundColor: `#292929`,
+    popupBackgroundColor: ` #222`,
+    color: `#f8f6f6`,
+    faderTop: `linear-gradient(to top, #ffffff00, #292929)`,
+    faderBottom: `linear-gradient(to bottom, #ffffff00, #292929)`,
+    logoSrc: `assets/images/logo-bright.png`,
+  },
+};
+
 // ----- Data -----
 const accounts = [
   {
@@ -21,6 +44,7 @@ const accounts = [
     ],
     interestRate: 0.012,
     pin: 4758,
+    theme: themes.dark,
   },
   {
     owner: `Jessica Davis`,
@@ -37,6 +61,7 @@ const accounts = [
     ],
     interestRate: 0.015,
     pin: 8391,
+    theme: themes.bright,
   },
   {
     owner: `Steven Williams`,
@@ -53,6 +78,7 @@ const accounts = [
     ],
     interestRate: 0.007,
     pin: 2847,
+    theme: themes.bright,
   },
   {
     owner: `Sarah Smith`,
@@ -66,6 +92,7 @@ const accounts = [
     ],
     interestRate: 0.01,
     pin: 9432,
+    theme: themes.bright,
   },
   {
     owner: `Stilyan Atanasov`,
@@ -83,6 +110,7 @@ const accounts = [
     ],
     interestRate: 0.01,
     pin: 6743,
+    theme: themes.dark,
   },
   {
     owner: `Antoan Atanasov`,
@@ -100,6 +128,7 @@ const accounts = [
     ],
     interestRate: 0.01,
     pin: 9583,
+    theme: themes.bright,
   },
 ];
 
@@ -137,27 +166,6 @@ const messages = {
   },
 };
 
-const themes = {
-  bright: {
-    icon: `Theme: <i class="fa-regular fa-brightness" />`,
-    backgroundColor: `#f8f6f6`,
-    movementsBackgroundColor: `#ffffff`,
-    color: `#444`,
-    faderTop: `linear-gradient(to top, #ffffff00, #ffffff)`,
-    faderBottom: `linear-gradient(to bottom, #ffffff00, #ffffff)`,
-    logoSrc: `assets/images/logo-dark.png`,
-  },
-  dark: {
-    icon: `Theme: <i class="fa-regular fa-moon" />`,
-    backgroundColor: `#1b1b1b`,
-    movementsBackgroundColor: `#292929`,
-    color: `#f8f6f6`,
-    faderTop: `linear-gradient(to top, #ffffff00, #292929)`,
-    faderBottom: `linear-gradient(to bottom, #ffffff00, #292929)`,
-    logoSrc: `assets/images/logo-bright.png`,
-  },
-};
-
 const sortFunctions = new Map([
   [
     0,
@@ -191,7 +199,6 @@ const isMobile = screenWidth <= 800;
 let currentAccount;
 let actionOnConfirm;
 let currentMovementsSortState = defaultMovementsSortState;
-let currentTheme = defaultTheme;
 let loggingIn = true;
 let signingUpStep = 0; // 0 -> not-signing up, 1 -> step 1, 2 -> step 2
 let popupActive = false;
@@ -272,7 +279,7 @@ const elements = {
     operationCloseXMark: document.querySelector(`.operation--close .operation-xmark`),
   },
   other: {
-    logo: document.querySelector(`.logo`),
+    logos: document.querySelectorAll(`.logo`),
     faderTop: document.querySelector(`.fader--top`),
     faderBottom: document.querySelector(`.fader--bottom`),
     sortIcon: document.querySelector(`.sort--icon`),
@@ -298,14 +305,16 @@ const buildOnlineDeposit = buildMovement.bind(null, `deposit`, `Online Deposit`)
 const buildATMWithdrawal = buildMovement.bind(null, `withdrawal`, `ATM Withdrawal`);
 const buildWireTransfer = buildMovement.bind(null, `transfer`);
 const emptyMovementsContainer = () => document.querySelectorAll(".movements__row").forEach(row => row.remove());
-const swapTheme = () => (currentTheme = currentTheme === themes.bright ? themes.dark : themes.bright);
+const swapTheme = () => (currentAccount.theme = currentAccount.theme === themes.bright ? themes.dark : themes.bright);
 const closeConfirmation = () => elements.buttons.popupConfirm.removeEventListener(`click`, actionOnConfirm);
+const checkEmptyFields = (...fields) => fields.reduce((acc, field) => acc && field.value !== ``, true);
 
 function handleLoginUI() {
   elements.containers.login.classList.add(`hidden`);
   elements.containers.app.classList.remove(`hidden`);
   elements.containers.nav.classList.remove(`hidden`);
   elements.labels.welcome.textContent = messages.welcome(currentAccount.owner.split(` `)[0]);
+  changeTheme(currentAccount.theme);
 }
 
 function handleLogOutUI() {
@@ -319,10 +328,9 @@ function handleLogOutUI() {
   elements.forms.logIn.classList.remove(`slide-right`);
   elements.labels.welcome.textContent = ``;
   currentMovementsSortState = defaultMovementsSortState;
-  currentTheme = defaultTheme;
   loggingIn = true;
   signingUpStep = 0;
-  changeTheme(currentTheme);
+  changeTheme(defaultTheme);
 }
 
 function displayMovements(movements) {
@@ -385,6 +393,7 @@ function createAccountStep1() {
     username: createUsername(firstName, lastName),
     movements: [],
     interestRate: 0.01,
+    theme: defaultTheme,
   });
 
   displaySignUpNextPage();
@@ -423,6 +432,7 @@ function createUsername(firstName, lastName) {
 
 function validateDeposit() {
   elements.buttons.deposit.blur();
+  if (!checkEmptyFields(elements.inputs.depositAmount)) return;
   if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
 
   const amount = Number(elements.inputs.depositAmount.value);
@@ -445,6 +455,7 @@ function deposit(amount) {
 
 function validateWithdrawal() {
   elements.buttons.withdraw.blur();
+  if (!checkEmptyFields(elements.inputs.withdrawalAmount)) return;
   if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
 
   const amount = Number(elements.inputs.withdrawalAmount.value);
@@ -466,6 +477,7 @@ function withdraw(amount) {
 
 function validateTransfer() {
   elements.buttons.transfer.blur();
+  if (!checkEmptyFields(elements.inputs.transferTo, elements.inputs.transferAmount)) return;
   if (elements.operations.transfer.classList.contains(`slide-up`)) toggleOperation(elements.operations.transfer);
 
   const recipient = elements.inputs.transferTo.value;
@@ -495,6 +507,7 @@ function transfer(recipientIndex, amount) {
 
 function validateAccountClosure() {
   elements.buttons.close.blur();
+  if (!checkEmptyFields(elements.inputs.closeUsername, elements.inputs.closePin)) return;
   if (elements.operations.close.classList.contains(`slide-up`)) toggleOperation(elements.operations.close);
 
   const username = elements.inputs.closeUsername.value;
@@ -528,8 +541,9 @@ function changeTheme(theme) {
   elements.containers.movements.style.backgroundColor = theme.movementsBackgroundColor;
   elements.other.faderTop.style.backgroundImage = theme.faderTop;
   elements.other.faderBottom.style.backgroundImage = theme.faderBottom;
-  elements.buttons.sort.style.color = theme.color;
-  elements.other.logo.src = theme.logoSrc;
+  elements.containers.popup.style.backgroundColor = theme.popupBackgroundColor;
+  elements.buttons.sort.style.color = elements.containers.popup.style.color = elements.buttons.popupCancel.style.color = elements.buttons.popupClose.style.color = theme.color;
+  elements.other.logos.forEach(logo => (logo.src = theme.logoSrc));
   elements.buttons.settings.style.color = theme.color;
 }
 
@@ -621,4 +635,4 @@ elements.buttons.operationDepositXMark.addEventListener(`click`, () => toggleOpe
 elements.buttons.operationTransferXMark.addEventListener(`click`, () => toggleOperation(elements.operations.transfer));
 elements.buttons.operationCloseXMark.addEventListener(`click`, () => toggleOperation(elements.operations.close));
 
-// TODO simplify operations, sign up field clearing, save theme, overlay bug, form submit BUG, dark theme popup
+// TODO simplify operations, sign up field clearing

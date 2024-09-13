@@ -14,202 +14,207 @@
   </head>
   <body>
     <div class="body">
-      <!-- TOP NAVIGATION -->
-      <nav class="nav hidden">
-        <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
-        <p class="welcome"></p>
-        <button class="settings"><i class="fa-solid fa-bars"></i></button>
-        <ul class="settings--menu">
-          <li>
-            <span class="theme">Theme: <i class="fa-regular fa-brightness"></i></span>
-          </li>
-          <hr />
-          <li><div class="btn--logout">Logout</div></li>
-        </ul>
-      </nav>
-
-      <div class="login-container">
-        <div class="login-box">
-          <div class="login-form pin slide-left">
-            <h1>Create PIN</h1>
-            <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
-            <form>
-              <div class="form-group">
-                <input type="password" id="create--pin" placeholder="" maxlength="4" class="login__input login__input--pin-create" />
-                <label class="login__label" for="create--pin">Create PIN</label>
-              </div>
-              <div class="form-group">
-                <input type="password" id="confirm--pin" placeholder="" maxlength="4" class="login__input login__input--pin-confirm" />
-                <label class="login__label" for="confirm--pin">Confirm PIN</label>
-              </div>
-              <button type="reset" class="btn btn--signup">Create Account</button>
-            </form>
-          </div>
-          <div class="login-form signup slide-left">
-            <h1>Sign Up</h1>
-            <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
-            <form>
-              <div class="form-group">
-                <input type="text" id="firstname" placeholder="" class="login__input login__input--first-name" />
-                <label class="login__label" for="firstname">First name</label>
-              </div>
-              <div class="form-group">
-                <input type="text" id="surname" placeholder="" class="login__input login__input--last-name" />
-                <label class="login__label" for="surname">Last name</label>
-              </div>
-              <button type="reset" class="btn btn--signup-next">Next</button>
-              <div class="signup-link">
-                <p>Already have an account: <a href="#" class="btn--login-page">LOG IN</a></p>
-              </div>
-            </form>
-          </div>
-
-          <img src="assets/images/splash.png" alt="splash image" />
-          <div class="login-form login">
-            <h1>Log In</h1>
-            <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
-            <form>
-              <div class="form-group">
-                <input type="text" id="username" placeholder="" class="login__input login__input--user" />
-                <label class="login__label" for="username">Username</label>
-              </div>
-              <div class="form-group">
-                <input type="password" id="password" placeholder="" maxlength="4" class="login__input login__input--pin" />
-                <label class="login__label" for="password">PIN</label>
-              </div>
-              <button type="reset" class="btn btn--login">Login</button>
-              <div class="signup-link">
-                <p>Don't have an account: <a href="#" class="btn--signup-page">SIGN UP</a></p>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <main class="app hidden">
-        <section class="popup hidden">
+      <main>
+        <!-- TOP NAVIGATION -->
+        <nav class="nav hidden">
           <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
-          <p class="popup__message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, nihil!</p>
-          <div class="popup__btns--container">
-            <button class="btn popup__btn--confirm">Confirm</button>
-            <button class="btn popup__btn--cancel">Cancel</button>
+          <p class="welcome"></p>
+          <button class="settings"><i class="fa-solid fa-bars"></i></button>
+          <ul class="settings--menu">
+            <li>
+              <span class="theme">Theme: <i class="fa-regular fa-brightness"></i></span>
+            </li>
+            <hr />
+            <li><div class="btn--logout">Logout</div></li>
+          </ul>
+        </nav>
+
+        <section>
+          <div class="login-container">
+            <div class="login-box">
+              <div class="login-form pin slide-left">
+                <h1>Create PIN</h1>
+                <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
+                <form>
+                  <div class="form-group">
+                    <input type="password" id="create--pin" placeholder="" maxlength="4" class="login__input login__input--pin-create" />
+                    <label class="login__label" for="create--pin">Create PIN</label>
+                  </div>
+                  <div class="form-group">
+                    <input type="password" id="confirm--pin" placeholder="" maxlength="4" class="login__input login__input--pin-confirm" />
+                    <label class="login__label" for="confirm--pin">Confirm PIN</label>
+                  </div>
+                  <button type="reset" class="btn btn--signup">Create Account</button>
+                </form>
+              </div>
+              <div class="login-form signup slide-left">
+                <h1>Sign Up</h1>
+                <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
+                <form>
+                  <div class="form-group">
+                    <input type="text" id="firstname" placeholder="" class="login__input login__input--first-name" />
+                    <label class="login__label" for="firstname">First name</label>
+                  </div>
+                  <div class="form-group">
+                    <input type="text" id="surname" placeholder="" class="login__input login__input--last-name" />
+                    <label class="login__label" for="surname">Last name</label>
+                  </div>
+                  <button type="reset" class="btn btn--signup-next">Next</button>
+                  <div class="signup-link">
+                    <p>Already have an account: <a href="#" class="btn--login-page">LOG IN</a></p>
+                  </div>
+                </form>
+              </div>
+
+              <img src="assets/images/splash.png" alt="splash image" />
+              <div class="login-form login">
+                <h1>Log In</h1>
+                <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
+                <form>
+                  <div class="form-group">
+                    <input type="text" id="username" placeholder="" class="login__input login__input--user" />
+                    <label class="login__label" for="username">Username</label>
+                  </div>
+                  <div class="form-group">
+                    <input type="password" id="password" placeholder="" maxlength="4" class="login__input login__input--pin" />
+                    <label class="login__label" for="password">PIN</label>
+                  </div>
+                  <button type="reset" class="btn btn--login">Login</button>
+                  <div class="signup-link">
+                    <p>Don't have an account: <a href="#" class="btn--signup-page">SIGN UP</a></p>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
-          <span class="popup__btn--close"><i class="fa-solid fa-x"></i></span>
         </section>
-        <section class="overlay hidden"></section>
 
-        <!-- BALANCE -->
-        <div class="balance">
-          <div>
-            <p class="balance__label">Current balance</p>
-            <p class="balance__date">As of <span class="date">05/03/2037</span></p>
-          </div>
-          <p class="balance__value">0000€</p>
-        </div>
+        <section class="app hidden">
+          <!-- POPUP -->
+          <section class="popup hidden">
+            <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
+            <p class="popup__message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, nihil!</p>
+            <div class="popup__btns--container">
+              <button class="btn popup__btn--confirm">Confirm</button>
+              <button class="btn popup__btn--cancel">Cancel</button>
+            </div>
+            <span class="popup__btn--close"><i class="fa-solid fa-x"></i></span>
+          </section>
+          <section class="overlay hidden"></section>
 
-        <!-- MOVEMENTS -->
-        <div class="titles">
-          <p>Type</p>
-          <hr />
-          <p>Description</p>
-          <hr />
-          <p>Date</p>
-          <hr />
-          <p>Amount</p>
-        </div>
-
-        <div class="movements">
-          <div class="fader fader--top"></div>
-          <p>You have not made any movement yet!</p>
-          <div class="fader fader--bottom"></div>
-        </div>
-
-        <!-- SUMMARY -->
-        <div class="summary">
-          <div>
-            <p class="summary__label">In</p>
-            <p class="summary__value summary__value--in">0000€</p>
-          </div>
-          <div>
-            <p class="summary__label">Out</p>
-            <p class="summary__value summary__value--out">0000€</p>
-          </div>
-          <div>
-            <p class="summary__label">Interest</p>
-            <p class="summary__value summary__value--interest">0000€</p>
-          </div>
-
-          <button class="btn--sort">
-            <span class="sort--icon"><i class="fa-solid fa-arrow-up-arrow-down"></i></span>
-            SORT
-          </button>
-        </div>
-
-        <!-- OPERATION: DEPOSIT/WITHDRAW -->
-        <div class="operation operation--deposit">
-          <h2>Deposit / Withdraw</h2>
-          <span class="operation-xmark"><i class="fa-solid fa-xmark"></i></span>
-          <form class="form form--deposit">
-            <input type="number" class="form__input form__input--deposit-amount" placeholder="" />
-            <button type="reset" class="form__btn form__btn--deposit"><i class="fa-regular fa-arrow-right"></i></button>
-            <label class="form__label form__label--deposit">Deposit Amount</label>
-          </form>
-
-          <form class="form form--withdraw">
-            <input type="number" class="form__input form__input--withdrawal-amount" placeholder="" />
-            <button type="reset" class="form__btn form__btn--withdraw"><i class="fa-regular fa-arrow-right"></i></button>
-            <label class="form__label form__label--withdrawal">Withdrawal Amount</label>
-          </form>
-        </div>
-
-        <!-- OPERATION: TRANSFERS -->
-        <div class="operation operation--transfer">
-          <h2>Transfer money</h2>
-          <span class="operation-xmark"><i class="fa-solid fa-xmark"></i></span>
-          <form class="form form--transfer">
+          <!-- BALANCE -->
+          <div class="balance">
             <div>
-              <input type="text" class="form__input form__input--to" placeholder="" />
-              <label class="form__label">Transfer to</label>
+              <p class="balance__label">Current balance</p>
+              <p class="balance__date">As of <span class="date">05/03/2037</span></p>
+            </div>
+            <p class="balance__value">0000€</p>
+          </div>
+
+          <!-- MOVEMENTS -->
+          <div class="titles">
+            <p>Type</p>
+            <hr />
+            <p>Description</p>
+            <hr />
+            <p>Date</p>
+            <hr />
+            <p>Amount</p>
+          </div>
+
+          <div class="movements">
+            <div class="fader fader--top"></div>
+            <p>You have not made any movement yet!</p>
+            <div class="fader fader--bottom"></div>
+          </div>
+
+          <!-- SUMMARY -->
+          <div class="summary">
+            <div>
+              <p class="summary__label">In</p>
+              <p class="summary__value summary__value--in">0000€</p>
             </div>
             <div>
-              <input type="number" class="form__input form__input--amount" placeholder="" />
-              <label class="form__label form__label--second">Amount</label>
-            </div>
-            <button type="reset" class="form__btn form__btn--transfer"><i class="fa-regular fa-arrow-right"></i></button>
-          </form>
-        </div>
-
-        <!-- OPERATION: CLOSE -->
-        <div class="operation operation--close">
-          <h2>Close account</h2>
-          <span class="operation-xmark"><i class="fa-solid fa-xmark"></i></span>
-          <form class="form form--close">
-            <div>
-              <input type="text" class="form__input form__input--user" placeholder="" />
-              <label class="form__label">Confirm Username</label>
+              <p class="summary__label">Out</p>
+              <p class="summary__value summary__value--out">0000€</p>
             </div>
             <div>
-              <input type="password" maxlength="4" class="form__input form__input--pin" autocomplete="new-password" placeholder="" />
-              <label class="form__label form__label--second">Confirm PIN</label>
+              <p class="summary__label">Interest</p>
+              <p class="summary__value summary__value--interest">0000€</p>
             </div>
-            <button type="reset" class="form__btn form__btn--close"><i class="fa-regular fa-arrow-right"></i></button>
-          </form>
-        </div>
 
-        <!-- OPERATION BUTTONS -->
-        <section class="operation--btns">
-          <div>
-            <button class="btn-circle deposit"><i class="fa-solid fa-money-from-bracket"></i></button>
-            <p>Deposit/Withdraw</p>
+            <button class="btn--sort">
+              <span class="sort--icon"><i class="fa-solid fa-arrow-up-arrow-down"></i></span>
+              SORT
+            </button>
           </div>
-          <div>
-            <button class="btn-circle transfer"><i class="fa-regular fa-money-bill-transfer"></i></button>
-            <p>Transfer</p>
+
+          <!-- OPERATION: DEPOSIT/WITHDRAW -->
+          <div class="operation operation--deposit">
+            <h2>Deposit / Withdraw</h2>
+            <span class="operation-xmark"><i class="fa-solid fa-xmark"></i></span>
+            <form class="form form--deposit">
+              <input type="number" class="form__input form__input--deposit-amount" placeholder="" />
+              <button type="reset" class="form__btn form__btn--deposit"><i class="fa-regular fa-arrow-right"></i></button>
+              <label class="form__label form__label--deposit">Deposit Amount</label>
+            </form>
+
+            <form class="form form--withdraw">
+              <input type="number" class="form__input form__input--withdrawal-amount" placeholder="" />
+              <button type="reset" class="form__btn form__btn--withdraw"><i class="fa-regular fa-arrow-right"></i></button>
+              <label class="form__label form__label--withdrawal">Withdrawal Amount</label>
+            </form>
           </div>
-          <div>
-            <button class="btn-circle close"><i class="fa-regular fa-right-from-bracket"></i></button>
-            <p>Close account</p>
+
+          <!-- OPERATION: TRANSFERS -->
+          <div class="operation operation--transfer">
+            <h2>Transfer money</h2>
+            <span class="operation-xmark"><i class="fa-solid fa-xmark"></i></span>
+            <form class="form form--transfer">
+              <div>
+                <input type="text" class="form__input form__input--to" placeholder="" />
+                <label class="form__label">Transfer to</label>
+              </div>
+              <div>
+                <input type="number" class="form__input form__input--amount" placeholder="" />
+                <label class="form__label form__label--second">Amount</label>
+              </div>
+              <button type="reset" class="form__btn form__btn--transfer"><i class="fa-regular fa-arrow-right"></i></button>
+            </form>
           </div>
+
+          <!-- OPERATION: CLOSE -->
+          <div class="operation operation--close">
+            <h2>Close account</h2>
+            <span class="operation-xmark"><i class="fa-solid fa-xmark"></i></span>
+            <form class="form form--close">
+              <div>
+                <input type="text" class="form__input form__input--user" placeholder="" />
+                <label class="form__label">Confirm Username</label>
+              </div>
+              <div>
+                <input type="password" maxlength="4" class="form__input form__input--pin" autocomplete="new-password" placeholder="" />
+                <label class="form__label form__label--second">Confirm PIN</label>
+              </div>
+              <button type="reset" class="form__btn form__btn--close"><i class="fa-regular fa-arrow-right"></i></button>
+            </form>
+          </div>
+
+          <!-- OPERATION BUTTONS -->
+          <section class="operation--btns">
+            <div>
+              <button class="btn-circle deposit"><i class="fa-solid fa-money-from-bracket"></i></button>
+              <p>Deposit/Withdraw</p>
+            </div>
+            <div>
+              <button class="btn-circle transfer"><i class="fa-regular fa-money-bill-transfer"></i></button>
+              <p>Transfer</p>
+            </div>
+            <div>
+              <button class="btn-circle close"><i class="fa-regular fa-right-from-bracket"></i></button>
+              <p>Close account</p>
+            </div>
+          </section>
         </section>
       </main>
       <footer>© 2024 Stilyan Atanasov. All rights reserved.</footer>

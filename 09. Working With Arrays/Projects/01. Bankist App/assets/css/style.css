@@ -261,8 +261,9 @@ nav {
   position: fixed;
   inset: 0;
   z-index: 9;
-  width: 100vw;
-  height: auto;
+  width: 200vw;
+  height: 200vh;
+  transform: translate(-50vw, -50vh);
   backdrop-filter: blur(10px);
   transition: all 300ms;
 }
@@ -333,7 +334,7 @@ nav {
 }
 
 .popup.error {
-  color: #e52a5a;
+  color: #e52a5a !important;
 }
 
 .popup.error .popup__btn--cancel {
@@ -350,6 +351,7 @@ nav {
   gap: 2rem;
   transform: translateY(-3rem);
   transition: all 1s ease;
+  z-index: 1;
 }
 
 .balance {
@@ -358,6 +360,8 @@ nav {
   align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 11;
 }
 
 .balance__label {
@@ -739,7 +743,7 @@ h2 {
   bottom: 1rem;
   right: 2rem;
   font-size: 1.3rem;
-  z-index: 1;
+  z-index: 11;
 }
 
 .timer {
@@ -758,7 +762,7 @@ footer {
   position: absolute;
   bottom: 1rem;
   font-size: 1.3rem;
-  z-index: 1;
+  z-index: 0;
 }
 
-/* TODO Animate buttons, remove duplicate styles, large screen responsive disign + improvements, hide app*/
+/* TODO Animate buttons, remove duplicate styles, large screen responsive design + improvements, hide app BUG*/

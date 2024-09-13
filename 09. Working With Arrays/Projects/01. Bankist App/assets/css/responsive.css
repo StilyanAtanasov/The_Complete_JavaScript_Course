@@ -56,11 +56,6 @@
     font-size: 1.15rem;
   }
 
-  .balance {
-    position: relative;
-    z-index: 11;
-  }
-
   .operation {
     width: 80%;
     align-self: center;
