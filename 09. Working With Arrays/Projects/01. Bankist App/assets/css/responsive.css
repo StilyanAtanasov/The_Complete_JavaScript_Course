@@ -1,5 +1,37 @@
 /* ----- Large Resolutions ----- */
-/* TODO */
+
+@media (min-width: 2300px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 2560px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 3000px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 3840px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 801px) {
+  main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+}
 
 /* ----- Small Resolutions ----- */
 @media (max-width: 1500px) {

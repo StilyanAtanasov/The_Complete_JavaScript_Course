@@ -51,7 +51,7 @@ html {
   z-index: 1;
   width: 100%;
   height: 100%;
-  transition: all 1s ease;
+  transition: all 1000ms ease;
 }
 
 .login-box {
@@ -349,8 +349,9 @@ nav {
   grid-template-columns: 4fr 3fr;
   grid-template-rows: auto 2rem 18rem repeat(2, 14rem) auto;
   gap: 2rem;
+  align-self: center;
   transform: translateY(-3rem);
-  transition: all 1s ease;
+  transition: all 1000ms ease;
   z-index: 1;
 }
 
@@ -390,6 +391,7 @@ nav {
   border-bottom: 1px solid #888;
   border-radius: 5px;
   padding-bottom: 3rem;
+  transition: all 500ms;
 }
 
 .titles p {
@@ -431,6 +433,7 @@ nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  grid-row: 2 / span 4;
 }
 
 .movements.empty p {
@@ -765,4 +768,4 @@ footer {
   z-index: 0;
 }
 
-/* TODO Animate buttons, remove duplicate styles, large screen responsive design + improvements, hide app BUG*/
+/* TODO Animate buttons, remove duplicate styles, small responsive improvements*/

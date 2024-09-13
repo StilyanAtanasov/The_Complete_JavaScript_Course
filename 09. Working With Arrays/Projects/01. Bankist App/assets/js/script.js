@@ -284,6 +284,7 @@ const elements = {
     faderBottom: document.querySelector(`.fader--bottom`),
     sortIcon: document.querySelector(`.sort--icon`),
     overlay: document.querySelector(`.overlay`),
+    titles: document.querySelector(`.titles`),
   },
 };
 
@@ -337,10 +338,12 @@ function displayMovements(movements) {
   emptyMovementsContainer();
   elements.containers.movements.classList.remove(`empty`);
   elements.containers.summary.classList.remove(`hidden`);
+  elements.other.titles.classList.remove(`hidden`);
 
   if (movements.length === 0) {
     elements.containers.movements.classList.add(`empty`);
     elements.containers.summary.classList.add(`hidden`);
+    elements.other.titles.classList.add(`hidden`);
   } else {
     movements.forEach(function (movement) {
       const movementType = movement.type;
@@ -624,7 +627,7 @@ elements.buttons.settings.addEventListener(`click`, () => isMobile && hideSettin
 elements.buttons.settings.addEventListener(`click`, () => !isMobile && elements.buttons.settingsMenu.classList.toggle(`reveal-left`));
 elements.buttons.settingsMenu.addEventListener(`click`, () => !isMobile && elements.buttons.settingsMenu.classList.add(`reveal-left`));
 document.addEventListener(
-  "mousedown",
+  `mousedown`,
   (event, menu = elements.buttons.settingsMenu) => !isMobile && !elements.buttons.settings.contains(event.target) && !menu.contains(event.target) && menu.classList.remove("reveal-left")
 );
 
@@ -635,4 +638,4 @@ elements.buttons.operationDepositXMark.addEventListener(`click`, () => toggleOpe
 elements.buttons.operationTransferXMark.addEventListener(`click`, () => toggleOperation(elements.operations.transfer));
 elements.buttons.operationCloseXMark.addEventListener(`click`, () => toggleOperation(elements.operations.close));
 
-// TODO simplify operations, sign up field clearing
+// TODO simplify operations, sign up field clearing, errors and validation
