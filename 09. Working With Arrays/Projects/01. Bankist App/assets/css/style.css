@@ -83,6 +83,20 @@ html {
   transition: all 500ms ease, transform 350ms ease, visibility 200ms linear, opacity 200ms linear;
 }
 
+.input__error {
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: red;
+  transition: all 100ms;
+}
+
+.input__error.shake {
+  animation: horizontal-shaking 200ms linear 50ms 1 forwards;
+}
+
 .login-form h1 {
   font-size: 4rem;
   font-weight: bold;
@@ -766,6 +780,24 @@ footer {
   bottom: 1rem;
   font-size: 1.3rem;
   z-index: 0;
+}
+
+@keyframes horizontal-shaking {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 /* TODO Animate buttons, remove duplicate styles, small responsive improvements*/

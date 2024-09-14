@@ -141,15 +141,19 @@ const operations = {
 const messages = {
   errors: {
     invalidAmount: {
-      negativeValue: operation => `Cannot ${operation} non-positive amount!`,
-      insufficientBalance: () => `Insufficient balance!`,
-      movementLimit: (operation, limit = maxDeposit) => `Cannot ${operation} more than ${limit}€ at once!`,
-      movementMin: (operation, min = minMovementAmount) => `Cannot ${operation} less than ${min}€!`,
+      negativeValue: operation => `Error: Cannot ${operation} non-positive amount!`,
+      insufficientBalance: () => `Error: Insufficient balance!`,
+      movementLimit: (operation, limit = maxDeposit) => `Error: Cannot ${operation} more than ${limit}€ at once!`,
+      movementMin: (operation, min = minMovementAmount) => `Error: Cannot ${operation} less than ${min}€!`,
     },
     invalidCredentials: {
-      selfTransfer: () => `Cannot transfer to yourself!`,
-      username: username => `Account with username: ${username} does not exist!`,
-      credentials: () => `Invalid credentials!`,
+      selfTransfer: () => `Error: Cannot transfer to yourself!`,
+      username: username => `Error: Account with username: ${username} does not exist!`,
+      credentials: () => `Error: Invalid credentials!`,
+      wrongCharsInName: () => `Error: Name must be at least 2 characters long and must contain only the letters a-z, A-Z and the "-" sign!`,
+      pinCodesNotMatching: () => `Error: PIN codes do not match!`,
+      pinCodeSize: () => `Error: PIN code must be 4 digits!`,
+      pinCodeInvalidCharachters: () => `Error: PIN code must consist of digits only!`,
     },
   },
 
@@ -238,20 +242,27 @@ const elements = {
     sumInterest: document.querySelector(`.summary__value--interest`),
     timer: document.querySelector(`.timer`),
     popupMessage: document.querySelector(`.popup__message`),
+    inputErrorLogin: document.querySelector(`.input__error.login`),
+    inputErrorSignup: document.querySelector(`.input__error.signup`),
+    inputErrorPin: document.querySelector(`.input__error.pin`),
   },
   inputs: {
-    loginUsername: document.querySelector(`.login__input--user`),
-    loginPin: document.querySelector(`.login__input--pin`),
-    signUpFirstName: document.querySelector(`.login__input--first-name`),
-    signUpLastName: document.querySelector(`.login__input--last-name`),
-    signUpPIN: document.querySelector(`.login__input--pin-create`),
-    signUpPINConfirm: document.querySelector(`.login__input--pin-confirm`),
-    transferTo: document.querySelector(`.form__input--to`),
-    transferAmount: document.querySelector(`.form__input--amount`),
-    depositAmount: document.querySelector(`.form__input--deposit-amount`),
-    withdrawalAmount: document.querySelector(`.form__input--withdrawal-amount`),
-    closeUsername: document.querySelector(`.form__input--user`),
-    closePin: document.querySelector(`.form__input--pin`),
+    login: {
+      loginUsername: document.querySelector(`.login__input--user`),
+      loginPin: document.querySelector(`.login__input--pin`),
+      signUpFirstName: document.querySelector(`.login__input--first-name`),
+      signUpLastName: document.querySelector(`.login__input--last-name`),
+      signUpPIN: document.querySelector(`.login__input--pin-create`),
+      signUpPINConfirm: document.querySelector(`.login__input--pin-confirm`),
+    },
+    app: {
+      transferTo: document.querySelector(`.form__input--to`),
+      transferAmount: document.querySelector(`.form__input--amount`),
+      depositAmount: document.querySelector(`.form__input--deposit-amount`),
+      withdrawalAmount: document.querySelector(`.form__input--withdrawal-amount`),
+      closeUsername: document.querySelector(`.form__input--user`),
+      closePin: document.querySelector(`.form__input--pin`),
+    },
   },
   buttons: {
     login: document.querySelector(`.btn--login`),
@@ -299,7 +310,6 @@ const displayOut = sumOut => (elements.labels.sumOut.textContent = `${Math.abs(M
 const calcInterest = (P, R, T = 1) => P * R * T;
 const displayInterest = interest => (elements.labels.sumInterest.textContent = `${Math.round(interest * 100) / 100} €`);
 const validateCredentials = (username, password) => (accounts.find(acc => acc.username === username && acc.pin === password) !== undefined ? true : false);
-const clearFields = (...fieldNames) => fieldNames.forEach(f => (elements.inputs[f].value = ``));
 const buildMovement = (type, description, date, amount) => ({ type, description, date, amount });
 const buildDeposit = buildMovement.bind(null, `deposit`);
 const buildOnlineDeposit = buildMovement.bind(null, `deposit`, `Online Deposit`);
@@ -309,6 +319,10 @@ const emptyMovementsContainer = () => document.querySelectorAll(".movements__row
 const swapTheme = () => (currentAccount.theme = currentAccount.theme === themes.bright ? themes.dark : themes.bright);
 const closeConfirmation = () => elements.buttons.popupConfirm.removeEventListener(`click`, actionOnConfirm);
 const checkEmptyFields = (...fields) => fields.reduce((acc, field) => acc && field.value !== ``, true);
+const getInputValue = input => input.value.trim();
+const validName = name => [...name].reduce((acc, s, _, __, c = s.charCodeAt(0)) => acc && ((c > 64 && c < 91) || (c > 96 && c < 123) || c === 45), true);
+const fixName = name => name[0].toUpperCase() + name.slice(1).toLowerCase();
+const clearFields = (...fields) => fields.forEach(f => (f.value = ``));
 
 function handleLoginUI() {
   elements.containers.login.classList.add(`hidden`);
@@ -319,6 +333,7 @@ function handleLoginUI() {
 }
 
 function handleLogOutUI() {
+  hideSettings();
   emptyMovementsContainer();
   elements.containers.app.classList.add(`hidden`);
   elements.containers.nav.classList.add(`hidden`);
@@ -366,30 +381,34 @@ function sortMovements(movements, sortFunction = sortFunctions.get(0).sortFuncti
   return sortFunction(movements.slice());
 }
 
-function validateLogin(e) {
-  e.preventDefault();
-  const username = elements.inputs.loginUsername.value;
-  const password = Number(elements.inputs.loginPin.value);
+function validateLogin() {
+  const username = getInputValue(elements.inputs.login.loginUsername);
+  const password = Number(getInputValue(elements.inputs.login.loginPin));
 
-  if (!validateCredentials(username, password)) return;
+  if (!validateCredentials(username, password)) return displayInputError(messages.errors.invalidCredentials.credentials());
 
+  clearFields(elements.inputs.login.loginUsername, elements.inputs.login.loginPin);
   login(username);
 }
 
 function login(username) {
   currentAccount = accounts.find(acc => acc.username === username);
   loggingIn = false;
-  clearFields(`loginUsername`, `loginPin`);
   handleLoginUI();
   updateAccountBalance(currentAccount);
   updateUI(currentAccount);
 }
 
 function createAccountStep1() {
-  const firstName = elements.inputs.signUpFirstName.value;
-  const lastName = elements.inputs.signUpLastName.value;
+  if (!checkEmptyFields(elements.inputs.login.signUpFirstName, elements.inputs.login.signUpLastName)) return;
 
-  if (firstName === `` || lastName === ``) return; // TODO
+  let firstName = getInputValue(elements.inputs.login.signUpFirstName);
+  let lastName = getInputValue(elements.inputs.login.signUpLastName);
+
+  if (!validName(firstName) || !validName(lastName) || firstName.length < 2 || lastName.length < 2) return displayInputError(messages.errors.invalidCredentials.wrongCharsInName());
+
+  firstName = fixName(firstName);
+  lastName = fixName(lastName);
 
   accounts.push({
     owner: `${firstName} ${lastName}`,
@@ -399,22 +418,26 @@ function createAccountStep1() {
     theme: defaultTheme,
   });
 
+  clearFields(elements.inputs.login.signUpFirstName, elements.inputs.login.signUpLastName);
   displaySignUpNextPage();
   signingUpStep = 2;
 }
 
 function createAccountStep2() {
-  const createPIN = elements.inputs.signUpPIN.value;
-  const confirmPIN = elements.inputs.signUpPINConfirm.value;
+  const createPIN = getInputValue(elements.inputs.login.signUpPIN);
+  const confirmPIN = getInputValue(elements.inputs.login.signUpPINConfirm);
 
-  if (createPIN.length !== 4 || confirmPIN.length !== 4 || createPIN !== confirmPIN) return; // TODO
+  if (isNaN(Number(createPIN))) return displayInputError(messages.errors.invalidCredentials.pinCodeInvalidCharachters());
+
+  if (createPIN.length !== 4 || confirmPIN.length !== 4) return displayInputError(messages.errors.invalidCredentials.pinCodeSize());
+  if (createPIN !== confirmPIN) return displayInputError(messages.errors.invalidCredentials.pinCodesNotMatching());
 
   const PIN = Number(createPIN);
-  if (isNaN(PIN)) return;
 
   accounts.at(-1).pin = PIN;
   console.log(accounts.at(-1));
 
+  clearFields(elements.inputs.login.signUpPIN, elements.inputs.login.signUpPINConfirm);
   login(accounts.at(-1).username);
 }
 
@@ -435,10 +458,10 @@ function createUsername(firstName, lastName) {
 
 function validateDeposit() {
   elements.buttons.deposit.blur();
-  if (!checkEmptyFields(elements.inputs.depositAmount)) return;
+  if (!checkEmptyFields(elements.inputs.app.depositAmount)) return;
   if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
 
-  const amount = Number(elements.inputs.depositAmount.value);
+  const amount = Number(getInputValue(elements.inputs.app.depositAmount));
 
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.deposit));
   if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.deposit));
@@ -458,10 +481,10 @@ function deposit(amount) {
 
 function validateWithdrawal() {
   elements.buttons.withdraw.blur();
-  if (!checkEmptyFields(elements.inputs.withdrawalAmount)) return;
+  if (!checkEmptyFields(elements.inputs.app.withdrawalAmount)) return;
   if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
 
-  const amount = Number(elements.inputs.withdrawalAmount.value);
+  const amount = Number(getInputValue(elements.inputs.app.withdrawalAmount));
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.withdraw));
   if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.withdraw));
   if (amount > currentAccount.balance) return error(messages.errors.invalidAmount.insufficientBalance());
@@ -480,11 +503,11 @@ function withdraw(amount) {
 
 function validateTransfer() {
   elements.buttons.transfer.blur();
-  if (!checkEmptyFields(elements.inputs.transferTo, elements.inputs.transferAmount)) return;
+  if (!checkEmptyFields(elements.inputs.app.transferTo, elements.inputs.app.transferAmount)) return;
   if (elements.operations.transfer.classList.contains(`slide-up`)) toggleOperation(elements.operations.transfer);
 
-  const recipient = elements.inputs.transferTo.value;
-  const amount = Number(elements.inputs.transferAmount.value);
+  const recipient = getInputValue(elements.inputs.app.transferTo);
+  const amount = Number(getInputValue(elements.inputs.app.transferAmount));
 
   if (recipient === currentAccount.username) return error(messages.errors.invalidCredentials.selfTransfer());
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.transfer));
@@ -510,11 +533,11 @@ function transfer(recipientIndex, amount) {
 
 function validateAccountClosure() {
   elements.buttons.close.blur();
-  if (!checkEmptyFields(elements.inputs.closeUsername, elements.inputs.closePin)) return;
+  if (!checkEmptyFields(elements.inputs.app.closeUsername, elements.inputs.app.closePin)) return;
   if (elements.operations.close.classList.contains(`slide-up`)) toggleOperation(elements.operations.close);
 
-  const username = elements.inputs.closeUsername.value;
-  const password = Number(elements.inputs.closePin.value);
+  const username = getInputValue(elements.inputs.app.closeUsername);
+  const password = Number(getInputValue(elements.inputs.app.closePin));
 
   if (username !== currentAccount.username || password !== currentAccount.pin) return error(messages.errors.invalidCredentials.credentials());
 
@@ -569,7 +592,7 @@ function hidePopup() {
 function error(error) {
   elements.containers.popup.classList.add(`error`);
   elements.buttons.popupConfirm.textContent = `OK`;
-  displayPopup(`Error: ${error}`);
+  displayPopup(error);
   actionOnConfirm = () => hidePopup();
   elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
 }
@@ -597,9 +620,32 @@ function hideSettings() {
   elements.labels.welcome.classList.toggle(`hide-up`);
 }
 
+function getCurrentInputError() {
+  if (signingUpStep === 0) return elements.labels.inputErrorLogin;
+  if (signingUpStep === 1) return elements.labels.inputErrorSignup;
+  return elements.labels.inputErrorPin;
+}
+
+function displayInputError(errorMessage) {
+  const currentInputError = getCurrentInputError();
+
+  currentInputError.textContent = errorMessage;
+  currentInputError.classList.remove(`hidden`);
+  currentInputError.classList.add(`shake`);
+}
+
+function hideInputError() {
+  const currentInputError = getCurrentInputError();
+
+  currentInputError.classList.add(`hidden`);
+  currentInputError.classList.remove(`shake`);
+}
+
 // ----- App Logic -----
 // --- Event Listeners ---
 for (const form of Object.values(elements.forms)) form.addEventListener(`submit`, e => e.preventDefault());
+for (const input of Object.values(elements.inputs.login)) input.addEventListener(`focus`, hideInputError);
+
 elements.buttons.login.addEventListener(`click`, validateLogin);
 document.addEventListener(`keydown`, e => e.key === `Enter` && loggingIn && validateLogin(e));
 elements.buttons.signUpPage.addEventListener(`click`, switchLoginPage);
@@ -638,4 +684,4 @@ elements.buttons.operationDepositXMark.addEventListener(`click`, () => toggleOpe
 elements.buttons.operationTransferXMark.addEventListener(`click`, () => toggleOperation(elements.operations.transfer));
 elements.buttons.operationCloseXMark.addEventListener(`click`, () => toggleOperation(elements.operations.close));
 
-// TODO simplify operations, sign up field clearing, errors and validation
+// TODO improve code

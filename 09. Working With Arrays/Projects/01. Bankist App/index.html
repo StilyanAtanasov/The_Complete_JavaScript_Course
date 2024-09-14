@@ -33,6 +33,7 @@
           <div class="login-container">
             <div class="login-box">
               <div class="login-form pin slide-left">
+                <p class="input__error pin hidden">Error Cannot Access your account</p>
                 <h1>Create PIN</h1>
                 <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
                 <form>
@@ -44,10 +45,11 @@
                     <input type="password" id="confirm--pin" placeholder="" maxlength="4" class="login__input login__input--pin-confirm" />
                     <label class="login__label" for="confirm--pin">Confirm PIN</label>
                   </div>
-                  <button type="reset" class="btn btn--signup">Create Account</button>
+                  <button type="submit" class="btn btn--signup">Create Account</button>
                 </form>
               </div>
               <div class="login-form signup slide-left">
+                <p class="input__error signup hidden">Error Cannot Access your account</p>
                 <h1>Sign Up</h1>
                 <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
                 <form>
@@ -59,7 +61,7 @@
                     <input type="text" id="surname" placeholder="" class="login__input login__input--last-name" />
                     <label class="login__label" for="surname">Last name</label>
                   </div>
-                  <button type="reset" class="btn btn--signup-next">Next</button>
+                  <button type="submit" class="btn btn--signup-next">Next</button>
                   <div class="signup-link">
                     <p>Already have an account: <a href="#" class="btn--login-page">LOG IN</a></p>
                   </div>
@@ -68,6 +70,7 @@
 
               <img src="assets/images/splash.png" alt="splash image" />
               <div class="login-form login">
+                <p class="input__error login hidden">Error Cannot Access your account</p>
                 <h1>Log In</h1>
                 <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
                 <form>
@@ -79,7 +82,7 @@
                     <input type="password" id="password" placeholder="" maxlength="4" class="login__input login__input--pin" />
                     <label class="login__label" for="password">PIN</label>
                   </div>
-                  <button type="reset" class="btn btn--login">Login</button>
+                  <button type="submit" class="btn btn--login">Login</button>
                   <div class="signup-link">
                     <p>Don't have an account: <a href="#" class="btn--signup-page">SIGN UP</a></p>
                   </div>

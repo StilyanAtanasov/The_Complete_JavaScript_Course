@@ -130,6 +130,24 @@
   }
 }
 
+@media (max-width: 800px) and (max-height: 850px) {
+  html {
+    font-size: 6px;
+  }
+}
+
+@media (max-width: 800px) and (max-height: 770px) {
+  .movements {
+    height: 40vh;
+  }
+}
+
+@media (max-width: 800px) and (max-height: 660px) {
+  .movements {
+    height: 35vh;
+  }
+}
+
 @media (max-width: 700px) {
   .popup {
     width: 60rem;
@@ -262,6 +280,11 @@
   .btn--sort {
     font-size: 1.64rem;
   }
+
+  .logout-timer,
+  footer {
+    font-size: 1.2rem;
+  }
 }
 
 @media (max-width: 400px) {
@@ -295,10 +318,6 @@
 
   .login__label {
     transform: translateY(-3.2rem);
-  }
-
-  .logout-timer {
-    font-size: 1.5rem;
   }
 }
 
