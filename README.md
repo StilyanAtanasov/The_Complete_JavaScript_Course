@@ -32,15 +32,15 @@ NOTE: Some projects are further modified and improved by me and in some aspects 
 **URL:** [Live Demo](https://st-atanasov-pig-game.vercel.app/)
 
 **Repository Location:** [Project Code](https://github.com/CoolShadow1/The_Complete_JavaScript_Course/tree/main/05.%20DOM%20and%20Events%20Fundamentals/Projects/03.%20Pig%20Game)
-<!--
+
 ### 4. Bankist
 
-**Description:** A simplified online banking application that includes functionalities such as login, money transfers, loan requests, and account closures. This project emphasizes DOM manipulation and event handling.
+**Description:** The Bankist App is a minimalist online banking application that simulates real-world banking functionalities. This project is built with a focus on working with arrays, DOM manipulation, and event handling in JavaScript. The app provides users with the ability to log in, view transactions, transfer money, request deposits or withdrawals, and close accounts. Each feature showcases practical applications of fundamental JavaScript concepts.
 
-**URL:** [Live Demo](#)
+**URL:** [Live Demo](https://st-atanasov-bankist-app.vercel.app/)
 
-**Repository Location:** [Project Code](#)
-
+**Repository Location:** [Project Code](https://github.com/StilyanAtanasov/The_Complete_JavaScript_Course/tree/main/09.%20Working%20With%20Arrays/Projects/01.%20Bankist%20App)
+<!--
 ### 5. Mapty
 
 **Description:** A location-based application that allows users to log their workouts with details such as type, distance, duration, and coordinates. It integrates the use of the Geolocation API and local storage.
