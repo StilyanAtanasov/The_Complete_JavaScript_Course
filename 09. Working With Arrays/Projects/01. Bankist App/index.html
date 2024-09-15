@@ -15,10 +15,13 @@
   <body>
     <div class="body">
       <main>
-        <!-- TOP NAVIGATION -->
+        <!----- Top navigation ----->
         <nav class="nav hidden">
           <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
-          <p class="welcome"></p>
+          <div>
+            <p class="welcome"></p>
+            <span class="username"></span>
+          </div>
           <button class="settings"><i class="fa-solid fa-bars"></i></button>
           <ul class="settings--menu">
             <li>
@@ -29,6 +32,7 @@
           </ul>
         </nav>
 
+        <!----- Login ----->
         <section>
           <div class="login-container">
             <div class="login-box">
@@ -93,7 +97,7 @@
         </section>
 
         <section class="app hidden">
-          <!-- POPUP -->
+          <!----- Popup ----->
           <section class="popup hidden">
             <img src="assets/images/logo-dark.png" alt="Logo" class="logo" />
             <p class="popup__message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, nihil!</p>
@@ -105,7 +109,7 @@
           </section>
           <section class="overlay hidden"></section>
 
-          <!-- BALANCE -->
+          <!----- Balance ----->
           <div class="balance">
             <div>
               <p class="balance__label">Current balance</p>
@@ -114,7 +118,7 @@
             <p class="balance__value">0000€</p>
           </div>
 
-          <!-- MOVEMENTS -->
+          <!----- Movements ----->
           <div class="titles">
             <p>Type</p>
             <hr />
@@ -131,7 +135,7 @@
             <div class="fader fader--bottom"></div>
           </div>
 
-          <!-- SUMMARY -->
+          <!----- Summary ----->
           <div class="summary">
             <div>
               <p class="summary__label">In</p>
@@ -152,7 +156,7 @@
             </button>
           </div>
 
-          <!-- OPERATION: DEPOSIT/WITHDRAW -->
+          <!----- Operation: deposit/withdraw ----->
           <div class="operation operation--deposit">
             <h2>Deposit / Withdraw</h2>
             <span class="operation-xmark"><i class="fa-solid fa-xmark"></i></span>
@@ -169,14 +173,14 @@
             </form>
           </div>
 
-          <!-- OPERATION: TRANSFERS -->
+          <!----- Operation: transfer ----->
           <div class="operation operation--transfer">
             <h2>Transfer money</h2>
             <span class="operation-xmark"><i class="fa-solid fa-xmark"></i></span>
             <form class="form form--transfer">
               <div>
                 <input type="text" class="form__input form__input--to" placeholder="" />
-                <label class="form__label">Transfer to</label>
+                <label class="form__label">Username</label>
               </div>
               <div>
                 <input type="number" class="form__input form__input--amount" placeholder="" />
@@ -186,7 +190,7 @@
             </form>
           </div>
 
-          <!-- OPERATION: CLOSE -->
+          <!----- Operation: close account ----->
           <div class="operation operation--close">
             <h2>Close account</h2>
             <span class="operation-xmark"><i class="fa-solid fa-xmark"></i></span>
@@ -203,7 +207,7 @@
             </form>
           </div>
 
-          <!-- OPERATION BUTTONS -->
+          <!----- Operation buttons ----->
           <section class="operation--btns">
             <div>
               <button class="btn-circle deposit"><i class="fa-solid fa-money-from-bracket"></i></button>
@@ -222,7 +226,7 @@
       </main>
       <footer>© 2024 Stilyan Atanasov. All rights reserved.</footer>
 
-      <!-- LOGOUT TIMER -->
+      <!----- Logout timer ----->
       <p class="logout-timer">You will be logged out in <span class="timer">05:00</span></p>
     </div>
 

@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: inherit;
+  transition: all 350ms ease-out;
 }
 
 html {
@@ -15,9 +16,6 @@ html {
 
 ::-webkit-scrollbar-thumb {
   background-color: #888;
-}
-
-::-webkit-scrollbar-thumb {
   border-radius: 15px;
 }
 
@@ -39,7 +37,7 @@ html {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  transition: all 700ms linear;
+  transition: all 500ms linear;
 }
 
 .login-container {
@@ -51,7 +49,6 @@ html {
   z-index: 1;
   width: 100%;
   height: 100%;
-  transition: all 1000ms ease;
 }
 
 .login-box {
@@ -67,7 +64,6 @@ html {
 
 .login-box img {
   width: 50%;
-  transition: all 500ms;
 }
 
 .login-form {
@@ -120,7 +116,6 @@ html {
   margin-left: 1rem;
   transform: translateY(-2.8rem);
   pointer-events: none;
-  transition: all 300ms;
 }
 
 .login__input:focus ~ .login__label,
@@ -149,11 +144,15 @@ html {
   font-weight: bold;
   cursor: pointer;
   margin: 1.5rem 0;
-  transition: all 200ms linear;
+  transition: all 100ms linear;
 }
 
 .btn:hover {
   opacity: 0.9;
+}
+
+.btn:focus {
+  scale: 0.9;
 }
 
 .signup-link p {
@@ -205,24 +204,28 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  transition: all 500ms;
 }
 
 .welcome {
   font-size: 2.3rem;
   font-weight: 500;
-  transition: all 500ms;
+}
+
+.username {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #888;
 }
 
 .theme {
   font-size: 1.5rem;
   cursor: pointer;
-  transition: all 500ms;
 }
 
 .logo {
   height: 5.25rem;
-  transition: all 500ms;
 }
 
 .settings {
@@ -231,7 +234,6 @@ nav {
   border: none;
   cursor: pointer;
   padding: 1rem;
-  transition: all 500ms;
 }
 
 .settings:hover {
@@ -247,7 +249,6 @@ nav {
   padding: 1rem;
   border: 0.1rem solid #555;
   border-radius: 15px;
-  transition: all 300ms;
   transform: translateX(100vw);
 }
 
@@ -279,7 +280,6 @@ nav {
   height: 200vh;
   transform: translate(-50vw, -50vh);
   backdrop-filter: blur(10px);
-  transition: all 300ms;
 }
 
 .popup {
@@ -299,7 +299,6 @@ nav {
   color: #333;
   padding: 4rem 8rem;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.12);
-  transition: all 500ms;
 }
 
 .popup__message {
@@ -339,7 +338,6 @@ nav {
   font-size: 2rem;
   color: #333;
   cursor: pointer;
-  transition: all 300ms;
 }
 
 .popup__btn--close:hover {
@@ -365,7 +363,6 @@ nav {
   gap: 2rem;
   align-self: center;
   transform: translateY(-3rem);
-  transition: all 1000ms ease;
   z-index: 1;
 }
 
@@ -405,7 +402,6 @@ nav {
   border-bottom: 1px solid #888;
   border-radius: 5px;
   padding-bottom: 3rem;
-  transition: all 500ms;
 }
 
 .titles p {
@@ -436,7 +432,6 @@ nav {
   background-color: #ffffff;
   border-radius: 15px;
   overflow: scroll;
-  transition: all 500ms;
 }
 
 .movements p {
@@ -545,7 +540,6 @@ nav {
   align-items: baseline;
   padding: 0 0.3rem;
   margin-top: 1rem;
-  transition: all 500ms;
 }
 
 .summary div {
@@ -581,7 +575,6 @@ nav {
   font-size: 1.3rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 1s;
 }
 
 .btn--sort:hover {
@@ -704,7 +697,6 @@ h2 {
   color: #333;
   padding: 0.3rem 1rem;
   border-radius: 15px;
-  transition: all 0.3s;
 }
 
 .form__input:focus {
@@ -738,7 +730,6 @@ h2 {
   font-size: 1.8rem;
   background-color: #fff;
   cursor: pointer;
-  transition: all 0.3s;
 }
 
 .form__btn i {
@@ -799,5 +790,3 @@ footer {
     transform: translateX(0);
   }
 }
-
-/* TODO Animate buttons, remove duplicate styles, small responsive improvements*/

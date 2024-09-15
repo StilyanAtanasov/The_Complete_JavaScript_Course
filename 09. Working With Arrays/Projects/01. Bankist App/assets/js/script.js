@@ -6,7 +6,7 @@ const minMovementAmount = 5;
 
 const themes = {
   bright: {
-    icon: `Theme: <i class="fa-regular fa-brightness" />`,
+    icon: `Theme: <i class="fa-regular fa-brightness"></i>`,
     backgroundColor: `#f8f6f6`,
     movementsBackgroundColor: `#ffffff`,
     popupBackgroundColor: ` #f8f6f6`,
@@ -16,7 +16,7 @@ const themes = {
     logoSrc: `assets/images/logo-dark.png`,
   },
   dark: {
-    icon: `Theme: <i class="fa-regular fa-moon" />`,
+    icon: `Theme: <i class="fa-regular fa-moon"></i>`,
     backgroundColor: `#1b1b1b`,
     movementsBackgroundColor: `#292929`,
     popupBackgroundColor: ` #222`,
@@ -45,6 +45,7 @@ const accounts = [
     interestRate: 0.012,
     pin: 4758,
     theme: themes.dark,
+    firstVisit: false,
   },
   {
     owner: `Jessica Davis`,
@@ -62,6 +63,7 @@ const accounts = [
     interestRate: 0.015,
     pin: 8391,
     theme: themes.bright,
+    firstVisit: false,
   },
   {
     owner: `Steven Williams`,
@@ -79,6 +81,7 @@ const accounts = [
     interestRate: 0.007,
     pin: 2847,
     theme: themes.bright,
+    firstVisit: false,
   },
   {
     owner: `Sarah Smith`,
@@ -93,6 +96,7 @@ const accounts = [
     interestRate: 0.01,
     pin: 9432,
     theme: themes.bright,
+    firstVisit: false,
   },
   {
     owner: `Stilyan Atanasov`,
@@ -111,6 +115,7 @@ const accounts = [
     interestRate: 0.01,
     pin: 6743,
     theme: themes.dark,
+    firstVisit: false,
   },
   {
     owner: `Antoan Atanasov`,
@@ -129,6 +134,7 @@ const accounts = [
     interestRate: 0.01,
     pin: 9583,
     theme: themes.bright,
+    firstVisit: false,
   },
 ];
 
@@ -165,9 +171,9 @@ const messages = {
     builtMessage: operationInfo => `Please confirm that you wish to proceed with the ${operationInfo}?`,
   },
 
-  welcome(name) {
-    return `Welcome, ${name}!`;
-  },
+  welcome: name => `Welcome, ${name}!`,
+  firstVisit: username =>
+    `Your login credentials are as follows: Username: ${username}, and the PIN you just created. Please make sure to write them down securely, as the PIN cannot be recovered! Your username will also be displayed in the navigation.`,
 };
 
 const sortFunctions = new Map([
@@ -182,14 +188,14 @@ const sortFunctions = new Map([
     1, // Ascending
     {
       sortFunction: movements => movements.sort((a, b) => a.amount - b.amount),
-      btnInnerHTML: `<i class="fa-solid fa-arrow-up-wide-short" />`,
+      btnInnerHTML: `<i class="fa-solid fa-arrow-up-wide-short"></i>`,
     },
   ],
   [
     2, // Descending
     {
       sortFunction: movements => movements.sort((a, b) => b.amount - a.amount),
-      btnInnerHTML: `<i class="fa-solid fa-arrow-down-short-wide" />`,
+      btnInnerHTML: `<i class="fa-solid fa-arrow-down-short-wide"></i>`,
     },
   ],
 ]);
@@ -235,6 +241,7 @@ const elements = {
   },
   labels: {
     welcome: document.querySelector(`.welcome`),
+    username: document.querySelector(`.username`),
     date: document.querySelector(`.date`),
     balance: document.querySelector(`.balance__value`),
     sumIn: document.querySelector(`.summary__value--in`),
@@ -300,35 +307,48 @@ const elements = {
 };
 
 // ----- Functions -----
+// --- Balance ---
 const updateAccountBalance = account => (account.balance = calcBalance(account));
 const calcBalance = account => account.movements.reduce((acc, mov) => acc + mov.amount, 0);
 const displayBalance = balance => (elements.labels.balance.textContent = `${balance} €`);
+
+// --- Summary ---
 const calcIn = account => account.movements.reduce((acc, mov) => (mov.amount > 0 ? acc + mov.amount : acc), 0);
 const displayIn = sumIn => (elements.labels.sumIn.textContent = `${Math.round(sumIn * 100) / 100} €`);
 const calcOut = account => account.movements.reduce((acc, mov) => (mov.amount < 0 ? acc + mov.amount : acc), 0);
 const displayOut = sumOut => (elements.labels.sumOut.textContent = `${Math.abs(Math.round(sumOut * 100) / 100)} €`);
 const calcInterest = (P, R, T = 1) => P * R * T;
 const displayInterest = interest => (elements.labels.sumInterest.textContent = `${Math.round(interest * 100) / 100} €`);
+
+// --- Validation ---
 const validateCredentials = (username, password) => (accounts.find(acc => acc.username === username && acc.pin === password) !== undefined ? true : false);
+const validName = name => [...name].reduce((acc, s, _, __, c = s.charCodeAt(0)) => acc && ((c > 64 && c < 91) || (c > 96 && c < 123) || c === 45), true);
+const checkEmptyFields = (...fields) => fields.reduce((acc, field) => acc && field.value !== ``, true);
+
+// --- Operations ---
 const buildMovement = (type, description, date, amount) => ({ type, description, date, amount });
 const buildDeposit = buildMovement.bind(null, `deposit`);
 const buildOnlineDeposit = buildMovement.bind(null, `deposit`, `Online Deposit`);
 const buildATMWithdrawal = buildMovement.bind(null, `withdrawal`, `ATM Withdrawal`);
 const buildWireTransfer = buildMovement.bind(null, `transfer`);
-const emptyMovementsContainer = () => document.querySelectorAll(".movements__row").forEach(row => row.remove());
-const swapTheme = () => (currentAccount.theme = currentAccount.theme === themes.bright ? themes.dark : themes.bright);
-const closeConfirmation = () => elements.buttons.popupConfirm.removeEventListener(`click`, actionOnConfirm);
-const checkEmptyFields = (...fields) => fields.reduce((acc, field) => acc && field.value !== ``, true);
+
+// --- Input fields ---
 const getInputValue = input => input.value.trim();
-const validName = name => [...name].reduce((acc, s, _, __, c = s.charCodeAt(0)) => acc && ((c > 64 && c < 91) || (c > 96 && c < 123) || c === 45), true);
-const fixName = name => name[0].toUpperCase() + name.slice(1).toLowerCase();
 const clearFields = (...fields) => fields.forEach(f => (f.value = ``));
 
+// --- Other ---
+const emptyMovementsContainer = () => document.querySelectorAll(`.movements__row`).forEach(row => row.remove());
+const swapTheme = () => (currentAccount.theme = currentAccount.theme === themes.bright ? themes.dark : themes.bright);
+const closeConfirmation = () => elements.buttons.popupConfirm.removeEventListener(`click`, actionOnConfirm);
+const fixName = name => name[0].toUpperCase() + name.slice(1).toLowerCase();
+
+// --- UI ---
 function handleLoginUI() {
   elements.containers.login.classList.add(`hidden`);
   elements.containers.app.classList.remove(`hidden`);
   elements.containers.nav.classList.remove(`hidden`);
   elements.labels.welcome.textContent = messages.welcome(currentAccount.owner.split(` `)[0]);
+  elements.labels.username.textContent = currentAccount.username;
   changeTheme(currentAccount.theme);
 }
 
@@ -347,6 +367,14 @@ function handleLogOutUI() {
   loggingIn = true;
   signingUpStep = 0;
   changeTheme(defaultTheme);
+}
+
+function updateUI(account) {
+  displayMovements(account.movements);
+  displayBalance(account.balance);
+  displayIn(calcIn(account));
+  displayOut(calcOut(account));
+  displayInterest(calcInterest(account.balance, account.interestRate));
 }
 
 function displayMovements(movements) {
@@ -381,6 +409,46 @@ function sortMovements(movements, sortFunction = sortFunctions.get(0).sortFuncti
   return sortFunction(movements.slice());
 }
 
+function switchLoginPage() {
+  elements.forms.logIn.classList.toggle(`slide-right`);
+  elements.forms.signUp.classList.toggle(`slide-left`);
+
+  loggingIn = !loggingIn;
+  signingUpStep = signingUpStep === 1 ? 0 : 1;
+}
+
+function displaySignUpNextPage() {
+  elements.forms.signUp.classList.add(`scale-down`);
+  elements.forms.signUpPIN.classList.remove(`slide-left`);
+}
+
+function toggleOperation(operation) {
+  operation.classList.toggle(`slide-up`);
+  elements.other.overlay.classList.toggle(`hidden`);
+}
+
+function hideSettings() {
+  elements.buttons.settingsMenu.classList.toggle(`reveal-left`);
+  elements.labels.welcome.classList.toggle(`hide-up`);
+  elements.labels.username.classList.toggle(`hide-up`);
+}
+
+function displayInputError(errorMessage) {
+  const currentInputError = getCurrentInputError();
+
+  currentInputError.textContent = errorMessage;
+  currentInputError.classList.remove(`hidden`);
+  currentInputError.classList.add(`shake`);
+}
+
+function hideInputError() {
+  const currentInputError = getCurrentInputError();
+
+  currentInputError.classList.add(`hidden`);
+  currentInputError.classList.remove(`shake`);
+}
+
+// --- Login ---
 function validateLogin() {
   const username = getInputValue(elements.inputs.login.loginUsername);
   const password = Number(getInputValue(elements.inputs.login.loginPin));
@@ -397,8 +465,14 @@ function login(username) {
   handleLoginUI();
   updateAccountBalance(currentAccount);
   updateUI(currentAccount);
+
+  if (currentAccount.firstVisit) {
+    currentAccount.firstVisit = false;
+    error(messages.firstVisit(currentAccount.username));
+  }
 }
 
+// --- Signup ---
 function createAccountStep1() {
   if (!checkEmptyFields(elements.inputs.login.signUpFirstName, elements.inputs.login.signUpLastName)) return;
 
@@ -416,6 +490,7 @@ function createAccountStep1() {
     movements: [],
     interestRate: 0.01,
     theme: defaultTheme,
+    firstVisit: true,
   });
 
   clearFields(elements.inputs.login.signUpFirstName, elements.inputs.login.signUpLastName);
@@ -456,6 +531,7 @@ function createUsername(firstName, lastName) {
   return username + usernameNumber;
 }
 
+// --- Operations ---
 function validateDeposit() {
   elements.buttons.deposit.blur();
   if (!checkEmptyFields(elements.inputs.app.depositAmount)) return;
@@ -552,27 +628,7 @@ function closeAccount() {
   hidePopup();
 }
 
-function updateUI(account) {
-  displayMovements(account.movements);
-  displayBalance(account.balance);
-  displayIn(calcIn(account));
-  displayOut(calcOut(account));
-  displayInterest(calcInterest(account.balance, account.interestRate));
-}
-
-function changeTheme(theme) {
-  elements.buttons.theme.innerHTML = theme.icon;
-  elements.containers.body.style.backgroundColor = theme.backgroundColor;
-  elements.containers.body.style.color = theme.color;
-  elements.containers.movements.style.backgroundColor = theme.movementsBackgroundColor;
-  elements.other.faderTop.style.backgroundImage = theme.faderTop;
-  elements.other.faderBottom.style.backgroundImage = theme.faderBottom;
-  elements.containers.popup.style.backgroundColor = theme.popupBackgroundColor;
-  elements.buttons.sort.style.color = elements.containers.popup.style.color = elements.buttons.popupCancel.style.color = elements.buttons.popupClose.style.color = theme.color;
-  elements.other.logos.forEach(logo => (logo.src = theme.logoSrc));
-  elements.buttons.settings.style.color = theme.color;
-}
-
+// --- Popup ---
 function displayPopup(message) {
   elements.labels.popupMessage.textContent = message;
   elements.other.overlay.classList.remove(`hidden`);
@@ -597,27 +653,18 @@ function error(error) {
   elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
 }
 
-function switchLoginPage() {
-  elements.forms.logIn.classList.toggle(`slide-right`);
-  elements.forms.signUp.classList.toggle(`slide-left`);
-
-  loggingIn = !loggingIn;
-  signingUpStep = signingUpStep === 1 ? 0 : 1;
-}
-
-function displaySignUpNextPage() {
-  elements.forms.signUp.classList.add(`scale-down`);
-  elements.forms.signUpPIN.classList.remove(`slide-left`);
-}
-
-function toggleOperation(operation) {
-  operation.classList.toggle(`slide-up`);
-  elements.other.overlay.classList.toggle(`hidden`);
-}
-
-function hideSettings() {
-  elements.buttons.settingsMenu.classList.toggle(`reveal-left`);
-  elements.labels.welcome.classList.toggle(`hide-up`);
+// --- Other ---
+function changeTheme(theme) {
+  elements.buttons.theme.innerHTML = theme.icon;
+  elements.containers.body.style.backgroundColor = theme.backgroundColor;
+  elements.containers.body.style.color = theme.color;
+  elements.containers.movements.style.backgroundColor = theme.movementsBackgroundColor;
+  elements.other.faderTop.style.backgroundImage = theme.faderTop;
+  elements.other.faderBottom.style.backgroundImage = theme.faderBottom;
+  elements.containers.popup.style.backgroundColor = theme.popupBackgroundColor;
+  elements.buttons.sort.style.color = elements.containers.popup.style.color = elements.buttons.popupCancel.style.color = elements.buttons.popupClose.style.color = theme.color;
+  elements.other.logos.forEach(logo => (logo.src = theme.logoSrc));
+  elements.buttons.settings.style.color = theme.color;
 }
 
 function getCurrentInputError() {
@@ -626,26 +673,13 @@ function getCurrentInputError() {
   return elements.labels.inputErrorPin;
 }
 
-function displayInputError(errorMessage) {
-  const currentInputError = getCurrentInputError();
-
-  currentInputError.textContent = errorMessage;
-  currentInputError.classList.remove(`hidden`);
-  currentInputError.classList.add(`shake`);
-}
-
-function hideInputError() {
-  const currentInputError = getCurrentInputError();
-
-  currentInputError.classList.add(`hidden`);
-  currentInputError.classList.remove(`shake`);
-}
-
 // ----- App Logic -----
 // --- Event Listeners ---
+// General
 for (const form of Object.values(elements.forms)) form.addEventListener(`submit`, e => e.preventDefault());
 for (const input of Object.values(elements.inputs.login)) input.addEventListener(`focus`, hideInputError);
 
+// Login
 elements.buttons.login.addEventListener(`click`, validateLogin);
 document.addEventListener(`keydown`, e => e.key === `Enter` && loggingIn && validateLogin(e));
 elements.buttons.signUpPage.addEventListener(`click`, switchLoginPage);
@@ -654,29 +688,17 @@ elements.buttons.signUpNext.addEventListener(`click`, createAccountStep1);
 document.addEventListener(`keydown`, e => e.key === `Enter` && signingUpStep === 1 && createAccountStep1());
 elements.buttons.signup.addEventListener(`click`, createAccountStep2);
 document.addEventListener(`keydown`, e => e.key === `Enter` && signingUpStep === 2 && createAccountStep2());
+
+// Logout
+elements.buttons.logout.addEventListener(`click`, handleLogOutUI);
+
+// Operations
 elements.buttons.deposit.addEventListener(`click`, validateDeposit);
 elements.buttons.withdraw.addEventListener(`click`, validateWithdrawal);
 elements.buttons.transfer.addEventListener(`click`, validateTransfer);
 elements.buttons.close.addEventListener(`click`, validateAccountClosure);
-elements.buttons.theme.addEventListener(`click`, () => changeTheme(swapTheme()));
-elements.buttons.sort.addEventListener(`click`, () =>
-  displayMovements(sortMovements(currentAccount.movements, sortFunctions.get(currentMovementsSortState === 2 ? (currentMovementsSortState = 0) : ++currentMovementsSortState).sortFunction))
-);
-elements.buttons.logout.addEventListener(`click`, handleLogOutUI);
-elements.buttons.popupCancel.addEventListener(`click`, hidePopup);
-elements.buttons.popupClose.addEventListener(`click`, hidePopup);
-elements.other.overlay.addEventListener(`click`, () => popupActive && hidePopup());
-document.addEventListener(`keydown`, e => e.key === `Escape` && popupActive && hidePopup());
-document.addEventListener(`keydown`, e => e.key === `Enter` && popupActive && actionOnConfirm());
 
-elements.buttons.settings.addEventListener(`click`, () => isMobile && hideSettings());
-elements.buttons.settings.addEventListener(`click`, () => !isMobile && elements.buttons.settingsMenu.classList.toggle(`reveal-left`));
-elements.buttons.settingsMenu.addEventListener(`click`, () => !isMobile && elements.buttons.settingsMenu.classList.add(`reveal-left`));
-document.addEventListener(
-  `mousedown`,
-  (event, menu = elements.buttons.settingsMenu) => !isMobile && !elements.buttons.settings.contains(event.target) && !menu.contains(event.target) && menu.classList.remove("reveal-left")
-);
-
+// Operation buttons
 elements.buttons.operationDeposit.addEventListener(`click`, () => toggleOperation(elements.operations.deposit));
 elements.buttons.operationTransfer.addEventListener(`click`, () => toggleOperation(elements.operations.transfer));
 elements.buttons.operationClose.addEventListener(`click`, () => toggleOperation(elements.operations.close));
@@ -684,4 +706,26 @@ elements.buttons.operationDepositXMark.addEventListener(`click`, () => toggleOpe
 elements.buttons.operationTransferXMark.addEventListener(`click`, () => toggleOperation(elements.operations.transfer));
 elements.buttons.operationCloseXMark.addEventListener(`click`, () => toggleOperation(elements.operations.close));
 
-// TODO improve code
+// Popup
+elements.buttons.popupCancel.addEventListener(`click`, hidePopup);
+elements.buttons.popupClose.addEventListener(`click`, hidePopup);
+elements.other.overlay.addEventListener(`click`, () => popupActive && hidePopup());
+document.addEventListener(`keydown`, e => e.key === `Escape` && popupActive && hidePopup());
+document.addEventListener(`keydown`, e => e.key === `Enter` && popupActive && actionOnConfirm());
+
+// Settings
+elements.buttons.settings.addEventListener(`click`, () => isMobile && hideSettings());
+elements.buttons.settings.addEventListener(`click`, () => !isMobile && elements.buttons.settingsMenu.classList.toggle(`reveal-left`));
+elements.buttons.settingsMenu.addEventListener(`click`, () => !isMobile && elements.buttons.settingsMenu.classList.add(`reveal-left`));
+document.addEventListener(
+  `mousedown`,
+  (event, menu = elements.buttons.settingsMenu) => !isMobile && !elements.buttons.settings.contains(event.target) && !menu.contains(event.target) && menu.classList.remove(`reveal-left`)
+);
+
+// Sort movements
+elements.buttons.sort.addEventListener(`click`, () =>
+  displayMovements(sortMovements(currentAccount.movements, sortFunctions.get(currentMovementsSortState === 2 ? (currentMovementsSortState = 0) : ++currentMovementsSortState).sortFunction))
+);
+
+// Theme
+elements.buttons.theme.addEventListener(`click`, () => changeTheme(swapTheme()));
