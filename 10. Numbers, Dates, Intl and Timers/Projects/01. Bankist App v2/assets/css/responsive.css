@@ -125,6 +125,10 @@
     display: grid;
   }
 
+  .logout-timer {
+    font-size: 1.3rem;
+  }
+
   .popup__btn--confirm,
   .popup__btn--cancel {
     width: 35%;
@@ -193,6 +197,49 @@
     transform: translateX(0);
   }
 
+  .titles {
+    grid-template-columns: 80fr 1fr 80fr 1fr 80fr;
+  }
+
+  .titles p:nth-child(1),
+  .titles hr:nth-child(2),
+  .movements__type {
+    display: none;
+  }
+
+  .titles p:nth-child(3) {
+    text-align: start;
+  }
+
+  .movements__row {
+    grid-template-columns: repeat(3, 1fr);
+    font-size: 1.3rem;
+  }
+
+  .movements__description {
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .movements__value {
+    font-weight: 500;
+  }
+
+  .movements__description.deposit,
+  .movements__value.deposit {
+    color: #66c873;
+  }
+
+  .movements__description.transfer {
+    color: #ffcb03;
+  }
+
+  .movements__description.withdrawal,
+  .movements__value.transfer,
+  .movements__value.withdrawal {
+    color: #f5465d;
+  }
+
   .summary__label {
     font-size: 1.4rem;
   }
@@ -217,6 +264,10 @@
     font-size: 1.6rem;
   }
 
+  .logout-timer {
+    font-size: 1.5rem;
+  }
+
   footer {
     font-size: 1.4rem;
   }
@@ -235,6 +286,7 @@
     font-size: 1.64rem;
   }
 
+  .logout-timer,
   footer {
     font-size: 1.2rem;
   }

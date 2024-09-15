@@ -369,7 +369,7 @@ nav {
 .balance {
   grid-column: 1 / span 2;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 2rem;
   position: relative;
@@ -382,6 +382,11 @@ nav {
   margin-bottom: -0.2rem;
 }
 
+.balance__date {
+  font-size: 1.4rem;
+  color: #888;
+}
+
 .balance__value {
   font-size: 4.5rem;
   font-weight: 400;
@@ -392,7 +397,7 @@ nav {
   width: 100%;
   display: grid;
   gap: 1rem;
-  grid-template-columns: 90fr 1fr 130fr 1fr 80fr;
+  grid-template-columns: 90fr 1fr 130fr 1fr 80fr 1fr 80fr;
   padding: 0 4rem;
   border-bottom: 1px solid #888;
   border-radius: 5px;
@@ -450,7 +455,7 @@ nav {
   padding: 2.25rem 4rem;
   display: grid;
   gap: 1rem;
-  grid-template-columns: 2fr 3fr 2fr;
+  grid-template-columns: repeat(2, 3fr) repeat(2, 2fr);
   border-bottom: 1px solid #eee;
   align-items: center;
 }
@@ -465,6 +470,7 @@ nav {
 }
 
 .movements__type,
+.movements__date,
 .movements__value {
   width: fit-content;
   height: fit-content;
@@ -493,7 +499,14 @@ nav {
 
 .movements__description {
   font-size: 1.2em;
-  text-align: center;
+}
+
+.movements__date {
+  font-size: 1.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #666;
+  justify-self: center;
 }
 
 .movements__value {
@@ -733,6 +746,14 @@ h2 {
   grid-template-columns: 2.5fr 1fr 2.5fr;
 }
 
+.logout-timer {
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+  font-size: 1.3rem;
+  z-index: 11;
+}
+
 .timer {
   font-weight: 600;
 }
@@ -748,7 +769,6 @@ h2 {
 footer {
   position: absolute;
   bottom: 1rem;
-  right: 1rem;
   font-size: 1.3rem;
   z-index: 0;
 }
