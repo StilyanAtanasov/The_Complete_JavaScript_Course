@@ -451,7 +451,7 @@ function hideInputError() {
 // --- Login ---
 function validateLogin() {
   const username = getInputValue(elements.inputs.login.loginUsername);
-  const password = Number(getInputValue(elements.inputs.login.loginPin));
+  const password = +getInputValue(elements.inputs.login.loginPin);
 
   if (!validateCredentials(username, password)) return displayInputError(messages.errors.invalidCredentials.credentials());
 
@@ -460,7 +460,7 @@ function validateLogin() {
 }
 
 function login(username) {
-  currentAccount = accounts.find(acc => acc.username === username);
+  currentAccount = accounts.findLast(acc => acc.username === username);
   loggingIn = false;
   handleLoginUI();
   updateAccountBalance(currentAccount);
@@ -502,12 +502,12 @@ function createAccountStep2() {
   const createPIN = getInputValue(elements.inputs.login.signUpPIN);
   const confirmPIN = getInputValue(elements.inputs.login.signUpPINConfirm);
 
-  if (isNaN(Number(createPIN))) return displayInputError(messages.errors.invalidCredentials.pinCodeInvalidCharachters());
+  if (Number.isNaN(+createPIN)) return displayInputError(messages.errors.invalidCredentials.pinCodeInvalidCharachters());
 
   if (createPIN.length !== 4 || confirmPIN.length !== 4) return displayInputError(messages.errors.invalidCredentials.pinCodeSize());
   if (createPIN !== confirmPIN) return displayInputError(messages.errors.invalidCredentials.pinCodesNotMatching());
 
-  const PIN = Number(createPIN);
+  const PIN = +createPIN;
 
   accounts.at(-1).pin = PIN;
   console.log(accounts.at(-1));
@@ -519,13 +519,7 @@ function createAccountStep2() {
 function createUsername(firstName, lastName) {
   let username = (firstName[0] + lastName).toUpperCase();
   let equalUsersCount = 1;
-  accounts.forEach(
-    acc =>
-      acc.username
-        .split(``)
-        .filter(char => isNaN(char))
-        .join(``) === username && equalUsersCount++
-  );
+  accounts.forEach(acc => acc.username.slice(0, -6) === username && equalUsersCount++);
 
   const usernameNumber = equalUsersCount.toString().padStart(6, `0`);
   return username + usernameNumber;
@@ -537,7 +531,7 @@ function validateDeposit() {
   if (!checkEmptyFields(elements.inputs.app.depositAmount)) return;
   if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
 
-  const amount = Number(getInputValue(elements.inputs.app.depositAmount));
+  const amount = +getInputValue(elements.inputs.app.depositAmount);
 
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.deposit));
   if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.deposit));
@@ -560,7 +554,7 @@ function validateWithdrawal() {
   if (!checkEmptyFields(elements.inputs.app.withdrawalAmount)) return;
   if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
 
-  const amount = Number(getInputValue(elements.inputs.app.withdrawalAmount));
+  const amount = +getInputValue(elements.inputs.app.withdrawalAmount);
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.withdraw));
   if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.withdraw));
   if (amount > currentAccount.balance) return error(messages.errors.invalidAmount.insufficientBalance());
@@ -583,7 +577,7 @@ function validateTransfer() {
   if (elements.operations.transfer.classList.contains(`slide-up`)) toggleOperation(elements.operations.transfer);
 
   const recipient = getInputValue(elements.inputs.app.transferTo);
-  const amount = Number(getInputValue(elements.inputs.app.transferAmount));
+  const amount = +getInputValue(elements.inputs.app.transferAmount);
 
   if (recipient === currentAccount.username) return error(messages.errors.invalidCredentials.selfTransfer());
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.transfer));
@@ -613,7 +607,7 @@ function validateAccountClosure() {
   if (elements.operations.close.classList.contains(`slide-up`)) toggleOperation(elements.operations.close);
 
   const username = getInputValue(elements.inputs.app.closeUsername);
-  const password = Number(getInputValue(elements.inputs.app.closePin));
+  const password = +getInputValue(elements.inputs.app.closePin);
 
   if (username !== currentAccount.username || password !== currentAccount.pin) return error(messages.errors.invalidCredentials.credentials());
 

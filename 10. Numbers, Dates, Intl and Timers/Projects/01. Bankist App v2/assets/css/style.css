@@ -167,6 +167,7 @@ html {
   -webkit-text-fill-color: transparent;
   font-weight: bold;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .signup-link a:hover {
