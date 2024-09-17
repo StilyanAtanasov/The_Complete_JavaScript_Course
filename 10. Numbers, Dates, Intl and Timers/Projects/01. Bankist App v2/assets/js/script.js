@@ -1,7 +1,7 @@
 "use strict";
 
 // ----- Constants -----
-const maxDeposit = 10000;
+const maxDeposit = 10_000;
 const minMovementAmount = 5;
 
 const themes = {
@@ -310,15 +310,15 @@ const elements = {
 // --- Balance ---
 const updateAccountBalance = account => (account.balance = calcBalance(account));
 const calcBalance = account => account.movements.reduce((acc, mov) => acc + mov.amount, 0);
-const displayBalance = balance => (elements.labels.balance.textContent = `${balance} €`);
+const displayBalance = balance => (elements.labels.balance.textContent = `${balance.toFixed(2)} €`);
 
 // --- Summary ---
 const calcIn = account => account.movements.reduce((acc, mov) => (mov.amount > 0 ? acc + mov.amount : acc), 0);
-const displayIn = sumIn => (elements.labels.sumIn.textContent = `${Math.round(sumIn * 100) / 100} €`);
+const displayIn = sumIn => (elements.labels.sumIn.textContent = `${sumIn.toFixed(2)} €`);
 const calcOut = account => account.movements.reduce((acc, mov) => (mov.amount < 0 ? acc + mov.amount : acc), 0);
-const displayOut = sumOut => (elements.labels.sumOut.textContent = `${Math.abs(Math.round(sumOut * 100) / 100)} €`);
+const displayOut = sumOut => (elements.labels.sumOut.textContent = `${Math.abs(sumOut.toFixed(2))} €`);
 const calcInterest = (P, R, T = 1) => P * R * T;
-const displayInterest = interest => (elements.labels.sumInterest.textContent = `${Math.round(interest * 100) / 100} €`);
+const displayInterest = interest => (elements.labels.sumInterest.textContent = `${interest.toFixed(2)} €`);
 
 // --- Validation ---
 const validateCredentials = (username, password) => (accounts.find(acc => acc.username === username && acc.pin === password) !== undefined ? true : false);
@@ -531,7 +531,7 @@ function validateDeposit() {
   if (!checkEmptyFields(elements.inputs.app.depositAmount)) return;
   if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
 
-  const amount = +getInputValue(elements.inputs.app.depositAmount);
+  const amount = +(+getInputValue(elements.inputs.app.depositAmount)).toFixed(2);
 
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.deposit));
   if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.deposit));
@@ -554,7 +554,7 @@ function validateWithdrawal() {
   if (!checkEmptyFields(elements.inputs.app.withdrawalAmount)) return;
   if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
 
-  const amount = +getInputValue(elements.inputs.app.withdrawalAmount);
+  const amount = +(+getInputValue(elements.inputs.app.withdrawalAmount)).toFixed(2);
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.withdraw));
   if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.withdraw));
   if (amount > currentAccount.balance) return error(messages.errors.invalidAmount.insufficientBalance());
@@ -577,7 +577,7 @@ function validateTransfer() {
   if (elements.operations.transfer.classList.contains(`slide-up`)) toggleOperation(elements.operations.transfer);
 
   const recipient = getInputValue(elements.inputs.app.transferTo);
-  const amount = +getInputValue(elements.inputs.app.transferAmount);
+  const amount = +(+getInputValue(elements.inputs.app.transferAmount)).toFixed(2);
 
   if (recipient === currentAccount.username) return error(messages.errors.invalidCredentials.selfTransfer());
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.transfer));

@@ -56,7 +56,7 @@ console.log(Math.PI * Number.parseFloat('10px') ** 2);
 console.log(Math.trunc(Math.random() * 6) + 1);
 
 const randomInt = (min, max) =>
-  Math.floor(Math.random() * (max - min) + 1) + min;
+  Math.floor(Math.random() * (max - min + 1)) + min;
 // 0...1 -> 0...(max - min) -> min...max
 // console.log(randomInt(10, 20));
 
