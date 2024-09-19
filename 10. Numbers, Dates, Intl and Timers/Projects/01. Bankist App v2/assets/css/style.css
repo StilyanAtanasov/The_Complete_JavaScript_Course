@@ -510,6 +510,16 @@ nav {
   justify-self: center;
 }
 
+.movements__date p {
+  display: block;
+  text-align: center;
+}
+
+.movements__date p:first-child {
+  font-size: 1.25em;
+  color: #888;
+}
+
 .movements__value {
   font-size: 1.7em;
   margin-right: 0;

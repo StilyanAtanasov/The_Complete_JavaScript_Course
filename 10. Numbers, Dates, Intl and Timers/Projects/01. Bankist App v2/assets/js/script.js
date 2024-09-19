@@ -33,14 +33,14 @@ const accounts = [
     owner: `Jonas Schmedtmann`,
     username: `JSCHMEDTMANN000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 200 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 450 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -400 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 3000 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -650 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -130 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 70 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 1300 },
+      { type: `deposit`, description: `Online Deposit`, date: `2018-05-14T08:45:12.144Z`, amount: 200 },
+      { type: `deposit`, description: `Online Deposit`, date: `2018-09-20T14:32:09.012Z`, amount: 450 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2019-03-03T10:18:36.144Z`, amount: -400 },
+      { type: `deposit`, description: `Online Deposit`, date: `2019-11-22T12:00:45.234Z`, amount: 3000 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-01-18T09:10:30.678Z`, amount: -650 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-04-14T15:45:25.567Z`, amount: -130 },
+      { type: `deposit`, description: `Online Deposit`, date: `2021-06-12T17:25:48.912Z`, amount: 70 },
+      { type: `deposit`, description: `Online Deposit`, date: `2022-02-08T13:52:15.354Z`, amount: 1300 },
     ],
     interestRate: 0.012,
     pin: 4758,
@@ -51,14 +51,14 @@ const accounts = [
     owner: `Jessica Davis`,
     username: `JDAVIS000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 5000 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 3400 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -150 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -790 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -3210 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -1000 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 8500 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -30 },
+      { type: `deposit`, description: `Online Deposit`, date: `2018-06-18T12:45:22.121Z`, amount: 5000 },
+      { type: `deposit`, description: `Online Deposit`, date: `2019-01-25T09:14:31.543Z`, amount: 3400 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2019-11-11T15:22:49.674Z`, amount: -150 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-02-07T18:05:12.234Z`, amount: -790 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-12-23T11:32:09.998Z`, amount: -3210 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2021-04-15T09:13:41.564Z`, amount: -1000 },
+      { type: `deposit`, description: `Online Deposit`, date: `2022-03-04T14:00:59.867Z`, amount: 8500 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2022-11-11T20:22:10.432Z`, amount: -30 },
     ],
     interestRate: 0.015,
     pin: 8391,
@@ -69,14 +69,14 @@ const accounts = [
     owner: `Steven Williams`,
     username: `SWILLIAMS000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 200 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -200 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 340 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -300 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -20 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 50 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 400 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -460 },
+      { type: `deposit`, description: `Online Deposit`, date: `2021-01-20T12:12:14.223Z`, amount: 200 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2021-03-05T17:22:45.556Z`, amount: -200 },
+      { type: `deposit`, description: `Online Deposit`, date: `2021-08-29T14:15:34.334Z`, amount: 340 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2021-11-20T11:47:20.445Z`, amount: -300 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2022-01-17T19:32:41.678Z`, amount: -20 },
+      { type: `deposit`, description: `Online Deposit`, date: `2022-06-23T08:52:09.114Z`, amount: 50 },
+      { type: `deposit`, description: `Online Deposit`, date: `2023-04-02T10:27:44.343Z`, amount: 400 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2023-07-19T18:19:34.225Z`, amount: -460 },
     ],
     interestRate: 0.007,
     pin: 2847,
@@ -87,11 +87,11 @@ const accounts = [
     owner: `Sarah Smith`,
     username: `SSMITH000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 430 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 1000 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 700 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 50 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 90 },
+      { type: `deposit`, description: `Online Deposit`, date: `2020-02-05T11:42:16.873Z`, amount: 430 },
+      { type: `deposit`, description: `Online Deposit`, date: `2020-07-10T10:17:09.123Z`, amount: 1000 },
+      { type: `deposit`, description: `Online Deposit`, date: `2021-03-20T15:37:29.111Z`, amount: 700 },
+      { type: `deposit`, description: `Online Deposit`, date: `2021-09-12T08:57:45.421Z`, amount: 50 },
+      { type: `deposit`, description: `Online Deposit`, date: `2022-01-05T20:47:01.563Z`, amount: 90 },
     ],
     interestRate: 0.01,
     pin: 9432,
@@ -102,15 +102,15 @@ const accounts = [
     owner: `Stilyan Atanasov`,
     username: `SATANASOV000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 1000 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 12000 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -5000 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 10000 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -84 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 750 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 154 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 1478 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -747 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-01-04T14:35:22.234Z`, amount: 1000 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-02-18T08:12:05.943Z`, amount: 12000 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-03-09T10:23:45.556Z`, amount: -5000 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-04-28T11:33:22.123Z`, amount: 10000 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-05-11T12:40:13.222Z`, amount: -84 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-06-25T17:25:49.564Z`, amount: 750 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-07-18T14:17:09.453Z`, amount: 154 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-08-05T15:55:34.003Z`, amount: 1478 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-08-29T16:45:32.467Z`, amount: -747 },
     ],
     interestRate: 0.01,
     pin: 6743,
@@ -121,15 +121,15 @@ const accounts = [
     owner: `Antoan Atanasov`,
     username: `AATANASOV000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 1000 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 12000 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -5000 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 10000 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -84 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 750 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 154 },
-      { type: `deposit`, description: `Online Deposit`, date: `24/01/2037`, amount: 1478 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `24/01/2037`, amount: -747 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-01-15T10:45:12.567Z`, amount: 1000 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-02-10T13:17:29.012Z`, amount: 12000 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-03-03T14:19:45.678Z`, amount: -5000 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-04-22T15:42:22.123Z`, amount: 10000 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-06-01T08:15:13.456Z`, amount: -84 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-07-05T09:55:42.345Z`, amount: 750 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-08-09T10:14:34.223Z`, amount: 154 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-09-01T11:25:24.054Z`, amount: 1478 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-09-12T12:55:15.999Z`, amount: -747 },
     ],
     interestRate: 0.01,
     pin: 9583,
@@ -344,11 +344,12 @@ const fixName = name => name[0].toUpperCase() + name.slice(1).toLowerCase();
 
 // --- UI ---
 function handleLoginUI() {
+  elements.labels.welcome.textContent = messages.welcome(currentAccount.owner.split(` `)[0]);
+  elements.labels.username.textContent = currentAccount.username;
+  elements.labels.date.textContent = new Date().toDateString();
   elements.containers.login.classList.add(`hidden`);
   elements.containers.app.classList.remove(`hidden`);
   elements.containers.nav.classList.remove(`hidden`);
-  elements.labels.welcome.textContent = messages.welcome(currentAccount.owner.split(` `)[0]);
-  elements.labels.username.textContent = currentAccount.username;
   changeTheme(currentAccount.theme);
 }
 
@@ -390,10 +391,14 @@ function displayMovements(movements) {
   } else {
     movements.forEach(function (movement) {
       const movementType = movement.type;
+      const movementDate = new Date(movement.date);
+      const date = `${`${movementDate.getDate()}`.padStart(2, `0`)}/${`${movementDate.getMonth() + 1}`.padStart(2, `0`)}/${movementDate.getFullYear()}`;
+      const time = `${`${movementDate.getHours()}`.padStart(2, `0`)}:${`${movementDate.getMinutes()}`.padStart(2, `0`)}`;
+
       const movementHTML = `<div class="movements__row">
                               <div class="movements__type ${movementType}">${movementType}</div>
                               <div class="movements__description ${movementType}">${movement.description}</div>
-                              <div class="movements__date">${movement.date}</div>
+                              <div class="movements__date"><p>${date}</p><p>${time}</p></div>
                               <div class="movements__value ${movementType}">${movement.amount} €</div>
                             </div>`;
 
@@ -543,7 +548,7 @@ function validateDeposit() {
 }
 
 function deposit(amount) {
-  currentAccount.movements.push(buildOnlineDeposit(`24/01/2037`, amount));
+  currentAccount.movements.push(buildOnlineDeposit(new Date().toISOString(), amount));
   updateAccountBalance(currentAccount);
   updateUI(currentAccount);
   hidePopup();
