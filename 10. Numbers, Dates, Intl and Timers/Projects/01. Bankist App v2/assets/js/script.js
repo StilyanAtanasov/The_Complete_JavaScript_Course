@@ -3,6 +3,21 @@
 // ----- Constants -----
 const maxDeposit = 10_000;
 const minMovementAmount = 5;
+const dateFormatOptions = {
+  day: `2-digit`,
+  month: `2-digit`,
+  year: `numeric`,
+};
+
+const timeFormatOptions = {
+  hour: `numeric`,
+  minute: `numeric`,
+};
+
+const fullDateFormatOptions = {
+  ...dateFormatOptions,
+  ...timeFormatOptions,
+};
 
 const themes = {
   bright: {
@@ -110,7 +125,7 @@ const accounts = [
       { type: `deposit`, description: `Online Deposit`, date: `2024-06-25T17:25:49.564Z`, amount: 750 },
       { type: `deposit`, description: `Online Deposit`, date: `2024-07-18T14:17:09.453Z`, amount: 154 },
       { type: `deposit`, description: `Online Deposit`, date: `2024-08-05T15:55:34.003Z`, amount: 1478 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-08-29T16:45:32.467Z`, amount: -747 },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-09-19T20:45:32.467Z`, amount: -747 },
     ],
     interestRate: 0.01,
     pin: 6743,
@@ -346,7 +361,7 @@ const fixName = name => name[0].toUpperCase() + name.slice(1).toLowerCase();
 function handleLoginUI() {
   elements.labels.welcome.textContent = messages.welcome(currentAccount.owner.split(` `)[0]);
   elements.labels.username.textContent = currentAccount.username;
-  elements.labels.date.textContent = new Date().toDateString();
+  elements.labels.date.textContent = new Intl.DateTimeFormat(currentAccount.locale, fullDateFormatOptions).format(new Date());
   elements.containers.login.classList.add(`hidden`);
   elements.containers.app.classList.remove(`hidden`);
   elements.containers.nav.classList.remove(`hidden`);
@@ -392,13 +407,12 @@ function displayMovements(movements) {
     movements.forEach(function (movement) {
       const movementType = movement.type;
       const movementDate = new Date(movement.date);
-      const date = `${`${movementDate.getDate()}`.padStart(2, `0`)}/${`${movementDate.getMonth() + 1}`.padStart(2, `0`)}/${movementDate.getFullYear()}`;
-      const time = `${`${movementDate.getHours()}`.padStart(2, `0`)}:${`${movementDate.getMinutes()}`.padStart(2, `0`)}`;
+      const formatedDate = formatDate(movementDate, currentAccount.locale);
 
       const movementHTML = `<div class="movements__row">
                               <div class="movements__type ${movementType}">${movementType}</div>
                               <div class="movements__description ${movementType}">${movement.description}</div>
-                              <div class="movements__date"><p>${date}</p><p>${time}</p></div>
+                              <div class="movements__date">${formatedDate}</div>
                               <div class="movements__value ${movementType}">${movement.amount} €</div>
                             </div>`;
 
@@ -466,6 +480,7 @@ function validateLogin() {
 
 function login(username) {
   currentAccount = accounts.findLast(acc => acc.username === username);
+  currentAccount.locale = navigator.language;
   loggingIn = false;
   handleLoginUI();
   updateAccountBalance(currentAccount);
@@ -570,7 +585,7 @@ function validateWithdrawal() {
 }
 
 function withdraw(amount) {
-  currentAccount.movements.push(buildATMWithdrawal(`24/01/2037`, amount * -1));
+  currentAccount.movements.push(buildATMWithdrawal(new Date().toISOString(), amount * -1));
   updateAccountBalance(currentAccount);
   updateUI(currentAccount);
   hidePopup();
@@ -599,8 +614,8 @@ function validateTransfer() {
 }
 
 function transfer(recipientIndex, amount) {
-  currentAccount.movements.push(buildWireTransfer(`Wire transfer to ${accounts[recipientIndex].owner}`, `24/01/2037`, amount * -1));
-  accounts[recipientIndex].movements.push(buildDeposit(`Wire transfer from ${currentAccount.owner}`, `24/01/2037`, amount));
+  currentAccount.movements.push(buildWireTransfer(`Wire transfer to ${accounts[recipientIndex].owner}`, new Date().toISOString(), amount * -1));
+  accounts[recipientIndex].movements.push(buildDeposit(`Wire transfer from ${currentAccount.owner}`, new Date().toISOString(), amount));
   updateAccountBalance(currentAccount);
   updateUI(currentAccount);
   hidePopup();
@@ -650,6 +665,25 @@ function error(error) {
   displayPopup(error);
   actionOnConfirm = () => hidePopup();
   elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
+}
+
+// --- Dates ---
+function calcDaysPassed(dateOld, dateNew = new Date()) {
+  const oldDateNormalized = new Date(dateOld).setHours(0, 0, 0, 0);
+  const newDateNormalized = new Date(dateNew).setHours(0, 0, 0, 0);
+
+  return Math.round((newDateNormalized - oldDateNormalized) / 86_400_000);
+}
+
+function formatDate(date, locale) {
+  const daysPassed = calcDaysPassed(date);
+  const time = new Intl.DateTimeFormat(locale, timeFormatOptions).format(date);
+
+  if (!daysPassed) return `<p>TODAY</p><p>${time}</p>`;
+  if (daysPassed === 1) return `<p>YESTERDAY</p><p>${time}</p>`;
+
+  const dateFormated = new Intl.DateTimeFormat(locale, dateFormatOptions).format(date);
+  return `<p>${dateFormated}</p><p>${time}</p>`;
 }
 
 // --- Other ---
