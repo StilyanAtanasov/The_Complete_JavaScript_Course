@@ -1,8 +1,11 @@
 "use strict";
 
 // ----- Constants -----
-const maxDeposit = 10_000;
+const maxDeposit = 100_000;
 const minMovementAmount = 5;
+const sessionTime = 600; // s
+const timerUptadeInterval = 1000; // ms
+const transactionInterval = 1000; // ms
 const dateFormatOptions = {
   day: `2-digit`,
   month: `2-digit`,
@@ -14,9 +17,19 @@ const timeFormatOptions = {
   minute: `numeric`,
 };
 
+const timerFormatOptions = {
+  hour: `2-digit`,
+  minute: `2-digit`,
+};
+
 const fullDateFormatOptions = {
   ...dateFormatOptions,
   ...timeFormatOptions,
+};
+
+const currencyMultipliers = {
+  USDtoEUR: 0.9,
+  EURtoUSD: 1.11,
 };
 
 const themes = {
@@ -48,17 +61,18 @@ const accounts = [
     owner: `Jonas Schmedtmann`,
     username: `JSCHMEDTMANN000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `2018-05-14T08:45:12.144Z`, amount: 200 },
-      { type: `deposit`, description: `Online Deposit`, date: `2018-09-20T14:32:09.012Z`, amount: 450 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2019-03-03T10:18:36.144Z`, amount: -400 },
-      { type: `deposit`, description: `Online Deposit`, date: `2019-11-22T12:00:45.234Z`, amount: 3000 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-01-18T09:10:30.678Z`, amount: -650 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-04-14T15:45:25.567Z`, amount: -130 },
-      { type: `deposit`, description: `Online Deposit`, date: `2021-06-12T17:25:48.912Z`, amount: 70 },
-      { type: `deposit`, description: `Online Deposit`, date: `2022-02-08T13:52:15.354Z`, amount: 1300 },
+      { type: `deposit`, description: `Online Deposit`, date: `2018-05-14T08:45:12.144Z`, amount: 200, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2018-09-20T14:32:09.012Z`, amount: 450, currency: `EUR` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2019-03-03T10:18:36.144Z`, amount: -400, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2019-11-22T12:00:45.234Z`, amount: 3000, currency: `EUR` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-01-18T09:10:30.678Z`, amount: -650, currency: `EUR` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-04-14T15:45:25.567Z`, amount: -130, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2021-06-12T17:25:48.912Z`, amount: 70, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2022-02-08T13:52:15.354Z`, amount: 1300, currency: `EUR` },
     ],
     interestRate: 0.012,
     pin: 4758,
+    currency: `EUR`,
     theme: themes.dark,
     firstVisit: false,
   },
@@ -66,17 +80,18 @@ const accounts = [
     owner: `Jessica Davis`,
     username: `JDAVIS000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `2018-06-18T12:45:22.121Z`, amount: 5000 },
-      { type: `deposit`, description: `Online Deposit`, date: `2019-01-25T09:14:31.543Z`, amount: 3400 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2019-11-11T15:22:49.674Z`, amount: -150 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-02-07T18:05:12.234Z`, amount: -790 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-12-23T11:32:09.998Z`, amount: -3210 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2021-04-15T09:13:41.564Z`, amount: -1000 },
-      { type: `deposit`, description: `Online Deposit`, date: `2022-03-04T14:00:59.867Z`, amount: 8500 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2022-11-11T20:22:10.432Z`, amount: -30 },
+      { type: `deposit`, description: `Online Deposit`, date: `2018-06-18T12:45:22.121Z`, amount: 5000, currency: `USD` },
+      { type: `deposit`, description: `Online Deposit`, date: `2019-01-25T09:14:31.543Z`, amount: 3400, currency: `USD` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2019-11-11T15:22:49.674Z`, amount: -150, currency: `USD` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-02-07T18:05:12.234Z`, amount: -790, currency: `USD` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2020-12-23T11:32:09.998Z`, amount: -3210, currency: `USD` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2021-04-15T09:13:41.564Z`, amount: -1000, currency: `USD` },
+      { type: `deposit`, description: `Online Deposit`, date: `2022-03-04T14:00:59.867Z`, amount: 8500, currency: `USD` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2022-11-11T20:22:10.432Z`, amount: -30, currency: `USD` },
     ],
     interestRate: 0.015,
     pin: 8391,
+    currency: `USD`,
     theme: themes.bright,
     firstVisit: false,
   },
@@ -84,17 +99,18 @@ const accounts = [
     owner: `Steven Williams`,
     username: `SWILLIAMS000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `2021-01-20T12:12:14.223Z`, amount: 200 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2021-03-05T17:22:45.556Z`, amount: -200 },
-      { type: `deposit`, description: `Online Deposit`, date: `2021-08-29T14:15:34.334Z`, amount: 340 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2021-11-20T11:47:20.445Z`, amount: -300 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2022-01-17T19:32:41.678Z`, amount: -20 },
-      { type: `deposit`, description: `Online Deposit`, date: `2022-06-23T08:52:09.114Z`, amount: 50 },
-      { type: `deposit`, description: `Online Deposit`, date: `2023-04-02T10:27:44.343Z`, amount: 400 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2023-07-19T18:19:34.225Z`, amount: -460 },
+      { type: `deposit`, description: `Online Deposit`, date: `2021-01-20T12:12:14.223Z`, amount: 200, currency: `USD` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2021-03-05T17:22:45.556Z`, amount: -200, currency: `USD` },
+      { type: `deposit`, description: `Online Deposit`, date: `2021-08-29T14:15:34.334Z`, amount: 340, currency: `USD` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2021-11-20T11:47:20.445Z`, amount: -300, currency: `USD` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2022-01-17T19:32:41.678Z`, amount: -20, currency: `USD` },
+      { type: `deposit`, description: `Online Deposit`, date: `2022-06-23T08:52:09.114Z`, amount: 50, currency: `USD` },
+      { type: `deposit`, description: `Online Deposit`, date: `2023-04-02T10:27:44.343Z`, amount: 400, currency: `USD` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2023-07-19T18:19:34.225Z`, amount: -460, currency: `USD` },
     ],
     interestRate: 0.007,
     pin: 2847,
+    currency: `USD`,
     theme: themes.bright,
     firstVisit: false,
   },
@@ -102,14 +118,15 @@ const accounts = [
     owner: `Sarah Smith`,
     username: `SSMITH000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `2020-02-05T11:42:16.873Z`, amount: 430 },
-      { type: `deposit`, description: `Online Deposit`, date: `2020-07-10T10:17:09.123Z`, amount: 1000 },
-      { type: `deposit`, description: `Online Deposit`, date: `2021-03-20T15:37:29.111Z`, amount: 700 },
-      { type: `deposit`, description: `Online Deposit`, date: `2021-09-12T08:57:45.421Z`, amount: 50 },
-      { type: `deposit`, description: `Online Deposit`, date: `2022-01-05T20:47:01.563Z`, amount: 90 },
+      { type: `deposit`, description: `Online Deposit`, date: `2020-02-05T11:42:16.873Z`, amount: 430, currency: `USD` },
+      { type: `deposit`, description: `Online Deposit`, date: `2020-07-10T10:17:09.123Z`, amount: 1000, currency: `USD` },
+      { type: `deposit`, description: `Online Deposit`, date: `2021-03-20T15:37:29.111Z`, amount: 700, currency: `USD` },
+      { type: `deposit`, description: `Online Deposit`, date: `2021-09-12T08:57:45.421Z`, amount: 50, currency: `USD` },
+      { type: `deposit`, description: `Online Deposit`, date: `2022-01-05T20:47:01.563Z`, amount: 90, currency: `USD` },
     ],
     interestRate: 0.01,
     pin: 9432,
+    currency: `USD`,
     theme: themes.bright,
     firstVisit: false,
   },
@@ -117,18 +134,19 @@ const accounts = [
     owner: `Stilyan Atanasov`,
     username: `SATANASOV000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `2024-01-04T14:35:22.234Z`, amount: 1000 },
-      { type: `deposit`, description: `Online Deposit`, date: `2024-02-18T08:12:05.943Z`, amount: 12000 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-03-09T10:23:45.556Z`, amount: -5000 },
-      { type: `deposit`, description: `Online Deposit`, date: `2024-04-28T11:33:22.123Z`, amount: 10000 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-05-11T12:40:13.222Z`, amount: -84 },
-      { type: `deposit`, description: `Online Deposit`, date: `2024-06-25T17:25:49.564Z`, amount: 750 },
-      { type: `deposit`, description: `Online Deposit`, date: `2024-07-18T14:17:09.453Z`, amount: 154 },
-      { type: `deposit`, description: `Online Deposit`, date: `2024-08-05T15:55:34.003Z`, amount: 1478 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-09-19T20:45:32.467Z`, amount: -747 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-01-04T14:35:22.234Z`, amount: 1000, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-02-18T08:12:05.943Z`, amount: 12000, currency: `EUR` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-03-09T10:23:45.556Z`, amount: -5000, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-04-28T11:33:22.123Z`, amount: 10000, currency: `EUR` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-05-11T12:40:13.222Z`, amount: -84, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-06-25T17:25:49.564Z`, amount: 750, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-07-18T14:17:09.453Z`, amount: 154, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-08-05T15:55:34.003Z`, amount: 1478, currency: `EUR` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-09-19T20:45:32.467Z`, amount: -747, currency: `EUR` },
     ],
     interestRate: 0.01,
     pin: 6743,
+    currency: `EUR`,
     theme: themes.dark,
     firstVisit: false,
   },
@@ -136,18 +154,19 @@ const accounts = [
     owner: `Antoan Atanasov`,
     username: `AATANASOV000001`,
     movements: [
-      { type: `deposit`, description: `Online Deposit`, date: `2024-01-15T10:45:12.567Z`, amount: 1000 },
-      { type: `deposit`, description: `Online Deposit`, date: `2024-02-10T13:17:29.012Z`, amount: 12000 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-03-03T14:19:45.678Z`, amount: -5000 },
-      { type: `deposit`, description: `Online Deposit`, date: `2024-04-22T15:42:22.123Z`, amount: 10000 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-06-01T08:15:13.456Z`, amount: -84 },
-      { type: `deposit`, description: `Online Deposit`, date: `2024-07-05T09:55:42.345Z`, amount: 750 },
-      { type: `deposit`, description: `Online Deposit`, date: `2024-08-09T10:14:34.223Z`, amount: 154 },
-      { type: `deposit`, description: `Online Deposit`, date: `2024-09-01T11:25:24.054Z`, amount: 1478 },
-      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-09-12T12:55:15.999Z`, amount: -747 },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-01-15T10:45:12.567Z`, amount: 1000, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-02-10T13:17:29.012Z`, amount: 12000, currency: `EUR` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-03-03T14:19:45.678Z`, amount: -5000, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-04-22T15:42:22.123Z`, amount: 10000, currency: `EUR` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-06-01T08:15:13.456Z`, amount: -84, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-07-05T09:55:42.345Z`, amount: 750, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-08-09T10:14:34.223Z`, amount: 154, currency: `EUR` },
+      { type: `deposit`, description: `Online Deposit`, date: `2024-09-01T11:25:24.054Z`, amount: 1478, currency: `EUR` },
+      { type: `withdrawal`, description: `ATM Withdrawal`, date: `2024-09-12T12:55:15.999Z`, amount: -747, currency: `EUR` },
     ],
     interestRate: 0.01,
     pin: 9583,
+    currency: `EUR`,
     theme: themes.bright,
     firstVisit: false,
   },
@@ -164,8 +183,8 @@ const messages = {
     invalidAmount: {
       negativeValue: operation => `Error: Cannot ${operation} non-positive amount!`,
       insufficientBalance: () => `Error: Insufficient balance!`,
-      movementLimit: (operation, limit = maxDeposit) => `Error: Cannot ${operation} more than ${limit}€ at once!`,
-      movementMin: (operation, min = minMovementAmount) => `Error: Cannot ${operation} less than ${min}€!`,
+      movementLimit: (operation, locale, currency, limit = maxDeposit) => `Error: Cannot ${operation} more than ${formatAmount(locale, currency, limit)} at once!`,
+      movementMin: (operation, locale, currency, min = minMovementAmount) => `Error: Cannot ${operation} less than ${formatAmount(locale, currency, min)}!`,
     },
     invalidCredentials: {
       selfTransfer: () => `Error: Cannot transfer to yourself!`,
@@ -180,9 +199,9 @@ const messages = {
 
   popup: {
     closeAccount: () => `closure of your account`,
-    deposit: amount => `deposit of ${amount}€`,
-    withdraw: amount => `withdrawal of ${amount}€`,
-    transfer: (recipient, amount) => `transfer of ${amount}€ to ${recipient}`,
+    deposit: (amount, locale, currency) => `deposit of ${formatAmount(locale, currency, amount)}`,
+    withdraw: (amount, locale, currency) => `withdrawal of ${formatAmount(locale, currency, amount)}`,
+    transfer: (recipient, amount, locale, currency) => `transfer of ${formatAmount(locale, currency, amount)} to ${recipient}`,
     builtMessage: operationInfo => `Please confirm that you wish to proceed with the ${operationInfo}?`,
   },
 
@@ -227,6 +246,9 @@ let currentMovementsSortState = defaultMovementsSortState;
 let loggingIn = true;
 let signingUpStep = 0; // 0 -> not-signing up, 1 -> step 1, 2 -> step 2
 let popupActive = false;
+let timer;
+let timerInterval;
+let nextWatchUpdate;
 
 // ----- Elements -----
 const elements = {
@@ -263,10 +285,12 @@ const elements = {
     sumOut: document.querySelector(`.summary__value--out`),
     sumInterest: document.querySelector(`.summary__value--interest`),
     timer: document.querySelector(`.timer`),
+    timerBox: document.querySelector(`.logout-timer`),
     popupMessage: document.querySelector(`.popup__message`),
     inputErrorLogin: document.querySelector(`.input__error.login`),
     inputErrorSignup: document.querySelector(`.input__error.signup`),
     inputErrorPin: document.querySelector(`.input__error.pin`),
+    currency: document.querySelector(`.currency`),
   },
   inputs: {
     login: {
@@ -301,6 +325,7 @@ const elements = {
     theme: document.querySelector(`.theme`),
     settings: document.querySelector(`.settings`),
     settingsMenu: document.querySelector(`.settings--menu`),
+    currencyBox: document.querySelector(`.currency--box`),
     popupConfirm: document.querySelector(`.popup__btn--confirm`),
     popupCancel: document.querySelector(`.popup__btn--cancel`),
     popupClose: document.querySelector(`.popup__btn--close`),
@@ -322,18 +347,21 @@ const elements = {
 };
 
 // ----- Functions -----
+// --- Currency ---
+const currencyMultiplier = (amount, currency, targetCurrency) => (currency !== targetCurrency ? amount * currencyMultipliers[`${currency}to${targetCurrency}`] : amount);
+
 // --- Balance ---
 const updateAccountBalance = account => (account.balance = calcBalance(account));
-const calcBalance = account => account.movements.reduce((acc, mov) => acc + mov.amount, 0);
-const displayBalance = balance => (elements.labels.balance.textContent = `${balance.toFixed(2)} €`);
+const calcBalance = account => account.movements.reduce((acc, mov) => acc + currencyMultiplier(mov.amount, mov.currency, account.currency), 0);
+const displayBalance = (locale, currency, balance) => (elements.labels.balance.textContent = formatAmount(locale, currency, balance));
 
 // --- Summary ---
-const calcIn = account => account.movements.reduce((acc, mov) => (mov.amount > 0 ? acc + mov.amount : acc), 0);
-const displayIn = sumIn => (elements.labels.sumIn.textContent = `${sumIn.toFixed(2)} €`);
-const calcOut = account => account.movements.reduce((acc, mov) => (mov.amount < 0 ? acc + mov.amount : acc), 0);
-const displayOut = sumOut => (elements.labels.sumOut.textContent = `${Math.abs(sumOut.toFixed(2))} €`);
+const calcIn = account => account.movements.reduce((acc, mov) => (mov.amount > 0 ? acc + currencyMultiplier(mov.amount, mov.currency, account.currency) : acc), 0);
+const displayIn = (locale, currency, sumIn) => (elements.labels.sumIn.textContent = formatAmount(locale, currency, sumIn));
+const calcOut = account => account.movements.reduce((acc, mov) => (mov.amount < 0 ? acc + currencyMultiplier(mov.amount, mov.currency, account.currency) : acc), 0);
+const displayOut = (locale, currency, sumOut) => (elements.labels.sumOut.textContent = formatAmount(locale, currency, sumOut));
 const calcInterest = (P, R, T = 1) => P * R * T;
-const displayInterest = interest => (elements.labels.sumInterest.textContent = `${interest.toFixed(2)} €`);
+const displayInterest = (locale, currency, interest) => (elements.labels.sumInterest.textContent = formatAmount(locale, currency, interest));
 
 // --- Validation ---
 const validateCredentials = (username, password) => (accounts.find(acc => acc.username === username && acc.pin === password) !== undefined ? true : false);
@@ -341,7 +369,7 @@ const validName = name => [...name].reduce((acc, s, _, __, c = s.charCodeAt(0)) 
 const checkEmptyFields = (...fields) => fields.reduce((acc, field) => acc && field.value !== ``, true);
 
 // --- Operations ---
-const buildMovement = (type, description, date, amount) => ({ type, description, date, amount });
+const buildMovement = (type, description, date, amount, currency) => ({ type, description, date, amount, currency });
 const buildDeposit = buildMovement.bind(null, `deposit`);
 const buildOnlineDeposit = buildMovement.bind(null, `deposit`, `Online Deposit`);
 const buildATMWithdrawal = buildMovement.bind(null, `withdrawal`, `ATM Withdrawal`);
@@ -351,17 +379,26 @@ const buildWireTransfer = buildMovement.bind(null, `transfer`);
 const getInputValue = input => input.value.trim();
 const clearFields = (...fields) => fields.forEach(f => (f.value = ``));
 
+// --- Currency ---
+const formatAmount = (locale, currency, amount) => new Intl.NumberFormat(locale, { style: `currency`, currency }).format(amount);
+const changeCurrency = currentCurrency => (currentCurrency === `EUR` ? `USD` : `EUR`);
+
 // --- Other ---
 const emptyMovementsContainer = () => document.querySelectorAll(`.movements__row`).forEach(row => row.remove());
 const swapTheme = () => (currentAccount.theme = currentAccount.theme === themes.bright ? themes.dark : themes.bright);
 const closeConfirmation = () => elements.buttons.popupConfirm.removeEventListener(`click`, actionOnConfirm);
 const fixName = name => name[0].toUpperCase() + name.slice(1).toLowerCase();
+const toggleTimer = () => elements.labels.timerBox.classList.toggle(`hidden`);
+const formatFullDate = (locale, options, date) => new Intl.DateTimeFormat(locale, options).format(date);
 
 // --- UI ---
 function handleLoginUI() {
+  timer = sessionTime;
+  toggleTimer();
+  triggerTimer();
   elements.labels.welcome.textContent = messages.welcome(currentAccount.owner.split(` `)[0]);
   elements.labels.username.textContent = currentAccount.username;
-  elements.labels.date.textContent = new Intl.DateTimeFormat(currentAccount.locale, fullDateFormatOptions).format(new Date());
+  updateDate();
   elements.containers.login.classList.add(`hidden`);
   elements.containers.app.classList.remove(`hidden`);
   elements.containers.nav.classList.remove(`hidden`);
@@ -369,7 +406,10 @@ function handleLoginUI() {
 }
 
 function handleLogOutUI() {
+  toggleTimer();
+  clearInterval(timerInterval);
   hideSettings();
+  hidePopup();
   emptyMovementsContainer();
   elements.containers.app.classList.add(`hidden`);
   elements.containers.nav.classList.add(`hidden`);
@@ -385,12 +425,24 @@ function handleLogOutUI() {
   changeTheme(defaultTheme);
 }
 
-function updateUI(account) {
-  displayMovements(account.movements);
-  displayBalance(account.balance);
-  displayIn(calcIn(account));
-  displayOut(calcOut(account));
-  displayInterest(calcInterest(account.balance, account.interestRate));
+function updateUI(account, shouldDisplayMovements = true) {
+  shouldDisplayMovements && displayMovements(account.movements);
+  updateAccountBalance(account);
+  displayBalance(account.locale, account.currency, account.balance);
+  displayIn(account.locale, account.currency, calcIn(account));
+  displayOut(account.locale, account.currency, calcOut(account));
+  displayInterest(account.locale, account.currency, calcInterest(account.balance, account.interestRate));
+}
+
+function updateDate() {
+  const dateNow = new Date();
+  elements.labels.date.textContent = formatFullDate(currentAccount.locale, fullDateFormatOptions, dateNow);
+  nextWatchUpdate = (60 - dateNow.getSeconds()) * 1000;
+  setTimeout(() => {
+    formatFullDate(currentAccount.locale, fullDateFormatOptions, dateNow);
+    nextWatchUpdate = 60000;
+    setInterval(formatFullDate, nextWatchUpdate, currentAccount.locale, fullDateFormatOptions, new Date());
+  }, nextWatchUpdate);
 }
 
 function displayMovements(movements) {
@@ -413,7 +465,7 @@ function displayMovements(movements) {
                               <div class="movements__type ${movementType}">${movementType}</div>
                               <div class="movements__description ${movementType}">${movement.description}</div>
                               <div class="movements__date">${formatedDate}</div>
-                              <div class="movements__value ${movementType}">${movement.amount} €</div>
+                              <div class="movements__value ${movementType}">${formatAmount(currentAccount.locale, movement.currency, movement.amount)}</div>
                             </div>`;
 
       elements.other.faderTop.insertAdjacentHTML(`afterend`, movementHTML);
@@ -467,6 +519,26 @@ function hideInputError() {
   currentInputError.classList.remove(`shake`);
 }
 
+function updateTimer(timer) {
+  timer--;
+
+  let minutes = Math.floor(timer / 60);
+  let seconds = timer % 60;
+
+  let formattedTime = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+  elements.labels.timer.textContent = formattedTime;
+
+  if (timer === 0) return handleLogOutUI();
+
+  return timer;
+}
+
+function triggerTimer() {
+  updateTimer(timer);
+  timerInterval = setInterval(() => (timer = updateTimer(timer)), timerUptadeInterval);
+}
+
 // --- Login ---
 function validateLogin() {
   const username = getInputValue(elements.inputs.login.loginUsername);
@@ -483,7 +555,6 @@ function login(username) {
   currentAccount.locale = navigator.language;
   loggingIn = false;
   handleLoginUI();
-  updateAccountBalance(currentAccount);
   updateUI(currentAccount);
 
   if (currentAccount.firstVisit) {
@@ -509,6 +580,7 @@ function createAccountStep1() {
     username: createUsername(firstName, lastName),
     movements: [],
     interestRate: 0.01,
+    currency: `EUR`,
     theme: defaultTheme,
     firstVisit: true,
   });
@@ -530,7 +602,6 @@ function createAccountStep2() {
   const PIN = +createPIN;
 
   accounts.at(-1).pin = PIN;
-  console.log(accounts.at(-1));
 
   clearFields(elements.inputs.login.signUpPIN, elements.inputs.login.signUpPINConfirm);
   login(accounts.at(-1).username);
@@ -551,22 +622,23 @@ function validateDeposit() {
   if (!checkEmptyFields(elements.inputs.app.depositAmount)) return;
   if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
 
+  const locale = currentAccount.locale;
+  const currency = currentAccount.currency;
+
   const amount = +(+getInputValue(elements.inputs.app.depositAmount)).toFixed(2);
 
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.deposit));
-  if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.deposit));
-  if (amount > maxDeposit) return error(messages.errors.invalidAmount.movementLimit(operations.deposit));
+  if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.deposit, locale, currency));
+  if (amount > maxDeposit) return error(messages.errors.invalidAmount.movementLimit(operations.deposit, locale, currency));
 
-  actionOnConfirm = () => deposit(amount);
-  elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
-  displayPopup(messages.popup.builtMessage(messages.popup.deposit(amount)));
+  actionOnConfirm = () => setTimeout(deposit, transactionInterval, amount);
+  elements.buttons.popupConfirm.addEventListener(`click`, confirmOperation);
+  displayPopup(messages.popup.builtMessage(messages.popup.deposit(amount, locale, currency)));
 }
 
 function deposit(amount) {
-  currentAccount.movements.push(buildOnlineDeposit(new Date().toISOString(), amount));
-  updateAccountBalance(currentAccount);
+  currentAccount.movements.push(buildOnlineDeposit(new Date().toISOString(), amount, currentAccount.currency));
   updateUI(currentAccount);
-  hidePopup();
 }
 
 function validateWithdrawal() {
@@ -574,21 +646,22 @@ function validateWithdrawal() {
   if (!checkEmptyFields(elements.inputs.app.withdrawalAmount)) return;
   if (elements.operations.deposit.classList.contains(`slide-up`)) toggleOperation(elements.operations.deposit);
 
+  const locale = currentAccount.locale;
+  const currency = currentAccount.currency;
+
   const amount = +(+getInputValue(elements.inputs.app.withdrawalAmount)).toFixed(2);
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.withdraw));
-  if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.withdraw));
+  if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.withdraw, locale, currency));
   if (amount > currentAccount.balance) return error(messages.errors.invalidAmount.insufficientBalance());
 
-  actionOnConfirm = () => withdraw(amount);
-  elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
-  displayPopup(messages.popup.builtMessage(messages.popup.withdraw(amount)));
+  actionOnConfirm = () => setTimeout(withdraw, transactionInterval, amount);
+  elements.buttons.popupConfirm.addEventListener(`click`, confirmOperation);
+  displayPopup(messages.popup.builtMessage(messages.popup.withdraw(amount, locale, currency)));
 }
 
 function withdraw(amount) {
-  currentAccount.movements.push(buildATMWithdrawal(new Date().toISOString(), amount * -1));
-  updateAccountBalance(currentAccount);
+  currentAccount.movements.push(buildATMWithdrawal(new Date().toISOString(), amount * -1, currentAccount.currency));
   updateUI(currentAccount);
-  hidePopup();
 }
 
 function validateTransfer() {
@@ -598,27 +671,27 @@ function validateTransfer() {
 
   const recipient = getInputValue(elements.inputs.app.transferTo);
   const amount = +(+getInputValue(elements.inputs.app.transferAmount)).toFixed(2);
+  const locale = currentAccount.locale;
+  const currency = currentAccount.currency;
 
   if (recipient === currentAccount.username) return error(messages.errors.invalidCredentials.selfTransfer());
   if (amount <= 0) return error(messages.errors.invalidAmount.negativeValue(operations.transfer));
-  if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.transfer));
-  if (amount > maxDeposit) return error(messages.errors.invalidAmount.movementLimit(operations.transfer));
+  if (amount < minMovementAmount) return error(messages.errors.invalidAmount.movementMin(operations.transfer, locale, currency));
+  if (amount > maxDeposit) return error(messages.errors.invalidAmount.movementLimit(operations.transfer, locale, currency));
   if (amount > currentAccount.balance) return error(messages.errors.invalidAmount.insufficientBalance());
 
   const recipientIndex = accounts.findIndex(acc => acc.username === recipient);
   if (recipientIndex === -1) return error(messages.errors.invalidCredentials.username(recipient));
 
-  actionOnConfirm = () => transfer(recipientIndex, amount);
-  elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
-  displayPopup(messages.popup.builtMessage(messages.popup.transfer(accounts[recipientIndex].owner, amount)));
+  actionOnConfirm = () => setTimeout(transfer, transactionInterval, recipientIndex, amount);
+  elements.buttons.popupConfirm.addEventListener(`click`, confirmOperation);
+  displayPopup(messages.popup.builtMessage(messages.popup.transfer(accounts[recipientIndex].owner, amount, locale, currency)));
 }
 
 function transfer(recipientIndex, amount) {
-  currentAccount.movements.push(buildWireTransfer(`Wire transfer to ${accounts[recipientIndex].owner}`, new Date().toISOString(), amount * -1));
-  accounts[recipientIndex].movements.push(buildDeposit(`Wire transfer from ${currentAccount.owner}`, new Date().toISOString(), amount));
-  updateAccountBalance(currentAccount);
+  currentAccount.movements.push(buildWireTransfer(`Wire transfer to ${accounts[recipientIndex].owner}`, new Date().toISOString(), amount * -1, currentAccount.currency));
+  accounts[recipientIndex].movements.push(buildDeposit(`Wire transfer from ${currentAccount.owner}`, new Date().toISOString(), amount, currentAccount.currency));
   updateUI(currentAccount);
-  hidePopup();
 }
 
 function validateAccountClosure() {
@@ -632,14 +705,18 @@ function validateAccountClosure() {
   if (username !== currentAccount.username || password !== currentAccount.pin) return error(messages.errors.invalidCredentials.credentials());
 
   actionOnConfirm = () => closeAccount();
-  elements.buttons.popupConfirm.addEventListener(`click`, actionOnConfirm);
+  elements.buttons.popupConfirm.addEventListener(`click`, confirmOperation);
   displayPopup(messages.popup.builtMessage(messages.popup.closeAccount()));
 }
 
 function closeAccount() {
   accounts.splice(accounts.indexOf(currentAccount), 1);
   handleLogOutUI();
+}
+
+function confirmOperation() {
   hidePopup();
+  actionOnConfirm();
 }
 
 // --- Popup ---
@@ -706,6 +783,12 @@ function getCurrentInputError() {
   return elements.labels.inputErrorPin;
 }
 
+function changeAccountCurrency(account) {
+  const newCurrency = changeCurrency(account.currency);
+  account.currency = elements.labels.currency.textContent = newCurrency;
+  updateUI(account, false);
+}
+
 // ----- App Logic -----
 // --- Event Listeners ---
 // General
@@ -744,7 +827,7 @@ elements.buttons.popupCancel.addEventListener(`click`, hidePopup);
 elements.buttons.popupClose.addEventListener(`click`, hidePopup);
 elements.other.overlay.addEventListener(`click`, () => popupActive && hidePopup());
 document.addEventListener(`keydown`, e => e.key === `Escape` && popupActive && hidePopup());
-document.addEventListener(`keydown`, e => e.key === `Enter` && popupActive && actionOnConfirm());
+document.addEventListener(`keydown`, e => e.key === `Enter` && popupActive && confirmOperation());
 
 // Settings
 elements.buttons.settings.addEventListener(`click`, () => isMobile && hideSettings());
@@ -754,11 +837,10 @@ document.addEventListener(
   `mousedown`,
   (event, menu = elements.buttons.settingsMenu) => !isMobile && !elements.buttons.settings.contains(event.target) && !menu.contains(event.target) && menu.classList.remove(`reveal-left`)
 );
+elements.buttons.theme.addEventListener(`click`, () => changeTheme(swapTheme()));
+elements.buttons.currencyBox.addEventListener(`click`, () => changeAccountCurrency(currentAccount));
 
 // Sort movements
 elements.buttons.sort.addEventListener(`click`, () =>
   displayMovements(sortMovements(currentAccount.movements, sortFunctions.get(currentMovementsSortState === 2 ? (currentMovementsSortState = 0) : ++currentMovementsSortState).sortFunction))
 );
-
-// Theme
-elements.buttons.theme.addEventListener(`click`, () => changeTheme(swapTheme()));

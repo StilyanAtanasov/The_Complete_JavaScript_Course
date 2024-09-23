@@ -220,11 +220,6 @@ nav {
   color: #888;
 }
 
-.theme {
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
 .logo {
   height: 5.25rem;
 }
@@ -259,17 +254,18 @@ nav {
 
 .settings--menu li {
   padding: 1rem 0;
-  font-size: 2rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .btn--logout {
+  font-size: 2rem;
   width: 100%;
   text-align: center;
   color: #e52a5a;
-  cursor: pointer;
 }
 
 /* MAIN */
@@ -398,7 +394,7 @@ nav {
   width: 100%;
   display: grid;
   gap: 1rem;
-  grid-template-columns: 90fr 1fr 130fr 1fr 80fr 1fr 80fr;
+  grid-template-columns: 80fr 1fr 100fr 1fr 100fr 1fr 100fr;
   padding: 0 4rem;
   border-bottom: 1px solid #888;
   border-radius: 5px;
@@ -456,7 +452,7 @@ nav {
   padding: 2.25rem 4rem;
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(2, 3fr) repeat(2, 2fr);
+  grid-template-columns: repeat(4, 3fr);
   border-bottom: 1px solid #eee;
   align-items: center;
 }
