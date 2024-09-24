@@ -33,15 +33,23 @@ NOTE: Some projects are further modified and improved by me and in some aspects 
 
 **Repository Location:** [Project Code](https://github.com/CoolShadow1/The_Complete_JavaScript_Course/tree/main/05.%20DOM%20and%20Events%20Fundamentals/Projects/03.%20Pig%20Game)
 
-### 4. Bankist
+### 4. Bankist App
 
 **Description:** The Bankist App is a minimalist online banking application that simulates real-world banking functionalities. This project is built with a focus on working with arrays, DOM manipulation, and event handling in JavaScript. The app provides users with the ability to log in, view transactions, transfer money, request deposits or withdrawals, and close accounts. Each feature showcases practical applications of fundamental JavaScript concepts.
 
 **URL:** [Live Demo](https://st-atanasov-bankist-app.vercel.app/)
 
 **Repository Location:** [Project Code](https://github.com/StilyanAtanasov/The_Complete_JavaScript_Course/tree/main/09.%20Working%20With%20Arrays/Projects/01.%20Bankist%20App)
+
+### 5. Bankist App v2
+
+**Description:** This project builds upon the previous one by incorporating new concepts from the next section of the course, such as standardization, timers, and additional features.
+
+**URL:** [Live Demo](https://st-atanasov-bankist-app-v2.vercel.app/)
+
+**Repository Location:** [Project Code](https://github.com/StilyanAtanasov/The_Complete_JavaScript_Course/tree/main/10.%20Numbers%2C%20Dates%2C%20Intl%20and%20Timers/Projects/01.%20Bankist%20App%20v2)
 <!--
-### 5. Mapty
+### 7. Mapty
 
 **Description:** A location-based application that allows users to log their workouts with details such as type, distance, duration, and coordinates. It integrates the use of the Geolocation API and local storage.
 
@@ -49,7 +57,7 @@ NOTE: Some projects are further modified and improved by me and in some aspects 
 
 **Repository Location:** [Project Code](#)
 
-### 6. Forkify
+### 8. Forkify
 
 **Description:** A recipe application where users can search for recipes, view recipe details, and save favorite recipes. This project involves working with third-party APIs to fetch and display recipe data dynamically.
 
@@ -57,7 +65,7 @@ NOTE: Some projects are further modified and improved by me and in some aspects 
 
 **Repository Location:** [Project Code](#)
 
-### 7. Bankist Website
+### 6. Bankist Website
 
 **Description:** A modern, responsive website for a fictional bank, showcasing HTML, CSS, and JavaScript to create interactive and visually appealing web pages. This project covers advanced CSS techniques and JavaScript for UI interactions.
 
@@ -65,11 +73,4 @@ NOTE: Some projects are further modified and improved by me and in some aspects 
 
 **Repository Location:** [Project Code](#)
 
-## Usage
-
-To view or use any of the projects, navigate to the respective project directory using the links provided above. Each project folder contains a detailed README file with instructions on how to run and explore the project.
-
-## Acknowledgments
-
-This repository is based on the coursework and teachings of Jonas Schmedtman in "The Complete JavaScript Course 2024: From Zero to Expert!".
 -->
