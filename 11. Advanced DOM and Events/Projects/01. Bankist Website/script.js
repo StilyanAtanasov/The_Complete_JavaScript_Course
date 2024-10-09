@@ -7,6 +7,7 @@ const elements = {
     nav: document.querySelector(`.nav`),
     navLinksBox: document.querySelector(`.nav__links`),
     learnMoreBtn: document.querySelector(`.btn--scroll-to`),
+    navBars: document.querySelector(`.nav__bars`),
   },
   features: {
     section: document.getElementById(`section--1`),
@@ -14,18 +15,19 @@ const elements = {
   operations: {
     btnContainer: document.querySelector(`.operations__tab-container`),
     contentBox: document.querySelector(`.operations__content`),
+    allTabs: document.querySelectorAll(`.operations__tab`),
   },
   testimonials: {
     btnLeft: document.querySelector(`.slider__btn--left`),
     btnRight: document.querySelector(`.slider__btn--right`),
     dotsBox: document.querySelector(`.dots`),
+    allSlides: document.querySelectorAll(`.slide`),
   },
   other: {
     btnGoTop: document.querySelector(`.btn--go-top`),
     btnsRedirect: document.querySelectorAll(`.btn--redirect`),
     allSections: document.querySelectorAll(`.section`),
     allImages: document.querySelectorAll(`.features__img`),
-    allSlides: document.querySelectorAll(`.slide`),
   },
 };
 
@@ -63,6 +65,9 @@ const getOperationElement = (tab, key) => content.operations[`operation${tab}`][
 const handleNavHovered = e =>
   e.target.classList.contains(`nav__link`) && [...elements.header.navLinksBox.children].forEach(c => c.querySelector(`.nav__link`) !== e.target && c.classList.toggle(`fade`)) && console.log(e.target);
 const handleLearnMore = () => elements.features.section.scrollIntoView();
+const handleDotsClick = e => e.target.classList.contains(`dots__dot`) && slideTo((currentSliderState = Number(e.target.dataset.slide)));
+const showNavLinks = () => elements.header.navLinksBox.classList.add(`nav__links--show`);
+const hideNavLinks = e => e.target !== elements.header.navBars && e.target !== elements.header.navLinksBox && elements.header.navLinksBox.classList.remove(`nav__links--show`);
 
 function changeOperationsTab(e) {
   const targetButton = e.target.closest(`.operations__tab`);
@@ -104,7 +109,7 @@ function revealImage(entries, observer) {
 }
 
 function createDots() {
-  elements.other.allSlides.forEach((_, i) => elements.testimonials.dotsBox.insertAdjacentHTML(`beforeend`, `<button class="dots__dot" data-slide="${i + 1}"></button>`));
+  elements.testimonials.allSlides.forEach((_, i) => elements.testimonials.dotsBox.insertAdjacentHTML(`beforeend`, `<button class="dots__dot" data-slide="${i + 1}"></button>`));
   elements.other.allDots = document.querySelectorAll(`.dots__dot`);
 }
 
@@ -117,13 +122,9 @@ function changeSliderState(changeBy) {
 }
 
 function slideTo(slide) {
-  elements.other.allSlides.forEach((s, i) => (s.style.transform = `translateX(${(slide - (i + 1)) * -100}%)`));
+  elements.testimonials.allSlides.forEach((s, i) => (s.style.transform = `translateX(${(slide - (i + 1)) * -100}%)`));
   elements.other.allDots.forEach(d => d.classList.remove(`dots__dot--active`));
   document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add(`dots__dot--active`);
-}
-
-function handleDotsClick(e) {
-  e.target.classList.contains(`dots__dot`) && slideTo((currentSliderState = Number(e.target.dataset.slide)));
 }
 
 // ----- Main Logic -----
@@ -164,3 +165,6 @@ elements.testimonials.btnRight.addEventListener(`click`, () => slideTo(changeSli
 elements.testimonials.dotsBox.addEventListener(`click`, handleDotsClick);
 
 elements.other.btnGoTop.addEventListener(`click`, goTop);
+
+elements.header.navBars.addEventListener(`click`, showNavLinks);
+window.addEventListener(`touchstart`, hideNavLinks);

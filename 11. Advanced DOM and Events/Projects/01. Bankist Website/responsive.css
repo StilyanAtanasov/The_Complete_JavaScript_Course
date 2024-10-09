@@ -21,12 +21,33 @@
     font-size: 8px;
   }
 
+  .btn {
+    padding: 1.25rem 2.5rem;
+  }
+
+  .btn--go-top {
+    padding: 0;
+  }
+
   .nav {
     padding: 0 1rem;
   }
 
+  .nav.sticky {
+    padding: 0 5rem;
+  }
+
+  .slider {
+    height: 60rem;
+  }
+
   .dots {
-    bottom: 0;
+    bottom: 0rem;
+  }
+
+  .testimonial::before {
+    top: -2rem;
+    font-size: 15rem;
   }
 
   .section {
@@ -39,7 +60,7 @@
   }
 
   header .img__box {
-    width: 40%;
+    width: 50%;
     transform: rotate(90deg);
   }
 
@@ -49,7 +70,7 @@
 
   .features .img__box {
     width: 80vw;
-    opacity: 0.5;
+    opacity: 0.45;
   }
 
   .features .fade-left {
@@ -64,7 +85,7 @@
 
   .features__feature {
     position: absolute;
-    width: 35%;
+    width: 45%;
     font-size: 1.6em;
   }
 
@@ -83,6 +104,14 @@
   .features__box:nth-child(odd) .features__feature {
     right: 0;
   }
+
+  .footer__logo {
+    height: 7rem;
+  }
+
+  .footer__copyright {
+    font-size: 1.8rem;
+  }
 }
 
 @media (max-width: 700px) {
@@ -94,5 +123,94 @@
 @media (max-width: 600px) {
   html {
     font-size: 6.5px;
+  }
+}
+
+@media (max-width: 550px) {
+  html {
+    font-size: 5.98px;
+  }
+}
+
+@media (max-width: 500px) {
+  .operations__tab {
+    width: 30%;
+  }
+
+  .header__hero--title {
+    text-align: center;
+  }
+
+  .btn--scroll-to {
+    align-self: center;
+  }
+
+  .nav__links {
+    position: absolute;
+    right: 0;
+    top: -10vh;
+    width: 100vw;
+    padding: 1.5rem 3rem;
+    border-top: 1px solid var(--color-neutral);
+    border-bottom: 1px solid var(--color-neutral);
+    background-color: rgba(255, 255, 255, 0.85);
+    visibility: hidden;
+  }
+
+  .nav__links--show {
+    top: 9rem;
+    visibility: visible;
+  }
+
+  .nav__item {
+    margin-left: 0;
+  }
+
+  .nav__bars {
+    display: flex;
+  }
+
+  .nav__bars:hover {
+    opacity: 0.8;
+  }
+
+  .operations__tab p {
+    display: none;
+  }
+
+  .operations__content {
+    padding: 2.5rem 4rem 6.5rem 3rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .features__feature {
+    width: 90%;
+  }
+
+  .features__box:nth-child(even) .features__feature {
+    left: -1rem;
+  }
+
+  .features__box .features__box .features__feature {
+    left: 3rem;
+  }
+
+  .features .img__box {
+    opacity: 0.25;
+  }
+
+  .slider {
+    height: 70rem;
+  }
+
+  .slide {
+    height: 65rem;
+  }
+}
+
+@media (max-width: 380px) {
+  html {
+    font-size: 5.5px;
   }
 }

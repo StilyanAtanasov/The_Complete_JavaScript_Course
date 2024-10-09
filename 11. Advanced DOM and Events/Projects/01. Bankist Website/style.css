@@ -34,7 +34,6 @@
 
 ::-webkit-scrollbar-track {
   background-color: var(--color-neutral-darker);
-  border-radius: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -45,7 +44,6 @@ html {
   font-size: 10px;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  overflow-x: hidden;
 }
 
 body {
@@ -54,13 +52,14 @@ body {
   color: #444;
   line-height: 1.9;
   background-color: var(--color-primary-background);
+  overflow-x: hidden;
+  position: relative;
 }
 
 /* GENERAL ELEMENTS */
 .section {
   padding: 15rem 3rem;
   border-top: 1px solid #ddd;
-
   transition: transform 1s, opacity 1s;
 }
 
@@ -149,7 +148,6 @@ img {
   z-index: 100;
 }
 
-/* nav and stickly class at the same time */
 .nav.sticky {
   position: fixed;
   background-color: rgba(255, 255, 255, 0.95);
@@ -163,6 +161,7 @@ img {
 .nav__links {
   display: flex;
   align-items: center;
+  justify-content: space-evenly;
   list-style: none;
 }
 
@@ -195,6 +194,24 @@ img {
   color: inherit;
   background-color: var(--color-primary-darker);
   color: #333;
+}
+
+.nav__bars {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 100%;
+  padding: 2rem 0;
+  width: 4rem;
+  cursor: pointer;
+}
+
+.nav__bars--bar {
+  background-color: var(--color-neutral-darker);
+  border-radius: 15px;
+  height: 13%;
+  width: 100%;
 }
 
 /* HEADER */
@@ -273,7 +290,7 @@ header .img__box {
 }
 
 .features .img__box {
-  width: 60%;
+  width: 50%;
 }
 
 .features__img {
@@ -323,6 +340,9 @@ header .img__box {
 }
 
 .operations__tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 2.5rem;
   transform: translateY(-50%);
 }
@@ -331,6 +351,10 @@ header .img__box {
   margin-right: 1rem;
   font-weight: 600;
   display: inline-block;
+}
+
+.operations__tab.btn p {
+  color: inherit;
 }
 
 .operations__tab--1 {
