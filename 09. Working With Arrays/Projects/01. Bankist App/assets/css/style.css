@@ -250,6 +250,8 @@ nav {
   border: 0.1rem solid #555;
   border-radius: 15px;
   transform: translateX(100vw);
+  background-color: #333;
+  z-index: 15;
 }
 
 .reveal-left {
