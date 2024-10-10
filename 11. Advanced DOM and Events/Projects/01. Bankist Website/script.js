@@ -54,20 +54,26 @@ const content = {
   },
 };
 
-// ----- Global -----
+// ----- State variables -----
 let currentOperationsTab = 1;
 let currentSliderState = 1;
 
 // ----- Functions -----
+// --- Navigation ---
 const goTop = () => document.body.scrollIntoView();
 const redirect = () => (window.location.href = "https://st-atanasov-bankist-app-v2.vercel.app/");
-const getOperationElement = (tab, key) => content.operations[`operation${tab}`][key];
-const handleNavHovered = e =>
-  e.target.classList.contains(`nav__link`) && [...elements.header.navLinksBox.children].forEach(c => c.querySelector(`.nav__link`) !== e.target && c.classList.toggle(`fade`)) && console.log(e.target);
-const handleLearnMore = () => elements.features.section.scrollIntoView();
-const handleDotsClick = e => e.target.classList.contains(`dots__dot`) && slideTo((currentSliderState = Number(e.target.dataset.slide)));
-const showNavLinks = () => elements.header.navLinksBox.classList.add(`nav__links--show`);
+const toggleNavLinks = () => elements.header.navLinksBox.classList.toggle(`nav__links--show`);
 const hideNavLinks = e => e.target !== elements.header.navBars && e.target !== elements.header.navLinksBox && elements.header.navLinksBox.classList.remove(`nav__links--show`);
+const handleLearnMore = () => elements.features.section.scrollIntoView();
+
+function toggleNavElements(e) {
+  const isIntersecting = e[0].isIntersecting;
+  elements.header.nav.classList.toggle(`sticky`, !isIntersecting);
+  elements.other.btnGoTop.classList.toggle(`hidden`, isIntersecting);
+}
+
+// --- Operations ---
+const getOperationElement = (tab, key) => content.operations[`operation${tab}`][key];
 
 function changeOperationsTab(e) {
   const targetButton = e.target.closest(`.operations__tab`);
@@ -85,12 +91,29 @@ function changeOperationsTab(e) {
   elements.operations.contentBox.querySelector(`p`).textContent = getOperationElement(tab, `text`);
 }
 
-function toggleFixedElements(e) {
-  const isIntersecting = e[0].isIntersecting;
-  elements.header.nav.classList.toggle(`sticky`, !isIntersecting);
-  elements.other.btnGoTop.classList.toggle(`hidden`, isIntersecting);
+// --- Slider ---
+const handleDotsClick = e => e.target.classList.contains(`dots__dot`) && slideTo((currentSliderState = Number(e.target.dataset.slide)));
+
+function createDots() {
+  elements.testimonials.allSlides.forEach((_, i) => elements.testimonials.dotsBox.insertAdjacentHTML(`beforeend`, `<button class="dots__dot" data-slide="${i + 1}"></button>`));
+  elements.other.allDots = document.querySelectorAll(`.dots__dot`);
 }
 
+function slideTo(slide) {
+  elements.testimonials.allSlides.forEach((s, i) => (s.style.transform = `translateX(${(slide - (i + 1)) * -100}%)`));
+  elements.other.allDots.forEach(d => d.classList.remove(`dots__dot--active`));
+  document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add(`dots__dot--active`);
+}
+
+function changeSliderState(changeBy) {
+  currentSliderState = (currentSliderState + changeBy) % 3;
+
+  if (currentSliderState === 0) return (currentSliderState = 3);
+
+  return currentSliderState;
+}
+
+// --- Lazy loading ---
 function revealSection(entries, observer) {
   const entry = entries[0];
   if (!entry.isIntersecting) return;
@@ -108,31 +131,17 @@ function revealImage(entries, observer) {
   observer.unobserve(entryTarget);
 }
 
-function createDots() {
-  elements.testimonials.allSlides.forEach((_, i) => elements.testimonials.dotsBox.insertAdjacentHTML(`beforeend`, `<button class="dots__dot" data-slide="${i + 1}"></button>`));
-  elements.other.allDots = document.querySelectorAll(`.dots__dot`);
-}
-
-function changeSliderState(changeBy) {
-  currentSliderState = (currentSliderState + changeBy) % 3;
-
-  if (currentSliderState === 0) return (currentSliderState = 3);
-
-  return currentSliderState;
-}
-
-function slideTo(slide) {
-  elements.testimonials.allSlides.forEach((s, i) => (s.style.transform = `translateX(${(slide - (i + 1)) * -100}%)`));
-  elements.other.allDots.forEach(d => d.classList.remove(`dots__dot--active`));
-  document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add(`dots__dot--active`);
-}
+// --- Other ---
+const handleNavHovered = e =>
+  e.target.classList.contains(`nav__link`) && [...elements.header.navLinksBox.children].forEach(c => c.querySelector(`.nav__link`) !== e.target && c.classList.toggle(`fade`)) && console.log(e.target);
 
 // ----- Main Logic -----
 goTop();
 createDots();
 slideTo(1);
 
-new IntersectionObserver(toggleFixedElements, {
+// --- Observers ---
+new IntersectionObserver(toggleNavElements, {
   root: null,
   threshold: 0,
   rootMargin: `-${window.getComputedStyle(elements.header.nav).height}`,
@@ -152,19 +161,23 @@ const ImgObserver = new IntersectionObserver(revealImage, {
   rootMargin: `200px`,
 });
 
-elements.other.allImages.forEach(i => ImgObserver.observe(i));
-
-elements.other.btnsRedirect.forEach(btn => btn.addEventListener(`click`, redirect));
+// --- Listeners ---
+// -- Operations
 elements.operations.btnContainer.addEventListener(`click`, changeOperationsTab);
+
+// -- Header
+elements.header.navBars.addEventListener(`click`, toggleNavLinks);
 elements.header.navLinksBox.addEventListener(`mouseover`, handleNavHovered);
 elements.header.navLinksBox.addEventListener(`mouseout`, handleNavHovered);
 elements.header.learnMoreBtn.addEventListener(`click`, handleLearnMore);
 
+// -- Testimonials
 elements.testimonials.btnLeft.addEventListener(`click`, () => slideTo(changeSliderState(-1)));
 elements.testimonials.btnRight.addEventListener(`click`, () => slideTo(changeSliderState(1)));
 elements.testimonials.dotsBox.addEventListener(`click`, handleDotsClick);
 
+// -- Other
 elements.other.btnGoTop.addEventListener(`click`, goTop);
-
-elements.header.navBars.addEventListener(`click`, showNavLinks);
+elements.other.allImages.forEach(i => ImgObserver.observe(i));
+elements.other.btnsRedirect.forEach(btn => btn.addEventListener(`click`, redirect));
 window.addEventListener(`touchstart`, hideNavLinks);

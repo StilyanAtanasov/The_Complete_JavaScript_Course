@@ -56,7 +56,7 @@ body {
   position: relative;
 }
 
-/* GENERAL ELEMENTS */
+/* ----- General elements ----- */
 .section {
   padding: 15rem 3rem;
   border-top: 1px solid #ddd;
@@ -137,7 +137,7 @@ img {
   filter: blur(20px);
 }
 
-/* NAVIGATION */
+/* ----- Navigation ----- */
 .nav {
   display: flex;
   justify-content: space-between;
@@ -214,7 +214,7 @@ img {
   width: 100%;
 }
 
-/* HEADER */
+/* ----- Header ----- */
 .header {
   padding: 0 3rem;
   height: 100vh;
@@ -276,7 +276,7 @@ header .img__box {
   background-image: var(--gradient-primary);
 }
 
-/* FEATURES */
+/* ----- Features ----- */
 .features {
   display: flex;
   flex-direction: column;
@@ -300,7 +300,7 @@ header .img__box {
 
 .features__feature {
   align-self: center;
-  width: 40%;
+  width: 45%;
   font-size: 1.5rem;
 }
 
@@ -326,7 +326,7 @@ header .img__box {
   margin-bottom: 1rem;
 }
 
-/* OPERATIONS */
+/* ----- Operations ----- */
 .operations {
   max-width: 100rem;
   margin: 12rem auto 0 auto;
@@ -355,6 +355,7 @@ header .img__box {
 
 .operations__tab.btn p {
   color: inherit;
+  margin-right: 0.5rem;
 }
 
 .operations__tab--1 {
@@ -432,14 +433,12 @@ header .img__box {
   fill: var(--color-tertiary);
 }
 
-/* SLIDER */
+/* ----- Slider ----- */
 .slider {
   max-width: 100rem;
   height: 50rem;
   margin: 0 auto;
   position: relative;
-
-  /* IN THE END */
   overflow: hidden;
 }
 
@@ -448,17 +447,13 @@ header .img__box {
   top: 0;
   width: 100%;
   height: 50rem;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* THIS creates the animation! */
   transition: transform 1s;
 }
 
 .slide > img {
-  /* Only for images that have different size than slide */
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -468,7 +463,6 @@ header .img__box {
   position: absolute;
   top: 50%;
   z-index: 10;
-
   border: none;
   background: rgba(255, 255, 255, 0.7);
   font-family: inherit;
@@ -519,7 +513,7 @@ header .img__box {
   opacity: 1;
 }
 
-/* TESTIMONIALS */
+/* ----- Testimonials ----- */
 .testimonial {
   width: 65%;
   position: relative;
@@ -579,7 +573,7 @@ header .img__box {
   margin-bottom: 4rem;
 }
 
-/* SIGNUP */
+/* ----- Signup ----- */
 .section--sign-up {
   border-top: none;
   border-bottom: 1px solid #444;
@@ -600,7 +594,7 @@ header .img__box {
   padding: 2rem 5rem;
 }
 
-/* FOOTER */
+/* ----- Footer ----- */
 .footer {
   position: relative;
   padding: 10rem 3rem;

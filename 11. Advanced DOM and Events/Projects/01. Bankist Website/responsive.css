@@ -1,3 +1,29 @@
+/* ----- Large screen resolutions ----- */
+@media (min-width: 2300px) {
+  html {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 2560px) {
+  html {
+    font-size: 12.5px;
+  }
+}
+
+@media (min-width: 3400px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 3840px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+/* ----- Mobile resolutions ----- */
 @media (max-width: 1400px) {
   html {
     font-size: 9px;
