@@ -42,6 +42,7 @@ const themes = {
     faderTop: `linear-gradient(to top, #ffffff00, #ffffff)`,
     faderBottom: `linear-gradient(to bottom, #ffffff00, #ffffff)`,
     logoSrc: `assets/images/logo-dark.png`,
+    settingsMenuBackgroundColor: `#f8f6f6`,
   },
   dark: {
     icon: `Theme: <i class="fa-regular fa-moon"></i>`,
@@ -52,6 +53,7 @@ const themes = {
     faderTop: `linear-gradient(to top, #ffffff00, #292929)`,
     faderBottom: `linear-gradient(to bottom, #ffffff00, #292929)`,
     logoSrc: `assets/images/logo-bright.png`,
+    settingsMenuBackgroundColor: ` #222`,
   },
 };
 
@@ -775,6 +777,7 @@ function changeTheme(theme) {
   elements.buttons.sort.style.color = elements.containers.popup.style.color = elements.buttons.popupCancel.style.color = elements.buttons.popupClose.style.color = theme.color;
   elements.other.logos.forEach(logo => (logo.src = theme.logoSrc));
   elements.buttons.settings.style.color = theme.color;
+  elements.buttons.settingsMenu.style.backgroundColor = theme.settingsMenuBackgroundColor;
 }
 
 function getCurrentInputError() {
