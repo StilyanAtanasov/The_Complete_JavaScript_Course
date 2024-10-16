@@ -1,0 +1,42 @@
+/* ----- Small screen resolutions ----- */
+@media (max-width: 1200px) {
+  .sidebar {
+    flex-basis: 40rem;
+  }
+}
+
+@media (max-width: 850px) {
+  .sidebar {
+    flex-basis: 35rem;
+  }
+
+  .copyright {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    flex-direction: column-reverse;
+    padding: 0;
+  }
+
+  .sidebar {
+    height: 45vh;
+  }
+
+  .logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 9rem;
+    width: 100%;
+    background-color: var(--color-dark--1);
+    padding: 2rem 3rem;
+  }
+
+  .map {
+    height: 30vh;
+    margin-top: 9rem;
+  }
+}
