@@ -4,6 +4,7 @@
 
   --color-dark--1: #2d3439;
   --color-dark--2: #42484d;
+  --color-dark--3: #616161;
   --color-light--1: #aaa;
   --color-light--2: #ececec;
   --color-light--3: rgb(214, 222, 224);
@@ -55,8 +56,10 @@ a:visited {
 }
 
 .workouts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   list-style: none;
-  height: 77vh;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -71,14 +74,16 @@ a:visited {
   padding: 1.5rem 2.25rem;
   margin-bottom: 1.75rem;
   cursor: pointer;
-
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 0.75rem 1.5rem;
+  position: relative;
 }
+
 .workout--running {
   border-left: 5px solid var(--color-brand--2);
 }
+
 .workout--cycling {
   border-left: 5px solid var(--color-brand--1);
 }
@@ -110,6 +115,20 @@ a:visited {
   color: var(--color-light--1);
   text-transform: uppercase;
   font-weight: 800;
+}
+
+.workout__toolbox {
+  display: flex;
+  gap: 0.5rem;
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 1.4rem;
+  color: var(--color-light--1);
+}
+
+.workout__tool:hover {
+  color: var(--color-light--2);
 }
 
 .form {
@@ -171,6 +190,7 @@ a:visited {
 
 .copyright {
   margin-top: auto;
+  padding: 2rem 0;
   font-size: 1.3rem;
   text-align: center;
   color: var(--color-light--1);
@@ -180,7 +200,8 @@ a:visited {
 .map {
   flex: 1;
   height: 100%;
-  background-color: var(--color-light--1);
+  background-color: var(--color-dark--3);
+  position: relative;
 }
 
 .leaflet-popup .leaflet-popup-content-wrapper {
@@ -203,4 +224,24 @@ a:visited {
 }
 .cycling-popup .leaflet-popup-content-wrapper {
   border-left: 5px solid var(--color-brand--1);
+}
+
+.load {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: loadRotate 2s ease-in infinite forwards;
+}
+
+@keyframes loadRotate {
+  0% {
+    transform: translate(-50%, -50%) rotate3d(0, 1, 0, 0deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate3d(0, 1, 0, 180deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate3d(0, 1, 0, 0deg);
+  }
 }

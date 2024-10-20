@@ -3,51 +3,81 @@
 class App {
   #map;
   #currentWorkoutBuilder;
+  #MapZoom = 14;
+  #workoutText = {
+    running: {
+      input1Icon: `🏃‍♂️`,
+      input3Unit: `km/min`,
+      input3Prop: `pace`,
+      input4Icon: `🦶`,
+      input4Prop: `cadence`,
+      input4Unit: `spm`,
+    },
+    cycling: {
+      input1Icon: `🚴‍♂️`,
+      input3Unit: `km/h`,
+      input3Prop: `speed`,
+      input4Icon: `⛰️`,
+      input4Prop: `elevation`,
+      input4Unit: `m`,
+    },
+  };
 
   constructor() {
-    this.#getPosition();
     this.workouts = [];
+    this.#getPosition();
+    this.#getStoredWorkouts();
+    this.#displayStoredWorkouts();
 
     elements.inputs.type.addEventListener(`change`, this.#changeFormType);
+    elements.containers.form.addEventListener(`submit`, e => e.preventDefault());
+    elements.containers.workouts.addEventListener(`click`, this.#scrollToMarker.bind(this));
   }
 
   #getPosition = () =>
     navigator.geolocation.getCurrentPosition(
       this.#displayMap.bind(this),
-      () => console.error(`Error: Cound not get your position!`) // TODO
+      this.#getPosition // TODO
     );
 
   #displayMap(position) {
     const { latitude, longitude } = position.coords;
 
-    this.#map = L.map(`map`).setView([latitude, longitude], 14);
+    this.#map = L.map(`map`).setView([latitude, longitude], this.#MapZoom);
 
     L.tileLayer(`https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png`, {
       attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`,
     }).addTo(this.#map);
 
+    this.workouts.forEach(w => this.#displayMarker(w));
+
     this.#map.on(`click`, this.#renderForm.bind(this));
   }
 
   #renderForm(e) {
-    const { lat, lng } = e.latlng;
+    this.#currentWorkoutBuilder && elements.containers.form.removeEventListener(`submit`, this.#currentWorkoutBuilder);
 
-    this.#toggleForm();
+    this.#openForm();
+    elements.inputs.distance.focus();
 
-    this.#currentWorkoutBuilder = () => this.#createWorkout(lat, lng);
+    this.#currentWorkoutBuilder = () => this.#createWorkout(e.latlng);
     elements.containers.form.addEventListener(`submit`, this.#currentWorkoutBuilder);
   }
 
-  #toggleForm = () => elements.containers.form.classList.toggle(`hidden`);
+  #openForm = () => elements.containers.form.classList.remove(`hidden`);
+
+  #closeForm = () => elements.containers.form.classList.add(`hidden`);
+
   #clearFields = (...fieldNames) => fieldNames.forEach(f => (elements.inputs[f].value = ``));
 
-  #createWorkout(lat, lng) {
+  #createWorkout(latlng) {
     const type = elements.inputs.type.value;
     const distance = elements.inputs.distance.value;
     const duration = elements.inputs.duration.value;
     const dateNow = new Date();
 
     let workout;
+    const { lat, lng } = latlng;
     if (type === `running`) {
       const cadence = elements.inputs.cadence.value;
       if (!this.#validateFormArguments(distance, duration, cadence)) return console.error(`Invalid input`); // TODO
@@ -55,47 +85,62 @@ class App {
       workout = new Running(distance, duration, cadence, [lat, lng], dateNow);
     } else {
       const elevation = elements.inputs.elevation.value;
-      console.log(distance, duration, elevation);
       if (!this.#validateFormArguments(distance, duration, elevation)) return console.error(`Invalid input`); // TODO
 
       workout = new Cycling(distance, duration, elevation, [lat, lng], dateNow);
     }
 
-    // TODO external method
-    const workoutEl = `<li class="workout workout--${type}" data-id="1234567890">
-          <h2 class="workout__title">${type}</h2>
-          <div class="workout__details">
-            <span class="workout__icon">🏃‍♂️</span>
-            <span class="workout__value">${workout.distance}</span>
-            <span class="workout__unit">km</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">⏱</span>
-            <span class="workout__value">${workout.distance}</span>
-            <span class="workout__unit">min</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">⚡️</span>
-            <span class="workout__value">${workout.pace}</span>
-            <span class="workout__unit">min/km</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">🦶🏼</span>
-            <span class="workout__value">${workout.cadence}</span>
-            <span class="workout__unit">spm</span>
-          </div>
-        </li>`;
+    const workoutType = workout.type;
+    const workoutTitle = workout.description;
 
-    elements.containers.form.insertAdjacentHTML(`afterend`, workoutEl);
     this.workouts.push(workout);
+    this.#displayWorkout(workout, workoutTitle, workoutType);
 
-    this.#displayMarker(lat, lng);
-    this.#toggleForm();
+    this.#displayMarker(workout, workoutTitle, workoutType);
+    this.#closeForm();
     this.#clearFields(`distance`, `duration`, `elevation`, `cadence`);
     elements.containers.form.removeEventListener(`submit`, this.#currentWorkoutBuilder);
+
+    this.#updateLocalStorage();
   }
 
-  #displayMarker = (lat, lng) => L.marker([lat, lng]).addTo(this.#map);
+  #displayMarker = (workout, workoutTitle = workout.description, workoutType = workout.type) =>
+    L.marker(workout.coords)
+      .addTo(this.#map)
+      .bindPopup(L.popup({ closeOnClick: false, autoPan: false, autoClose: false, content: workoutTitle, className: `${workoutType}-popup` }))
+      .openPopup();
+
+  #displayWorkout = (workout, workoutTitle = workout.description, workoutType = workout.type) =>
+    elements.containers.workouts.insertAdjacentHTML(
+      `afterbegin`,
+      `<li class="workout workout--${workoutType}" data-id="${workout.id}">
+        <h2 class="workout__title">${workoutTitle}</h2> 
+        <div class="workout__details">
+          <span class="workout__icon">${this.#workoutText[workoutType].input1Icon}</span>
+          <span class="workout__value">${workout.distance}</span>
+          <span class="workout__unit">km</span>
+        </div>
+        <div class="workout__details">
+          <span class="workout__icon">⏱</span>
+          <span class="workout__value">${workout.duration}</span>
+          <span class="workout__unit">min</span>
+        </div>
+        <div class="workout__details">
+          <span class="workout__icon">⚡️</span>
+          <span class="workout__value">${workout[this.#workoutText[workoutType].input3Prop]}</span>
+          <span class="workout__unit">${this.#workoutText[workoutType].input3Unit}</span>
+        </div>
+        <div class="workout__details">
+          <span class="workout__icon">${this.#workoutText[workoutType].input4Icon}</span>
+          <span class="workout__value">${workout[this.#workoutText[workoutType].input4Prop]}</span>
+          <span class="workout__unit">${this.#workoutText[workoutType].input4Unit}</span>
+        </div>
+        <div  class="workout__toolbox"> 
+        <span class="workout__tool tool--edit"><i class="fa-solid fa-pen-to-square"></i></span>
+        <span class="workout__tool tool--delete"><i class="fa-solid fa-trash"></i></span>
+        </div>
+      </li>`
+    ); // TODO edit delete
 
   #validateFormArguments = (...values) => values.every(v => !Number.isNaN(v) && v > 0);
 
@@ -103,6 +148,29 @@ class App {
     elements.inputs.cadence.closest(`.form__row`).classList.toggle(`form__row--hidden`);
     elements.inputs.elevation.closest(`.form__row`).classList.toggle(`form__row--hidden`);
   }
+
+  #scrollToMarker(e) {
+    const workoutEl = e.target.closest(`.workout`);
+
+    if (!workoutEl) return;
+
+    const workout = this.workouts.find(w => w.id === workoutEl.dataset.id);
+    this.#map.setView(workout.coords, this.#MapZoom, { animate: true, duration: 0.5 });
+  }
+
+  #updateLocalStorage = () => localStorage.setItem(`workouts`, JSON.stringify(this.workouts));
+
+  #getStoredWorkouts() {
+    const workouts = JSON.parse(localStorage.getItem(`workouts`)) || [];
+
+    const classMap = { running: Running, cycling: Cycling };
+    const restoredWorkouts = workouts.map(w => Reflect.construct(classMap[w.type], [w.distance, w.duration, w.cadence || w.elevation, w.coords, new Date(w.date), w.id]));
+
+    this.workouts = restoredWorkouts;
+  }
+
+  #displayStoredWorkouts = () => this.workouts.forEach(w => this.#displayWorkout(w));
 }
 
+// ----- Business logic -----
 new App();
