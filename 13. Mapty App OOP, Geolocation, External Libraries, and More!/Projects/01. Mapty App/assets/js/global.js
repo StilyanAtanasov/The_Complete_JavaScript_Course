@@ -14,4 +14,7 @@ const elements = {
     cadence: document.querySelector(`.form__input--cadence`),
     elevation: document.querySelector(`.form__input--elevation`),
   },
+  buttons: {
+    calcelForm: document.querySelector(`.form__btn.btn--cancel`),
+  },
 };

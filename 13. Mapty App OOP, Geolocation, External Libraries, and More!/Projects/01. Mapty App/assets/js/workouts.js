@@ -15,6 +15,14 @@ class Workout {
     return `${this.constructor.name} on ${months[this.date.getMonth()]} ${this.date.getDate()}, ${this.date.getFullYear()}`;
   }
 
+  get marker() {
+    return this._marker;
+  }
+
+  set marker(value) {
+    this._marker = value;
+  }
+
   #generateUniqueId = date => `${date}-${++this.#workoutIdCounter}`;
 }
 

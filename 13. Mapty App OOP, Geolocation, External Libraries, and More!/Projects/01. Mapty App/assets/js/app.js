@@ -31,7 +31,7 @@ class App {
 
     elements.inputs.type.addEventListener(`change`, this.#changeFormType);
     elements.containers.form.addEventListener(`submit`, e => e.preventDefault());
-    elements.containers.workouts.addEventListener(`click`, this.#scrollToMarker.bind(this));
+    elements.containers.workouts.addEventListener(`click`, this.#handleWorkoutClick.bind(this));
   }
 
   #getPosition = () =>
@@ -61,6 +61,7 @@ class App {
     elements.inputs.distance.focus();
 
     this.#currentWorkoutBuilder = () => this.#createWorkout(e.latlng);
+    elements.buttons.calcelForm.addEventListener(`click`, this.#closeForm); // FIX
     elements.containers.form.addEventListener(`submit`, this.#currentWorkoutBuilder);
   }
 
@@ -69,6 +70,18 @@ class App {
   #closeForm = () => elements.containers.form.classList.add(`hidden`);
 
   #clearFields = (...fieldNames) => fieldNames.forEach(f => (elements.inputs[f].value = ``));
+
+  #handleWorkoutClick(e) {
+    const clicked = e.target;
+    const workoutEl = clicked.closest(`.workout`);
+
+    if (!workoutEl) return;
+
+    const workout = this.workouts.find(w => w.id === workoutEl.dataset.id);
+    if (clicked.closest(`.workout__tool`)?.classList.contains(`tool--delete`)) return this.#deleteWorkout(workout, workoutEl);
+
+    this.#scrollToMarker(workout);
+  }
 
   #createWorkout(latlng) {
     const type = elements.inputs.type.value;
@@ -104,11 +117,23 @@ class App {
     this.#updateLocalStorage();
   }
 
-  #displayMarker = (workout, workoutTitle = workout.description, workoutType = workout.type) =>
-    L.marker(workout.coords)
+  #deleteWorkout(workout, workoutEl) {
+    this.workouts.splice(this.workouts.indexOf(workout), 1);
+
+    elements.containers.workouts.removeChild(workoutEl);
+    workout.marker.remove();
+
+    this.#updateLocalStorage();
+  }
+
+  #displayMarker(workout, workoutTitle = workout.description, workoutType = workout.type) {
+    const marker = L.marker(workout.coords)
       .addTo(this.#map)
-      .bindPopup(L.popup({ closeOnClick: false, autoPan: false, autoClose: false, content: workoutTitle, className: `${workoutType}-popup` }))
-      .openPopup();
+      .bindPopup(L.popup({ closeOnClick: false, autoPan: false, autoClose: false, content: workoutTitle, className: `${workoutType}-popup` }));
+
+    workout.marker = marker;
+    marker.openPopup();
+  }
 
   #displayWorkout = (workout, workoutTitle = workout.description, workoutType = workout.type) =>
     elements.containers.workouts.insertAdjacentHTML(
@@ -140,7 +165,7 @@ class App {
         <span class="workout__tool tool--delete"><i class="fa-solid fa-trash"></i></span>
         </div>
       </li>`
-    ); // TODO edit delete
+    ); // TODO edit
 
   #validateFormArguments = (...values) => values.every(v => !Number.isNaN(v) && v > 0);
 
@@ -149,16 +174,16 @@ class App {
     elements.inputs.elevation.closest(`.form__row`).classList.toggle(`form__row--hidden`);
   }
 
-  #scrollToMarker(e) {
-    const workoutEl = e.target.closest(`.workout`);
+  #scrollToMarker = workout => this.#map.setView(workout.coords, this.#MapZoom, { animate: true, duration: 0.5 });
 
-    if (!workoutEl) return;
+  #updateLocalStorage = () => {
+    const serializableWorkouts = this.workouts.map(workout => {
+      const { _marker, ...rest } = workout;
+      return rest;
+    });
 
-    const workout = this.workouts.find(w => w.id === workoutEl.dataset.id);
-    this.#map.setView(workout.coords, this.#MapZoom, { animate: true, duration: 0.5 });
-  }
-
-  #updateLocalStorage = () => localStorage.setItem(`workouts`, JSON.stringify(this.workouts));
+    localStorage.setItem("workouts", JSON.stringify(serializableWorkouts));
+  };
 
   #getStoredWorkouts() {
     const workouts = JSON.parse(localStorage.getItem(`workouts`)) || [];
