@@ -12,7 +12,9 @@ class Workout {
   }
 
   get description() {
-    return `${this.constructor.name} on ${months[this.date.getMonth()]} ${this.date.getDate()}, ${this.date.getFullYear()}`;
+    return `${this.constructor.name} on ${months[this.date.getMonth()]} ${this.date.getDate()}, ${this.date.getFullYear()} | ${String(this.date.getHours()).padStart(2, `0`)}:${String(
+      this.date.getMinutes()
+    ).padStart(2, `0`)}`;
   }
 
   get marker() {
@@ -32,10 +34,13 @@ class Running extends Workout {
   constructor(distance, duration, cadence, coords, date, id) {
     super(distance, duration, coords, date, id);
     this.cadence = cadence;
-    this.pace = this.#calcPace(distance, duration);
   }
 
   #calcPace = (distance, duration) => (distance / duration).toFixed(2);
+
+  get pace() {
+    return this.#calcPace(this.distance, this.duration);
+  }
 }
 
 class Cycling extends Workout {
@@ -44,8 +49,11 @@ class Cycling extends Workout {
   constructor(distance, duration, elevation, coords, date, id) {
     super(distance, duration, coords, date, id);
     this.elevation = elevation;
-    this.speed = this.#calcSpeed(distance, duration);
   }
 
   #calcSpeed = (distance, duration) => (distance / (duration / 60)).toFixed(2);
+
+  get speed() {
+    return this.#calcSpeed(this.distance, this.duration);
+  }
 }

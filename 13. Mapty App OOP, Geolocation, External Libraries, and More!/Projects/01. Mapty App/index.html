@@ -23,7 +23,13 @@
     <div class="sidebar">
       <img src="assets/img/logo.png" alt="Logo" class="logo" />
 
+      <article class="error__box hidden">
+        <p class="error__title"></p>
+        <p class="error__message"></p>
+      </article>
+
       <form class="form hidden">
+        <h2 class="form__title">Workout</h2>
         <div class="form__row">
           <label class="form__label">Type</label>
           <select class="form__input form__input--type">
@@ -33,11 +39,11 @@
         </div>
         <div class="form__row">
           <label class="form__label">Distance</label>
-          <input class="form__input form__input--distance" placeholder="km" maxlength="4" />
+          <input class="form__input form__input--distance" placeholder="km" maxlength="4" required />
         </div>
         <div class="form__row">
           <label class="form__label">Duration</label>
-          <input class="form__input form__input--duration" placeholder="min" maxlength="5" />
+          <input class="form__input form__input--duration" placeholder="min" maxlength="5" required />
         </div>
         <div class="form__row">
           <label class="form__label">Cadence</label>
@@ -47,7 +53,7 @@
           <label class="form__label">Elev Gain</label>
           <input class="form__input form__input--elevation" placeholder="meters" maxlength="4" />
         </div>
-        <button class="form__btn btn--cancel">Cancel</button>
+        <button type="button" class="form__btn btn--cancel">Cancel</button>
         <button class="form__btn btn--ok">OK</button>
       </form>
       <ul class="workouts"></ul>

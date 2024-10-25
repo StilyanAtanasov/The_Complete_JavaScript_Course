@@ -18,18 +18,20 @@
 }
 
 /* ----- Small screen resolutions ----- */
-@media (max-width: 1024px) {
+@media (max-width: 1000px) {
   body {
     flex-direction: column-reverse;
     padding: 0;
   }
 
   .form,
-  .workouts li {
+  .workouts li,
+  .error__box {
     width: 70%;
   }
 
-  .form {
+  .form,
+  .error__box {
     align-self: center;
   }
 
@@ -53,15 +55,10 @@
   }
 }
 
-@media (max-width: 1024px) and (max-height: 600px) {
-  .sidebar {
-    flex-basis: 45vh;
-  }
-}
-
 @media (max-width: 750px) {
   .form,
-  .workouts li {
+  .workouts li,
+  .error__box {
     width: 100%;
   }
 }

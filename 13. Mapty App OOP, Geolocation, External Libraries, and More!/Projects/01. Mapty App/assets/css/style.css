@@ -5,9 +5,12 @@
   --color-dark--1: #2d3439;
   --color-dark--2: #42484d;
   --color-dark--3: #616161;
+
   --color-light--1: #aaa;
   --color-light--2: #ececec;
   --color-light--3: rgb(214, 222, 224);
+
+  --color-error--1: rgb(209, 5, 5);
 }
 
 * {
@@ -64,7 +67,8 @@ a:visited {
   overflow-x: hidden;
 }
 
-.workouts::-webkit-scrollbar {
+.workouts::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
   width: 0;
 }
 
@@ -131,24 +135,38 @@ a:visited {
   color: var(--color-light--2);
 }
 
-.form {
+.form,
+.error__box {
   background-color: var(--color-dark--2);
   border-radius: 10px;
   padding: 1.5rem 2.75rem;
+  transition: all 0.5s, transform 1ms;
   margin-bottom: 1.75rem;
+}
+
+.error__box {
+  border: 2px solid var(--color-error--1);
+  font-size: 1.3rem;
+}
+
+.error__title {
+  color: var(--color-error--1);
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.form {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem 2.5rem;
-
-  transition: all 0.5s, transform 1ms;
 }
 
-.form.hidden {
-  transform: translateY(-30rem);
-  height: 0;
-  padding: 0 2.25rem;
-  margin-bottom: 0;
-  opacity: 0;
+.form__title {
+  grid-column: 1 / -1;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-brand--2);
 }
 
 .form__row {
@@ -193,11 +211,17 @@ a:visited {
   background-color: transparent;
   cursor: pointer;
   font-weight: 700;
+  transition: all 200ms;
 }
 
 .form__btn.btn--ok {
   color: var(--color-dark--1);
   background-color: var(--color-brand--2);
+}
+
+.form__btn:hover {
+  background-color: var(--color-brand--1);
+  color: var(--color-dark--1);
 }
 
 .copyright {
@@ -244,6 +268,14 @@ a:visited {
   left: 50%;
   transform: translate(-50%, -50%);
   animation: loadRotate 2s ease-in infinite forwards;
+}
+
+.hidden {
+  transform: translateX(-100vw);
+  height: 0;
+  padding: 0 2.25rem;
+  margin-bottom: 0;
+  opacity: 0;
 }
 
 @keyframes loadRotate {
