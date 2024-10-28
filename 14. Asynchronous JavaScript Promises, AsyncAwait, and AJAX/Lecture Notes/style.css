@@ -42,20 +42,21 @@ textarea {
 }
 
 .countries {
-  margin-bottom: 8rem;
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   font-size: 2rem;
   opacity: 0;
   transition: opacity 1s;
+  gap: 3rem;
 }
 
 .country {
   background-color: #fff;
   box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   width: 30rem;
   border-radius: 0.7rem;
-  margin: 0 3rem;
 }
 
 .neighbour::before {
@@ -76,8 +77,8 @@ textarea {
 }
 
 .country__img {
-  width: 30rem;
-  height: 17rem;
+  width: 100%;
+  height: auto;
   object-fit: cover;
   background-color: #eee;
   border-top-left-radius: 0.7rem;
