@@ -13,7 +13,7 @@ const renderCountry = function (data, className = "") {
     <div class="country__data">
       <h3 class="country__name">${data.name.common}</h3>
       <h4 class="country__region">${data.region}</h4>
-      <p class="country__row"><span>👫</span>${(+data.population / 1000000).toFixed(1)} people</p>
+      <p class="country__row"><span>👫</span>${(+data.population / 1000000).toFixed(1)}M people</p>
       <p class="country__row"><span>🗣️</span>${Object.values(data.languages)[0]}</p>
       <p class="country__row"><span>💰</span>${Object.values(data.currencies)[0].name}</p>
     </div>
@@ -327,10 +327,6 @@ const whereAmI = async function () {
       `https://restcountries.com/v3.1/name/${dataGeo.country}`
     );
     
-    // BUG in video:
-    // if (!resGeo.ok) throw new Error('Problem getting country');
-    
-    // FIX:
     if (!res.ok) throw new Error('Problem getting country');
 
     const data = await res.json();
@@ -354,7 +350,6 @@ console.log('FIRST');
 //   alert(err.message);
 // }
 
-
 // ----- Returning Values from Async Functions -----
 const getPosition = function () {
   return new Promise(function (resolve, reject) {
@@ -370,15 +365,15 @@ const whereAmI = async function () {
 
     // Reverse geocoding
     const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-    if (!resGeo.ok) throw new Error('Problem getting location data');
+    if (!resGeo.ok) throw new Error("Problem getting location data");
     const dataGeo = await resGeo.json();
+    console.log(dataGeo);
 
     // Country data
-    const res = await fetch(
-      `https://restcountries.com/v3.1/name/${dataGeo.country}`
-    );
-    if (!resGeo.ok) throw new Error('Problem getting country');
+    const res = await fetch(`https://restcountries.com/v3.1/name/${dataGeo.country}`);
+    if (!resGeo.ok) throw new Error("Problem getting country");
     const data = await res.json();
+
     renderCountry(data[0]);
 
     return `You are in ${dataGeo.city}, ${dataGeo.country}`;
@@ -391,7 +386,7 @@ const whereAmI = async function () {
   }
 };
 
-console.log('1: Will get location');
+console.log("1: Will get location");
 // const city = whereAmI();
 // console.log(city);
 
@@ -407,9 +402,8 @@ console.log('1: Will get location');
   } catch (err) {
     console.error(`2: ${err.message} 💥`);
   }
-  console.log('3: Finished getting location');
+  console.log("3: Finished getting location");
 })();
-
 
 // ----- Running Promises in Parallel -----
 const get3Countries = async function (c1, c2, c3) {
@@ -487,19 +481,4 @@ Promise.any([
 ])
   .then(res => console.log(res))
   .catch(err => console.error(err));
-
-
-// Coding Challenge #3
-PART 1
-Write an async function 'loadNPause' that recreates Coding Challenge #2, this time using async/await (only the part where the promise is consumed). Compare the two versions, think about the big differences, and see which one you like more.
-Don't forget to test the error handler, and to set the network speed to 'Fast 3G' in the dev tools Network tab.
-
-PART 2
-1. Create an async function 'loadAll' that receives an array of image paths 'imgArr';
-2. Use .map to loop over the array, to load all the images with the 'createImage' function (call the resulting array 'imgs')
-3. Check out the 'imgs' array in the console! Is it like you expected?
-4. Use a promise combinator function to actually get the images from the array 😉
-5. Add the 'paralell' class to all the images (it has some CSS styles).
-
-TEST DATA: ['img/img-1.jpg', 'img/img-2.jpg', 'img/img-3.jpg']. To test, turn off the 'loadNPause' function.
 */

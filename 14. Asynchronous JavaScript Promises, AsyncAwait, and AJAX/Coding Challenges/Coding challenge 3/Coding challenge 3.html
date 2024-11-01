@@ -4,15 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script defer src="Coding challenge 3.js"></script>
     <title>Coding challenge 3</title>
     <style>
       body {
         height: 100vh;
         overflow: hidden;
         display: flex;
+        flex-direction: column;
         align-items: center;
         background: linear-gradient(to top left, #28b487, #7dd56f);
+        padding: 4rem;
       }
+
       h1 {
         font-family: sans-serif;
         font-size: 50px;
@@ -22,10 +26,39 @@
         text-align: center;
         color: white;
       }
+
+      .images {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        gap: 4rem;
+        overflow-y: scroll;
+        margin-bottom: 5rem;
+      }
+
+      .images img {
+        display: block;
+        width: 100%;
+      }
+
+      .images img.parallel {
+        border: 10px solid white;
+        box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
+        width: 80%;
+      }
+
+      @media (max-width: 500px) {
+        h1 {
+          font-size: 30px;
+        }
+        .images {
+          width: 100%;
+        }
+      }
     </style>
   </head>
   <body>
     <h1>Asynchronous JavaScript Promises, AsyncAwait, and AJAX</h1>
-    <script src="Coding challenge 3.js"></script>
+    <div class="images"></div>
   </body>
 </html>
