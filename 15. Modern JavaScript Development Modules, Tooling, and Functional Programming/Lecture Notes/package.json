@@ -1,0 +1,21 @@
+{
+  "name": "lecture-notes",
+  "version": "1.0.0",
+  "scripts": {
+    "development": "parcel index.html",
+    "production": "parcel build index.html"
+  },
+  "author": "Stilyan Atanasov",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "core-js": "^3.39.0",
+    "leaflet": "^1.9.4",
+    "lodash-es": "^4.17.21",
+    "regenerator-runtime": "^0.14.1"
+  },
+  "devDependencies": {
+    "parcel": "^2.12.0"
+  },
+  "browserslist": "last 2 versions, > 0.5% and ie >= 11"
+}
