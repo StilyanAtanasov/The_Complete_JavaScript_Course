@@ -1,11 +1,17 @@
 import View from "./view";
 
-export default class searchView extends View {
+export default class SearchView extends View {
   constructor() {
     super();
   }
 
-  getSearchPrompt = () => this.UIEls.header.searchField.value.trim();
+  getSearchPrompt = () => this.UIEls.searchForm.searchField.value.trim();
 
-  handleSearch = handler => this.UIEls.header.searchBtn.addEventListener(`click`, handler);
+  clearInputField = () => (this.UIEls.searchForm.searchField.value = ``);
+
+  handleSearch = handler =>
+    this.UIEls.searchForm.searchBtn.addEventListener(`click`, function (e) {
+      e.preventDefault();
+      handler();
+    });
 }

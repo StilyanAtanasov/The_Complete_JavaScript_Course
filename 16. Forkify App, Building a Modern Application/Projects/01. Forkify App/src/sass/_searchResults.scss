@@ -1,12 +1,19 @@
 @use "base";
 
-.search-results {
-  padding: 3rem 0;
+.search__results {
+  padding-bottom: 3rem;
   display: flex;
   flex-direction: column;
 }
 
-.results {
+.search__results--title {
+  font-size: 2rem;
+  margin: 1.5rem 0 1.5rem 1.5rem;
+  color: base.$color-grad-2;
+  font-weight: 800;
+}
+
+.search__results--results {
   list-style: none;
   margin-bottom: 2rem;
 }

@@ -18,8 +18,8 @@
       <header class="header">
         <img src="src/img/logo.png" alt="Logo" class="header__logo" />
         <form class="search">
-          <input type="text" class="search__field" placeholder="Search over 1,000,000 recipes..." />
-          <button type="button" class="btn search__btn">
+          <input type="text" class="search__field" placeholder="Search for recipes or ingredients..." />
+          <button type="submit" class="btn search__btn">
             <svg class="search__icon">
               <use href="src/img/icons.svg#icon-search"></use>
             </svg>
@@ -52,7 +52,7 @@
                         <use href="src/img/icons.svg#icon-smile"></use>
                       </svg>
                     </div>
-                    <p>No bookmarks yet. Find a nice recipe and bookmark it :)</p>
+                    <p>No bookmarks yet. Find a nice recipe and bookmark it!</p>
                   </div>
 
                   <!-- <li class="preview">
@@ -75,27 +75,9 @@
         </nav>
       </header>
 
-      <div class="search-results">
-        <ul class="results">
-          <!-- 
-          <li class="preview">
-            <a class="preview__link preview__link--active" href="#23456">
-              <figure class="preview__fig">
-                <img src="src/img/test-1.jpg" alt="Test" />
-              </figure>
-              <div class="preview__data">
-                <h4 class="preview__title">Pasta with Tomato Cream ...</h4>
-                <p class="preview__publisher">The Pioneer Woman</p>
-                <div class="preview__user-generated">
-                  <svg>
-                    <use href="src/img/icons.svg#icon-user"></use>
-                  </svg>
-                </div>
-              </div>
-            </a>
-          </li>
-           -->
-        </ul>
+      <section class="search__results">
+        <h3 class="search__results--title">Popular Recipes</h3>
+        <div class="search__results--results"></div>
 
         <div class="pagination">
           <!-- <button class="btn--inline pagination__btn--prev">
@@ -113,7 +95,7 @@
         </div>
 
         <p class="copyright">© 2024 Stilyan Atanasov. All rights reserved.</p>
-      </div>
+      </section>
 
       <div class="recipe">
         <div class="message">
@@ -124,13 +106,6 @@
           </div>
           <p>Start by searching for a recipe or an ingredient. Have fun!</p>
         </div>
-
-        <!-- <div class="spinner">
-          <svg>
-            <use href="src/img/icons.svg#icon-loader"></use>
-          </svg>
-        </div> -->
-
         <!-- <div class="error">
             <div>
               <svg>

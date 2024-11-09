@@ -1,3 +1,4 @@
+import ResultsController from "./controllers/resultsController";
 import SearchController from "./controllers/searchController";
 
 export default class Engine {
@@ -5,6 +6,7 @@ export default class Engine {
 
   constructor() {
     this.#searchController = new SearchController();
+    new ResultsController();
   }
 
   start() {
