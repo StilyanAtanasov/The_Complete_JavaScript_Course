@@ -6,28 +6,22 @@ export default class SearchController extends Controller {
   #model;
   #view;
 
-  constructor() {
-    super();
-    this.#model = new SearchModel();
+  constructor(appState) {
+    super(appState);
+    this.#model = new SearchModel(appState);
     this.#view = new SearchView();
   }
 
   async #controlSearch() {
-    this.#view.renderSpinner(this.#view.UIEls.results.title);
-    this.#view.updateText(this.#view.UIEls.results.title, `Searching...`);
+    this.#view.updateTitle();
+    this.#view.showSpinner();
 
     const prompt = this.#view.getSearchPrompt();
     this.#view.clearInputField();
 
-    const response = await this.#model.searchRecipe(prompt);
-
-    this.appState.search.query = prompt;
-    this.appState.search.response = response.data.recipes;
-
+    await this.#model.searchRecipe(prompt);
     this.eventBus.publish(`searched`, prompt);
   }
 
-  init() {
-    this.#view.handleSearch(this.#controlSearch.bind(this));
-  }
+  init = () => this.#view.onSearch(this.#controlSearch.bind(this));
 }

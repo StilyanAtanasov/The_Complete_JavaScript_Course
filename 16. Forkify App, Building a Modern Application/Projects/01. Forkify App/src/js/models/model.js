@@ -1,3 +1,5 @@
 export default class Model {
-  constructor() {}
+  constructor(appState) {
+    this.appState = appState;
+  }
 }

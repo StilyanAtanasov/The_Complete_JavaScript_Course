@@ -9,9 +9,12 @@ export default class SearchView extends View {
 
   clearInputField = () => (this.UIEls.searchForm.searchField.value = ``);
 
-  handleSearch = handler =>
+  onSearch = handler =>
     this.UIEls.searchForm.searchBtn.addEventListener(`click`, function (e) {
       e.preventDefault();
       handler();
     });
+
+  updateTitle = () => this.updateText(this.UIEls.results.title, `Searching...`);
+  showSpinner = () => this.renderSpinner(this.UIEls.results.title);
 }

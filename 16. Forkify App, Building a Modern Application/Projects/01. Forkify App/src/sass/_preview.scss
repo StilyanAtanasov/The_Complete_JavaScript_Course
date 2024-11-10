@@ -3,6 +3,8 @@
 
 .preview {
   &__link {
+    border: 1px solid transparent;
+
     &:link,
     &:visited {
       display: flex;
@@ -14,12 +16,12 @@
     }
 
     &:hover {
-      background-color: base.$color-grey-light-1;
-      transform: translateY(-2px);
+      background-color: base.$color-grey-light-3;
     }
 
     &--active {
-      background-color: base.$color-grey-light-1;
+      background-color: base.$color-grey-light-3;
+      border: 1px solid base.$color-grey-dark-1;
     }
   }
 
@@ -33,18 +35,14 @@
     backface-visibility: hidden;
 
     &::before {
-      content: '';
+      content: "";
       display: block;
       height: 100%;
       width: 100%;
       position: absolute;
       top: 0;
       left: 0;
-      background-image: linear-gradient(
-        to right bottom,
-        base.$color-grad-1,
-        base.$color-grad-2
-      );
+      background-image: linear-gradient(to right bottom, base.$color-grad-1, base.$color-grad-2);
       opacity: 0.4;
     }
 
@@ -72,7 +70,6 @@
     text-transform: uppercase;
     font-weight: 600;
 
-    // This is how text is truncated!
     text-overflow: ellipsis;
     max-width: 25rem;
     white-space: nowrap;

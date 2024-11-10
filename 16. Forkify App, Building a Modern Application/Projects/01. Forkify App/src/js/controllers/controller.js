@@ -1,9 +1,12 @@
 import EventBus from "../utils/eventBus";
-import AppState from "../appState";
 
 export default class Controller {
-  constructor() {
-    this.appState = Controller.appState ?? (Controller.appState = new AppState().appState);
+  #appState;
+
+  constructor(appState) {
+    this.#appState = appState;
     this.eventBus = Controller.eventBus ?? (Controller.eventBus = new EventBus());
   }
+
+  getState = keyPath => this.#appState.getState(keyPath);
 }

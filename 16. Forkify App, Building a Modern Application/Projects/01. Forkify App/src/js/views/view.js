@@ -5,11 +5,6 @@ export default class View {
   constructor() {
     this.UIEls = UIEls;
     this.icons = icons;
-    this.loaderMarkup = `<div class="spinner">
-           <svg>
-             <use href="${this.icons}#icon-loader"></use>
-           </svg>
-         </div> `;
   }
 
   updateText = (el, newText) => (el.textContent = newText);
@@ -18,5 +13,14 @@ export default class View {
 
   remove = (container, selector) => container.removeChild(document.querySelector(selector));
 
-  renderSpinner = (container, position = `afterEnd`) => this.render(container, this.loaderMarkup, position);
+  renderSpinner = (container, position = `afterEnd`) =>
+    this.render(
+      container,
+      `<div class="spinner">
+           <svg>
+             <use href="${this.icons}#icon-loader"></use>
+           </svg>
+         </div> `,
+      position
+    );
 }

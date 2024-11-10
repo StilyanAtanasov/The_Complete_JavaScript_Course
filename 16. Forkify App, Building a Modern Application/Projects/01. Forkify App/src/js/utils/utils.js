@@ -1,7 +1,5 @@
-export const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
+export const timeout = (ms, message) => new Promise((_, reject) => setTimeout(() => reject(new Error(message)), ms));
+export const getPageBounds = (page, pageLimit) => ({
+  start: (page - 1) * pageLimit,
+  end: page * pageLimit - 1,
+});

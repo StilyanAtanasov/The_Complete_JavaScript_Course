@@ -5,7 +5,8 @@ export default class ResultsView extends View {
     super();
   }
 
-  updateTitle = searchPrompt => this.updateText(this.UIEls.results.title, `Results for ${searchPrompt}`);
+  updateTitle = searchPrompt => this.updateText(this.UIEls.results.title, `Results for: ${searchPrompt}`);
+  hideSpinner = () => this.remove(this.UIEls.results.container, `.spinner`);
 
   buildMarkup = (id, imgUrl, title, publisher) => `<a class="preview__link preview__link--active" href="#${id}">
               <figure class="preview__fig">
@@ -22,4 +23,13 @@ export default class ResultsView extends View {
               </div>
             </a>
           `;
+
+  renderResults(results, start, end) {
+    this.UIEls.results.resultsList.innerHTML = ``;
+
+    for (let i = start; i <= end; i++) {
+      const result = results[i];
+      this.render(this.UIEls.results.resultsList, this.buildMarkup(result.id, result.image_url, result.title, result.publisher), `beforeend`);
+    }
+  }
 }
