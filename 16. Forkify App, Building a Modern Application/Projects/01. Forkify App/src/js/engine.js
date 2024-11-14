@@ -1,5 +1,5 @@
 import AppState from "./appState";
-import ResultsController from "./controllers/resultsController";
+import SearchResultsController from "./controllers/searchResultsController";
 import SearchController from "./controllers/searchController";
 
 export default class Engine {
@@ -9,7 +9,7 @@ export default class Engine {
   constructor() {
     this.#appState = new AppState();
     this.#searchController = new SearchController(this.#appState);
-    new ResultsController(this.#appState);
+    new SearchResultsController(this.#appState);
   }
 
   start = () => this.#searchController.init();

@@ -4,6 +4,7 @@
   padding-bottom: 3rem;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .search__results--title {
@@ -11,6 +12,9 @@
   margin: 1.5rem 0 1.5rem 1.5rem;
   color: base.$color-grad-2;
   font-weight: 800;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .search__results--results {
