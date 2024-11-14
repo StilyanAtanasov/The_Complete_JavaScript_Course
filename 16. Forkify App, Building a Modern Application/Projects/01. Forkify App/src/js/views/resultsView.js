@@ -25,18 +25,18 @@ export default class ResultsView extends View {
             </a>
           `;
 
-  paginationBtnMarkup(pageNum, direction, incrementBy) {
+  paginationBtnMarkup(direction, incrementBy) {
     const arrowIcon = `
             <svg class="search__icon">
               <use href="${this.icons}#icon-arrow-${direction}"></use>
             </svg>`;
 
     return `<button class="btn--inline pagination__btn pagination__btn--${direction === `left` ? `prev` : `next`}" data-increment="${incrementBy}">
-              ${direction === `left` ? arrowIcon : ``}
-              <span>Page ${pageNum}</span>
-              ${direction === `right` ? arrowIcon : ``}
+              ${direction === `left` ? `${arrowIcon} <span>Previous</span>` : `<span>Next</span> ${arrowIcon} `}
             </button>`;
   }
+
+  currentPageMarkup = (currentPage, totalPages) => `<span class="current-page">Page ${currentPage}/${totalPages}</span>`;
 
   renderResults(results, start, end) {
     this.UIEls.results.resultsList.innerHTML = ``;
@@ -50,9 +50,10 @@ export default class ResultsView extends View {
   renderPagination(currentPage, totalPages) {
     this.UIEls.results.paginationContainer.innerHTML = ``;
 
-    const renderPageButton = (pageNum, direction, incrementBy) => this.render(this.UIEls.results.paginationContainer, this.paginationBtnMarkup(pageNum, direction, incrementBy), `beforeEnd`);
-    if (currentPage > 1) renderPageButton(currentPage - 1, `left`, -1);
-    if (currentPage < totalPages) renderPageButton(currentPage + 1, `right`, 1);
+    const renderInPaginationContainer = markup => this.render(this.UIEls.results.paginationContainer, markup, `beforeEnd`);
+    if (currentPage > 1) renderInPaginationContainer(this.paginationBtnMarkup(`left`, -1));
+    renderInPaginationContainer(this.currentPageMarkup(currentPage, totalPages));
+    if (currentPage < totalPages) renderInPaginationContainer(this.paginationBtnMarkup(`right`, 1));
   }
 
   onPaginationClick(handler) {
