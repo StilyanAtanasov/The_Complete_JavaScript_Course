@@ -9,4 +9,7 @@ export const elements = {
     resultsList: document.querySelector(`.search__results--results`),
     paginationContainer: document.querySelector(`.pagination`),
   },
+  recipe: {
+    container: document.querySelector(`.recipe`),
+  },
 };

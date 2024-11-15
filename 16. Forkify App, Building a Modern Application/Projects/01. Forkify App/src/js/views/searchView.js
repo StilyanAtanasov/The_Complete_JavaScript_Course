@@ -16,5 +16,6 @@ export default class SearchView extends View {
     });
 
   updateTitle = () => this.updateText(this.UIEls.results.title, `Searching...`);
+
   showSpinner = () => this.renderSpinner(this.UIEls.results.title);
 }

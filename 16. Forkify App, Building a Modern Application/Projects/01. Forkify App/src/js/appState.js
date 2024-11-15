@@ -11,6 +11,16 @@ export default class AppState {
         resultsPerPage: PAGE_RESULTS_LIMIT,
         response: [],
       },
+      currentRecipe: {
+        cooking_time: 0,
+        id: ``,
+        imageUrl: ``,
+        ingredients: [],
+        publisher: ``,
+        servings: 0,
+        sourceUrl: ``,
+        title: ``,
+      },
     };
   }
 

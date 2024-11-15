@@ -4,7 +4,6 @@
 .recipe {
   background-color: base.$color-grey-light-1;
 
-  ///////////
   // FIGURE
   &__fig {
     height: 32rem;
@@ -13,18 +12,14 @@
     transform-origin: top;
 
     &::before {
-      content: '';
+      content: "";
       display: block;
       height: 100%;
       width: 100%;
       position: absolute;
       top: 0;
       left: 0;
-      background-image: linear-gradient(
-        to right bottom,
-        base.$color-grad-1,
-        base.$color-grad-2
-      );
+      background-image: linear-gradient(to right bottom, base.$color-grad-1, base.$color-grad-2);
       opacity: 0.6;
     }
   }
@@ -53,11 +48,7 @@
       -webkit-box-decoration-break: clone;
       box-decoration-break: clone;
       padding: 1.3rem 2rem;
-      background-image: linear-gradient(
-        to right bottom,
-        base.$color-grad-1,
-        base.$color-grad-2
-      );
+      background-image: linear-gradient(to right bottom, base.$color-grad-1, base.$color-grad-2);
     }
 
     @media only screen and (max-width: base.$bp-medium) {
@@ -65,7 +56,6 @@
     }
   }
 
-  ///////////
   // DETAILS
   &__details {
     display: flex;
@@ -122,7 +112,6 @@
     }
   }
 
-  ///////////
   // INGREDIENTS
   &__ingredients {
     padding: 5rem 8rem;
@@ -136,7 +125,7 @@
 
   &__ingredient-list {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 2.5rem 3rem;
     list-style: none;
   }
@@ -159,7 +148,6 @@
     flex: 0 0 auto;
   }
 
-  ///////////
   // DIRECTIONS
   &__directions {
     padding: 5rem 10rem;

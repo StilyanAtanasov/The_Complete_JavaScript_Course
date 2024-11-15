@@ -1,0 +1,95 @@
+import View from "./view";
+
+export default class ResultsView extends View {
+  constructor() {
+    super();
+  }
+
+  showSpinner = () => this.renderSpinner(this.UIEls.recipe.container, `afterBegin`);
+  hideSpinner = () => this.remove(this.UIEls.recipe.container, `.spinner`);
+
+  onHashChange = handler => [`hashchange`, `load`].forEach(e => window.addEventListener(e, () => handler(window.location.hash)));
+
+  ingredientMarkup = (ingredient, quantity, unit) => `<li class="recipe__ingredient">
+              <svg class="recipe__icon">
+                <use href="${this.icons}#icon-check" />
+              </svg>
+              ${quantity ? `<div class="recipe__quantity">${quantity}</div>` : ``}
+              <div class="recipe__description">
+                <span class="recipe__unit">${unit}</span>
+                ${ingredient}
+              </div>
+            </li>`;
+
+  recipeMarkup = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl) => `<figure class="recipe__fig">
+          <img src="${imageUrl}" alt="${title}" class="recipe__img" />
+          <h1 class="recipe__title">
+            <span>${title}</span>
+          </h1>
+        </figure>
+
+        <div class="recipe__details">
+          <div class="recipe__info">
+            <svg class="recipe__info-icon">
+              <use href="${this.icons}#icon-clock" />
+            </svg>
+            <span class="recipe__info-data recipe__info-data--minutes">${cookingTime}</span>
+            <span class="recipe__info-text">minutes</span>
+          </div>
+          <div class="recipe__info">
+            <svg class="recipe__info-icon">
+              <use href="${this.icons}#icon-users" />
+            </svg>
+            <span class="recipe__info-data recipe__info-data--people">${servings}</span>
+            <span class="recipe__info-text">servings</span>
+
+            <div class="recipe__info-buttons">
+              <button class="btn--tiny btn--increase-servings">
+                <svg>
+                  <use href="${this.icons}#icon-minus-circle" />
+                </svg>
+              </button>
+              <button class="btn--tiny btn--increase-servings">
+                <svg>
+                  <use href="${this.icons}#icon-plus-circle" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="recipe__user-generated">
+            <svg>
+              <use href="${this.icons}#icon-user" />
+            </svg>
+          </div>
+          <button class="btn--round">
+            <svg class="">
+              <use href="${this.icons}#icon-bookmark-fill" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="recipe__ingredients">
+          <h2 class="heading--2">Recipe ingredients</h2>
+          <ul class="recipe__ingredient-list">${ingredients.reduce((acc, i) => acc + this.ingredientMarkup(i.description, i.quantity, i.unit), ``)}</ul>
+        </div>
+
+        <div class="recipe__directions">
+          <h2 class="heading--2">How to cook it</h2>
+          <p class="recipe__directions-text">
+            This recipe was carefully designed and tested by
+            <span class="recipe__publisher">${publisher}</span>. Please check out directions at their website.
+          </p>
+          <a class="btn--small recipe__btn" href="${sourceUrl}" target="_blank">
+            <span>Directions</span>
+            <svg class="search__icon">
+              <use href="${this.icons}#icon-arrow-right" />
+            </svg>
+          </a>
+        </div>`;
+
+  renderRecipe = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl) =>
+    this.render(this.UIEls.recipe.container, this.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl));
+
+  removeCurrentRecipe = () => (this.UIEls.recipe.container.innerHTML = ``);
+}
