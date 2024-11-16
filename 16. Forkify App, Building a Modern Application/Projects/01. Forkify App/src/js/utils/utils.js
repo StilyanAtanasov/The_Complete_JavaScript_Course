@@ -1,3 +1,15 @@
+import fracty from "fracty";
+
+function gcd(a, b) {
+  while (b !== 0) {
+    let temp = b;
+    b = a % b;
+    a = temp;
+  }
+
+  return a;
+}
+
 export const timeout = (ms, message) => new Promise((_, reject) => setTimeout(() => reject(new Error(message)), ms));
 
 export function getPageBounds(page, pageLimit, totalResults) {
@@ -8,4 +20,23 @@ export function getPageBounds(page, pageLimit, totalResults) {
     start: (page - 1) * pageLimit,
     end: end >= lastResult ? lastResult : end,
   };
+}
+
+export function formatFraction(number) {
+  const fraction = fracty(number);
+  if (!fraction.includes(`/`)) return fraction;
+
+  const [wholePart, fractionalPart] = fraction.includes(` `) ? fraction.split(` `) : [null, fraction];
+  let [numerator, denominator] = fractionalPart.split(`/`).map(Number);
+
+  const precision = Number(`1`.padEnd(String(numerator).length - 1, `0`));
+  numerator = Math.round(numerator / precision);
+  denominator = Math.round(denominator / precision);
+
+  const divisor = gcd(numerator, denominator);
+  numerator /= divisor;
+  denominator /= divisor;
+
+  const simplifiedFraction = `${numerator}/${denominator}`;
+  return wholePart ? `${wholePart} ${simplifiedFraction}` : simplifiedFraction;
 }

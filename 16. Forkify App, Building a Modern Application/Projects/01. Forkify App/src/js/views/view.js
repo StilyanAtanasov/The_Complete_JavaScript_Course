@@ -2,7 +2,9 @@ import { elements as UIEls } from "../utils/elements";
 import icons from "url:../../img/icons.svg";
 
 export default class View {
-  constructor() {
+  constructor(location) {
+    this.location = location;
+
     this.UIEls = UIEls;
     this.icons = icons;
   }
@@ -23,4 +25,18 @@ export default class View {
          </div> `,
       position
     );
+
+  update(markup) {
+    const newElements = Array.from(document.createRange().createContextualFragment(markup).querySelectorAll(`*`));
+    const curElements = Array.from(this.location.querySelectorAll(`*`));
+
+    newElements.forEach((el, i) => {
+      const curEl = curElements[i];
+      if (!el.isEqualNode(curEl)) {
+        if (el.firstChild?.nodeValue?.trim()) curEl.textContent = el.textContent;
+
+        Array.from(el.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value));
+      }
+    });
+  }
 }

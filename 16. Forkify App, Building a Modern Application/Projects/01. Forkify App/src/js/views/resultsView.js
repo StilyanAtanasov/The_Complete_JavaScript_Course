@@ -1,10 +1,11 @@
 import View from "./view";
 
 export default class ResultsView extends View {
+  static location = document.querySelector(`.search__results`);
   #paginationClickCallback;
 
   constructor() {
-    super();
+    super(ResultsView.location);
   }
 
   hideSpinner = () => this.remove(this.UIEls.results.container, `.spinner`);

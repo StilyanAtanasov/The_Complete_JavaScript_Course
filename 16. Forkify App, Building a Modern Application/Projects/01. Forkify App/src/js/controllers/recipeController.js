@@ -23,7 +23,13 @@ export default class ResultsController extends Controller {
     const { title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl } = await this.#model.fetchRecipe(recipeId);
     this.#view.renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl);
 
-    this.#view.hideSpinner();
+    this.#view.onUpdateServings(
+      function (arg) {
+        this.#model.updateServings(arg);
+        const { title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl } = this.getState(`currentRecipe`);
+        this.#view.update(this.#view.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl));
+      }.bind(this)
+    );
   }
 
   init = () => this.#view.onHashChange(this.controlRecipe.bind(this));

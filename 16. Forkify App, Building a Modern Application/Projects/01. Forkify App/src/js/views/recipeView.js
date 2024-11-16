@@ -1,21 +1,32 @@
 import View from "./view";
+import { formatFraction } from "../utils/utils";
 
-export default class ResultsView extends View {
+export default class RecipeView extends View {
+  static location = document.querySelector(`.recipe`);
+
   constructor() {
-    super();
+    super(RecipeView.location);
   }
 
   showSpinner = () => this.renderSpinner(this.UIEls.recipe.container, `afterBegin`);
-  hideSpinner = () => this.remove(this.UIEls.recipe.container, `.spinner`);
 
   onHashChange = handler => [`hashchange`, `load`].forEach(e => window.addEventListener(e, () => handler(window.location.hash)));
+
+  onUpdateServings = handler =>
+    document.querySelector(`.recipe__info-buttons`).addEventListener(`click`, function (e) {
+      const target = e.target.closest(`.btn--increase-servings`);
+      if (!target) return;
+
+      handler(Number.parseInt(target.dataset.update_by, 10));
+    });
 
   ingredientMarkup = (ingredient, quantity, unit) => `<li class="recipe__ingredient">
               <svg class="recipe__icon">
                 <use href="${this.icons}#icon-check" />
               </svg>
-              ${quantity ? `<div class="recipe__quantity">${quantity}</div>` : ``}
+              
               <div class="recipe__description">
+              ${quantity ? `<div class="recipe__quantity">${formatFraction(quantity)}</div>` : ``}
                 <span class="recipe__unit">${unit}</span>
                 ${ingredient}
               </div>
@@ -44,12 +55,12 @@ export default class ResultsView extends View {
             <span class="recipe__info-text">servings</span>
 
             <div class="recipe__info-buttons">
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--increase-servings" data-update_by="-1">
                 <svg>
                   <use href="${this.icons}#icon-minus-circle" />
                 </svg>
               </button>
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--increase-servings" data-update_by="1">
                 <svg>
                   <use href="${this.icons}#icon-plus-circle" />
                 </svg>
@@ -88,8 +99,10 @@ export default class ResultsView extends View {
           </a>
         </div>`;
 
-  renderRecipe = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl) =>
-    this.render(this.UIEls.recipe.container, this.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl));
+  renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl) {
+    this.UIEls.recipe.container.innerHTML = ``;
+    this.render(RecipeView.location, this.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl));
+  }
 
   removeCurrentRecipe = () => (this.UIEls.recipe.container.innerHTML = ``);
 }

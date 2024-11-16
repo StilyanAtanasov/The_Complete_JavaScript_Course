@@ -16,14 +16,14 @@ export default class RecipeModel extends Model {
 
       const recipe = data.data.recipe;
       const recipeData = {
-        cookingTime: recipe.cooking_time,
+        title: recipe.title,
         id: recipe.id,
         imageUrl: recipe.image_url,
+        cookingTime: recipe.cooking_time,
+        servings: recipe.servings,
         ingredients: recipe.ingredients,
         publisher: recipe.publisher,
-        servings: recipe.servings,
         sourceUrl: recipe.source_url,
-        title: recipe.title,
       };
 
       this.appState.updateState(`currentRecipe`, recipeData);
@@ -32,5 +32,24 @@ export default class RecipeModel extends Model {
     } catch (err) {
       console.error(err.message); // TODO
     }
+  }
+
+  updateServings(updateBy) {
+    const currentServings = this.appState.getState(`currentRecipe.servings`);
+    const newServings = currentServings + updateBy;
+    if (newServings <= 0 || newServings > 1000) return;
+
+    const multiplier = newServings / currentServings;
+
+    this.appState.updateState(
+      `currentRecipe.ingredients`,
+      this.appState.getState(`currentRecipe.ingredients`).map(({ description, unit, quantity }) => ({
+        description,
+        unit,
+        quantity: quantity * multiplier,
+      }))
+    );
+
+    this.appState.updateState(`currentRecipe.servings`, newServings);
   }
 }
