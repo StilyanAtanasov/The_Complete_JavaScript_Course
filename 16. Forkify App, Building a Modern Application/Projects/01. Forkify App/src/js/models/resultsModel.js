@@ -5,5 +5,5 @@ export default class ResultsModel extends Model {
     super(appState);
   }
 
-  updateResultsPage = incrementBy => this.appState.updateState(`search.currentPage`, this.appState.getState(`search.currentPage`) + incrementBy);
+  changeResultsPage = incrementBy => this.appState.updateState(`search.currentPage`, this.appState.getState(`search.currentPage`) + incrementBy);
 }

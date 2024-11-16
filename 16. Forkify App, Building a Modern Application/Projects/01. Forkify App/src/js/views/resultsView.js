@@ -2,7 +2,7 @@ import View from "./view";
 
 export default class ResultsView extends View {
   static location = document.querySelector(`.search__results`);
-  #paginationClickCallback;
+  static #paginationClickCallback;
 
   constructor() {
     super(ResultsView.location);
@@ -58,14 +58,14 @@ export default class ResultsView extends View {
   }
 
   onPaginationClick(handler) {
-    this.#paginationClickCallback = function (e) {
+    ResultsView.#paginationClickCallback = function (e) {
       const target = e.target.closest(`.pagination__btn`);
       if (!target) return;
       handler(parseInt(target.dataset.increment, 10));
     };
 
-    this.UIEls.results.paginationContainer.addEventListener(`click`, this.#paginationClickCallback);
+    this.UIEls.results.paginationContainer.addEventListener(`click`, ResultsView.#paginationClickCallback);
   }
 
-  removePaginationClickListener = () => this.UIEls.results.paginationContainer.removeEventListener(`click`, this.#paginationClickCallback);
+  removePaginationClickListener = () => this.UIEls.results.paginationContainer.removeEventListener(`click`, ResultsView.#paginationClickCallback);
 }

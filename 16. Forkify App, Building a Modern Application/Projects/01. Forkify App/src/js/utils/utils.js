@@ -29,9 +29,9 @@ export function formatFraction(number) {
   const [wholePart, fractionalPart] = fraction.includes(` `) ? fraction.split(` `) : [null, fraction];
   let [numerator, denominator] = fractionalPart.split(`/`).map(Number);
 
-  const precision = Number(`1`.padEnd(String(numerator).length - 1, `0`));
-  numerator = Math.round(numerator / precision);
-  denominator = Math.round(denominator / precision);
+  const divider = Number(`1`.padEnd(String(numerator).length - 1, `0`));
+  numerator = Math.round(numerator / divider);
+  denominator = Math.round(denominator / divider);
 
   const divisor = gcd(numerator, denominator);
   numerator /= divisor;

@@ -21,6 +21,7 @@ export default class AppState {
         sourceUrl: ``,
         title: ``,
       },
+      popularRecipes: [`63b`, `417`, `49d`, `45a`, `4b5`, `96b`, `917`, `827`, `30f`, `a73`, `627`, `3dc`, `951`, `62d`, `aab`],
     };
   }
 
