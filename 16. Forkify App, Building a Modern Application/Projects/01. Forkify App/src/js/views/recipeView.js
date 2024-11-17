@@ -11,6 +11,17 @@ export default class RecipeView extends View {
   showSpinner = () => this.renderSpinner(this.UIEls.recipe.container, `afterBegin`);
 
   onHashChange = handler => [`hashchange`, `load`].forEach(e => window.addEventListener(e, () => handler(window.location.hash)));
+  onBookmark = handler =>
+    document.querySelector(`.bookmark-btn`).addEventListener(
+      `click`,
+      function (e) {
+        const target = e.target.closest(`.bookmark-btn`);
+        if (!target) return;
+
+        this.toggleBookmarkIcon();
+        handler();
+      }.bind(this)
+    );
 
   onUpdateServings = handler =>
     document.querySelector(`.recipe__info-buttons`).addEventListener(`click`, function (e) {
@@ -32,7 +43,7 @@ export default class RecipeView extends View {
               </div>
             </li>`;
 
-  recipeMarkup = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl) => `<figure class="recipe__fig">
+  recipeMarkup = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, isBookmarked) => `<figure class="recipe__fig">
           <img src="${imageUrl}" alt="${title}" class="recipe__img" />
           <h1 class="recipe__title">
             <span>${title}</span>
@@ -73,9 +84,9 @@ export default class RecipeView extends View {
               <use href="${this.icons}#icon-user" />
             </svg>
           </div>
-          <button class="btn--round">
-            <svg class="">
-              <use href="${this.icons}#icon-bookmark-fill" />
+          <button class="btn--round bookmark-btn">
+            <svg>
+              <use href="${this.icons}#icon-bookmark${isBookmarked ? `-fill` : ``}" />
             </svg>
           </button>
         </div>
@@ -99,10 +110,19 @@ export default class RecipeView extends View {
           </a>
         </div>`;
 
-  renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl) {
+  renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, isBookmarked = false) {
     this.UIEls.recipe.container.innerHTML = ``;
-    this.render(RecipeView.location, this.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl));
+    this.render(RecipeView.location, this.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, isBookmarked));
   }
 
   removeCurrentRecipe = () => (this.UIEls.recipe.container.innerHTML = ``);
+
+  toggleBookmarkIcon() {
+    const svg = document.querySelector(`.bookmark-btn use`);
+
+    const currentHref = svg.getAttribute(`href`);
+    const newHref = currentHref.includes(`fill`) ? currentHref.slice(0, -5) : `${currentHref}-fill`;
+
+    svg.setAttribute(`href`, newHref);
+  }
 }

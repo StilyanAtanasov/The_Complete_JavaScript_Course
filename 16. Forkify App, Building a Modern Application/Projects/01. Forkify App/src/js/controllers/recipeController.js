@@ -13,15 +13,15 @@ export default class ResultsController extends Controller {
     this.#view = new RecipeView();
   }
 
-  async controlRecipe(hash) {
+  async #controlRecipe(hash) {
     const recipeId = hash.slice(1);
     if (!recipeId) return;
 
     this.#view.removeCurrentRecipe();
     this.#view.showSpinner();
 
-    const { title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl } = await this.#model.fetchRecipe(recipeId);
-    this.#view.renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl);
+    const { id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl } = await this.#model.fetchRecipe(recipeId);
+    this.#view.renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, this.#isBookmarked(id));
 
     this.#view.onUpdateServings(
       function (arg) {
@@ -30,7 +30,20 @@ export default class ResultsController extends Controller {
         this.#view.update(this.#view.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl));
       }.bind(this)
     );
+
+    this.#view.onBookmark(
+      function () {
+        this.eventBus.publish(`bookmark`, {
+          id: this.getState(`currentRecipe.id`),
+          title: this.getState(`currentRecipe.title`),
+          image_url: this.getState(`currentRecipe.imageUrl`),
+          publisher: this.getState(`currentRecipe.publisher`),
+        });
+      }.bind(this)
+    );
   }
 
-  init = () => this.#view.onHashChange(this.controlRecipe.bind(this));
+  #isBookmarked = id => this.getState(`bookmarks`).reduce((acc, b) => acc || b.id === id, false);
+
+  init = () => this.#view.onHashChange(this.#controlRecipe.bind(this));
 }

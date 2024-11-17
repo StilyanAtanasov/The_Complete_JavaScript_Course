@@ -14,11 +14,11 @@ export default class ResultsController extends Controller {
     this.#view = new ResultsView();
   }
 
-  updateResults() {
+  updateResults(recipesData = this.getState(`search.response`)) {
     this.#view.removePaginationClickListener();
 
     const currentPage = this.getState(`search.currentPage`);
-    const recipes = this.getState(`search.response`);
+    const recipes = recipesData;
     const pageBounds = getPageBounds(currentPage, this.getState(`search.resultsPerPage`), recipes.length);
 
     this.#view.renderResults(recipes, pageBounds.start, pageBounds.end);

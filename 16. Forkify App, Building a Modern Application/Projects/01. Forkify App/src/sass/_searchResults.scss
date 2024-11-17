@@ -23,13 +23,13 @@
 }
 
 .pagination {
-  margin-top: auto;
   padding: 0 2rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   align-items: center;
   justify-items: center;
+  margin-top: 2rem;
 
   &::after {
     content: "";
@@ -62,4 +62,6 @@
   padding: 0 3.5rem;
   margin-top: 4rem;
   text-align: center;
+  margin-top: auto;
+  padding-top: 3rem;
 }
