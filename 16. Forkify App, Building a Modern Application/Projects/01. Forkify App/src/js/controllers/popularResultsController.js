@@ -14,10 +14,13 @@ export default class PopularResultsController extends ResultsController {
   }
 
   async #controlPopularRecipes() {
+    this.#view.showSpinner();
+
     this.#view.updateTitle();
     await this.#model.getPopularRecipes();
 
     this.updateResults();
+    this.#view.hideSpinner();
   }
 
   init = () => this.#controlPopularRecipes();

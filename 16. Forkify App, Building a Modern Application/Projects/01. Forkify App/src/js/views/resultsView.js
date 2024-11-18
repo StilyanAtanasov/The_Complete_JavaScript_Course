@@ -8,6 +8,7 @@ export default class ResultsView extends View {
     super(ResultsView.location);
   }
 
+  showSpinner = () => this.renderSpinner(this.UIEls.results.title);
   hideSpinner = () => this.remove(this.UIEls.results.container, `.spinner`);
 
   previewMarkup = (id, imgUrl, title, publisher) => `<a class="preview__link preview__link--active" href="#${id}">
