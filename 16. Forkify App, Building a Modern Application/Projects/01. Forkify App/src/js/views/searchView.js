@@ -18,4 +18,8 @@ export default class SearchView extends View {
   updateTitle = () => this.updateText(this.UIEls.results.title, `Searching...`);
 
   showSpinner = () => this.renderSpinner(this.UIEls.results.title);
+  removeCurrentResults() {
+    this.UIEls.results.resultsList.innerHTML = this.UIEls.results.paginationContainer.innerHTML = ``;
+    this.remove(this.UIEls.results.container, `.search__results--add-recipe`);
+  }
 }

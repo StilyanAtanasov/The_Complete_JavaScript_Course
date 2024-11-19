@@ -41,8 +41,6 @@ export default class ResultsView extends View {
   currentPageMarkup = (currentPage, totalPages) => `<span class="current-page">Page ${currentPage}/${totalPages}</span>`;
 
   renderResults(results, start, end) {
-    this.UIEls.results.resultsList.innerHTML = ``;
-
     for (let i = start; i <= end; i++) {
       const result = results[i];
       this.render(this.UIEls.results.resultsList, this.previewMarkup(result.id, result.image_url, result.title, result.publisher), `beforeend`);
@@ -66,6 +64,11 @@ export default class ResultsView extends View {
     };
 
     this.UIEls.results.paginationContainer.addEventListener(`click`, ResultsView.#paginationClickCallback);
+  }
+
+  removeCurrentResults() {
+    this.UIEls.results.resultsList.innerHTML = this.UIEls.results.paginationContainer.innerHTML = ``;
+    this.remove(this.UIEls.results.container, `.search__results--add-recipe`);
   }
 
   removePaginationClickListener = () => this.UIEls.results.paginationContainer.removeEventListener(`click`, ResultsView.#paginationClickCallback);

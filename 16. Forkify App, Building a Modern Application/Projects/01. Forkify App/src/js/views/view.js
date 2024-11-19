@@ -13,7 +13,10 @@ export default class View {
 
   render = (container, markup, position = `afterBegin`) => container.insertAdjacentHTML(position, markup);
 
-  remove = (container, selector) => container.removeChild(document.querySelector(selector));
+  remove(container, selector) {
+    const element = document.querySelector(selector);
+    element && container.removeChild(element);
+  }
 
   renderSpinner = (container, position = `afterEnd`) =>
     this.render(

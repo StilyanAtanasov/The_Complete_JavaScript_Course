@@ -17,6 +17,7 @@ export default class BookmarksController extends ResultsController {
   }
 
   #controlBookmarksResults() {
+    this.#view.removeCurrentResults();
     this.#view.updateTitle();
     this.#model.searchBookmarks() && this.updateResults();
   }

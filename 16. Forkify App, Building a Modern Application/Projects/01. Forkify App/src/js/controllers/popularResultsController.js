@@ -11,9 +11,11 @@ export default class PopularResultsController extends ResultsController {
 
     this.#model = new PopularResultsModel(appState);
     this.#view = new PopularResultsView();
+    this.eventBus.subscribe(`OpenPopularRecipes`, this.#controlPopularRecipes.bind(this))
   }
 
   async #controlPopularRecipes() {
+    this.#view.removeCurrentResults();
     this.#view.showSpinner();
 
     this.#view.updateTitle();

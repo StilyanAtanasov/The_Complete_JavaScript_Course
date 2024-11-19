@@ -13,6 +13,7 @@
   box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.25);
   z-index: 1000;
   transition: all 0.5s;
+  animation: 350ms ease-in-out forwards fade-in;
 
   .btn--close-modal {
     font-family: inherit;
@@ -37,11 +38,6 @@
   backdrop-filter: blur(4px);
   z-index: 100;
   transition: all 0.5s;
-}
-
-.hidden {
-  visibility: hidden;
-  opacity: 0;
 }
 
 .upload {
@@ -97,5 +93,16 @@
   &__btn {
     grid-column: 1 / -1;
     justify-self: center;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
   }
 }

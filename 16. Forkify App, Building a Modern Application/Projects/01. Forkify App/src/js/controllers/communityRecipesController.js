@@ -12,6 +12,10 @@ export default class BookmarksController extends ResultsController {
   }
 
   #controlCommunityRecipesResults() {
+    this.#view.removeCurrentResults();
     this.#view.updateTitle();
+    this.#view.renderUploadRecipeBtn();
+
+    this.#view.onUploadBtnClick(() => this.eventBus.publish(`OpenRecipeForm`, null));
   }
 }

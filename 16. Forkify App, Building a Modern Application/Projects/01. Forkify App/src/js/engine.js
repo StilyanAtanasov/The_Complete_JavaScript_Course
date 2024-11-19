@@ -6,6 +6,7 @@ import RecipeController from "./controllers/recipeController";
 import BookmarksController from "./controllers/bookmarksController";
 import CommunityRecipesController from "./controllers/communityRecipesController";
 import NavController from "./controllers/navController";
+import RecipeFormController from "./controllers/recipeFormController";
 
 export default class Engine {
   #appState;
@@ -22,8 +23,10 @@ export default class Engine {
     this.#popularResultsController = new PopularResultsController(this.#appState);
     this.#bookmarksController = new BookmarksController(this.#appState);
     this.#navController = new NavController(this.#appState);
+
     new SearchResultsController(this.#appState);
     new CommunityRecipesController(this.#appState);
+    new RecipeFormController(this.#appState);
   }
 
   start() {

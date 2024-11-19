@@ -17,6 +17,38 @@
   overflow: hidden;
 }
 
+.search__results--add-recipe {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 70%;
+  border: 2px solid base.$color-grad-2;
+  border-radius: 30px;
+  padding: 1.5rem 2rem;
+  font-size: 1.7rem;
+  font-weight: 700;
+  align-self: center;
+  cursor: pointer;
+  margin: 2rem 0 3rem 0;
+  transition: all 300ms;
+
+  &:hover {
+    background-color: base.$color-grey-light-2;
+    color: base.$color-grad-2;
+    transform: scale(0.98);
+
+    & svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  & svg {
+    width: 20%;
+    height: 4rem;
+    transition: all 300ms;
+  }
+}
+
 .search__results--results {
   list-style: none;
   margin-bottom: 2rem;
