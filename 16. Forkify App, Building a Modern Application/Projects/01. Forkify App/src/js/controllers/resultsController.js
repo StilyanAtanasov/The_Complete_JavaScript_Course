@@ -27,6 +27,7 @@ export default class ResultsController extends Controller {
     this.#view.onPaginationClick(
       function (arg) {
         this.#model.changeResultsPage(arg);
+        this.#view.removeCurrentResults();
         this.updateResults();
       }.bind(this)
     );

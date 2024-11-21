@@ -32,7 +32,7 @@ export default class Engine {
   start() {
     this.#searchController.init();
     this.#recipeController.init();
-    this.#popularResultsController.init();
+    // this.#popularResultsController.init();
     this.#bookmarksController.init();
     this.#navController.init();
   }
