@@ -14,46 +14,55 @@ export default class RecipeFormView extends View {
 
   formMarkup = () => `<div class="add-recipe-window">
       <button class="btn--close-modal">&times;</button>
+
+      <h2 class="upload__title">Upload Recipe Form</h2>
       <form class="upload">
-        <div class="upload__column">
-          <h3 class="upload__heading">Recipe data</h3>
+        <h3 class="upload__heading">Recipe data</h3>
+        <section class="upload__column">
+          <div class="upload__row">
           <label>Title</label>
-          <input value="TEST" required name="title" type="text" />
-          <label>URL</label>
-          <input value="TEST" required name="sourceUrl" type="text" />
+          <input placeholder="Pizza" required name="title" type="text" />
+          </div>
+          <div class="upload__row">
           <label>Image URL</label>
-          <input value="TEST" required name="image" type="text" />
+          <input placeholder="Recipe image" required name="imageUrl" type="text" />
+          </div>
+          <div class="upload__row">
           <label>Publisher</label>
-          <input value="TEST" required name="publisher" type="text" />
+          <input placeholder="Gordon Ramsay" required name="publisher" type="text" />
+          </div>
+          <div class="upload__row">
           <label>Prep time</label>
-          <input value="60" required name="cookingTime" type="number" />
+          <input placeholder="60 (in minutes)" required name="cookingTime" type="number" />
+          </div>
+          <div class="upload__row">
           <label>Servings</label>
-          <input value="4" required name="servings" type="number" />
-        </div>
+          <input placeholder="4" required name="servings" type="number" />
+          </div>
+        </section>
 
-        <div class="upload__column">
-          <h3 class="upload__heading">Ingredients</h3>
-          <label>Ingredient 1</label>
-          <input value="0.5,kg,Rice" type="text" required name="ingredient-1" placeholder="Format: 'Quantity,Unit,Description'" />
-          <label>Ingredient 2</label>
-          <input value="1,,Avocado" type="text" name="ingredient-2" placeholder="Format: 'Quantity,Unit,Description'" />
-          <label>Ingredient 3</label>
-          <input value=",,salt" type="text" name="ingredient-3" placeholder="Format: 'Quantity,Unit,Description'" />
-          <label>Ingredient 4</label>
-          <input type="text" name="ingredient-4" placeholder="Format: 'Quantity,Unit,Description'" />
-          <label>Ingredient 5</label>
-          <input type="text" name="ingredient-5" placeholder="Format: 'Quantity,Unit,Description'" />
-          <label>Ingredient 6</label>
-          <input type="text" name="ingredient-6" placeholder="Format: 'Quantity,Unit,Description'" />
+        <h3 class="upload__heading">Ingredients</h3>
+        <section class="upload__column">
+        <label>Ingredient 1</label>
+        <div class="upload__row">
+          <input type="text" name="ingredient-1-quantity" placeholder="Quantity (Optional)" />
+          <input type="text" name="ingredient-1-unit" placeholder="Unit (Optional)" />
+          <input type="text" required name="ingredient-1-name" placeholder="Ingredient Name" />
+          </div>
+        <div class="add-btn slim">
+          <svg>
+            <use href="${this.icons}#icon-plus-circle" ></use>
+          </svg>
+          <p>Add Ingredient</p>
         </div>
-
-        <button class="btn upload__btn">
+        </section>
+      </form>
+      <button class="btn upload__btn">
           <svg>
             <use href="${this.icons}#icon-upload-cloud"></use>
           </svg>
           <span>Upload</span>
         </button>
-      </form>
     </div>`;
 
   renderForm() {

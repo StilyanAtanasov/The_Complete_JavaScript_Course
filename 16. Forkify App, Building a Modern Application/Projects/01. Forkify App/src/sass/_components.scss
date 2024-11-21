@@ -212,3 +212,42 @@
     font-weight: 600;
   }
 }
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 70%;
+  border: 2px solid base.$color-grad-2;
+  color: base.$color-grey-dark-1;
+  background-color: transparent;
+  border-radius: 30px;
+  padding: 1.5rem 2rem;
+  font-size: 1.7rem;
+  font-weight: 700;
+  align-self: center;
+  cursor: pointer;
+  margin: 2rem 0 3rem 0;
+  transition: all 300ms;
+
+  &.slim {
+    padding: 1rem 1.5rem;
+    width: 55%;
+  }
+
+  &:hover {
+    background-color: base.$color-grey-light-2;
+    color: base.$color-grad-2;
+    transform: scale(0.98);
+
+    & svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  & svg {
+    width: 20%;
+    height: 4rem;
+    transition: all 300ms;
+  }
+}

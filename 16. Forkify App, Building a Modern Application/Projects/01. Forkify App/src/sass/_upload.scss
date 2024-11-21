@@ -1,6 +1,9 @@
 @use "base";
 
 .add-recipe-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -8,7 +11,6 @@
   width: 100rem;
   background-color: white;
   border-radius: 9px;
-
   padding: 5rem 6rem;
   box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.25);
   z-index: 1000;
@@ -41,18 +43,21 @@
 }
 
 .upload {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
   gap: 4rem 6rem;
+  padding: 2% 4%;
+  height: 40vh;
 
   &__column {
-    display: grid;
-    grid-template-columns: 1fr 2.8fr;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 1.5rem;
 
     & label {
-      font-size: 1.5rem;
+      font-size: 1.7rem;
       font-weight: 600;
       color: inherit;
     }
@@ -63,6 +68,7 @@
       border: 1px solid #ddd;
       border-radius: 0.5rem;
       transition: all 0.2s;
+      width: 70%;
 
       &::placeholder {
         color: base.$color-grey-light-3;
@@ -74,25 +80,35 @@
         background-color: base.$color-grey-light-1;
       }
     }
+  }
 
-    & button {
-      grid-column: 1 / span 2;
-      justify-self: center;
-      margin-top: 1rem;
-    }
+  &__row {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 3rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    color: base.$color-primary;
   }
 
   &__heading {
-    font-size: 2.25rem;
+    font-size: 2.4rem;
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 1rem;
-    grid-column: 1/-1;
+    align-self: center;
   }
 
   &__btn {
-    grid-column: 1 / -1;
-    justify-self: center;
+    justify-content: center;
+    width: 25%;
+    margin-top: 3rem;
   }
 }
 

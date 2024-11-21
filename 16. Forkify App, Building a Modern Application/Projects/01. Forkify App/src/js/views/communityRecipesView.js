@@ -6,19 +6,19 @@ export default class CommunityRecipesView extends ResultsView {
   }
 
   onUploadBtnClick = handler =>
-    document.querySelector(`.search__results--add-recipe`).addEventListener(`click`, function (e) {
-      const target = e.target.closest(`.search__results--add-recipe`);
+    document.querySelector(`#upload-recipe-btn`).addEventListener(`click`, function (e) {
+      const target = e.target.closest(`#upload-recipe-btn`);
       if (!target) return;
 
       handler();
     });
 
-  uploadRecipeBtnMarkup = () => `<div class="search__results--add-recipe">
+  uploadRecipeBtnMarkup = () => `<button id="upload-recipe-btn" class="add-btn">
           <svg>
             <use href="${this.icons}#icon-plus-circle" ></use>
           </svg>
           <p>Upload Recipe</p>
-        </div>`;
+        </button>`;
 
   updateTitle = () => this.updateText(this.UIEls.results.title, `Community Recipes`);
   renderUploadRecipeBtn = () => this.render(this.UIEls.results.title, this.uploadRecipeBtnMarkup(), `afterEnd`);

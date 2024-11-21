@@ -68,7 +68,7 @@ export default class ResultsView extends View {
 
   removeCurrentResults() {
     this.UIEls.results.resultsList.innerHTML = this.UIEls.results.paginationContainer.innerHTML = ``;
-    this.remove(this.UIEls.results.container, `.search__results--add-recipe`);
+    this.remove(this.UIEls.results.container, `.add-btn`);
   }
 
   removePaginationClickListener = () => this.UIEls.results.paginationContainer.removeEventListener(`click`, ResultsView.#paginationClickCallback);
