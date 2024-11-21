@@ -6,7 +6,7 @@ export default class RecipeFormModel extends Model {
   }
 
   async createRecipe() {
-    const response = await fetch(`/api/publishRecipe`);
+    const response = await fetch(`.netlify/functions/publishRecipe`);
     if (!response.ok) throw new Error(`Failed to fetch recipe`);
     const data = await response.json();
     console.log(data);
