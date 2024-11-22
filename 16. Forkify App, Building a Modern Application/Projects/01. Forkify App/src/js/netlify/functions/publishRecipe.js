@@ -1,21 +1,34 @@
-// const fetch = require("node-fetch");
+const fetch = require("node-fetch");
+const { API_URL } = require("../../config/config");
 
-exports.handler = async function (event, context) {
-  //   const { id } = event.queryStringParameters;
+exports.handler = async function (event) {
+  if (event.httpMethod !== `POST`) {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ message: `Method Not Allowed` }),
+    };
+  }
 
   try {
-    // const API_URL = `https://api.example.com/recipes/`;
-    const API_KEY = process.env.API_KEY_TEST;
+    const API_KEY = process.env.API_KEY;
 
-    // const response = await fetch(`${API_URL}/${id}?key=${API_KEY}`);
-    // if (!response.ok) throw new Error(`Failed to fetch data`);
+    const recipe = event.body;
+    if (!recipe) throw new Error(`Invalid recipe data`);
 
-    // const data = await response.json();
+    const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+      method: `POST`,
+      headers: {
+        "Content-Type": `application/json`,
+      },
+      body: recipe,
+    });
+
+    if (!response.ok) throw new Error(`Failed to upload recipe`);
+    const data = await response.json();
+
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        API_KEY,
-      }),
+      body: JSON.stringify({ message: `Successfully published recipe!`, data }),
     };
   } catch (err) {
     return {
