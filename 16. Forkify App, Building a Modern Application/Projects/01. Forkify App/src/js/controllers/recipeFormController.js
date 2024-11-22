@@ -16,12 +16,18 @@ export default class RecipeFormController extends Controller {
 
   #controlOpenForm() {
     this.#view.renderForm();
-    this.#model.createRecipe();
 
     this.#view.onCloseForm(this.#controlCloseForm.bind(this));
+    this.#view.onSubmit(this.#controlUploadRecipe.bind(this));
+    this.#view.onAddIngredient(this.#controlAddIngredient.bind(this));
   }
 
-  #controlCloseForm() {
-    this.#view.removeForm();
+  #controlUploadRecipe(data) {
+    const recipe = this.#model.submitRecipe(this.#model.createRecipe(data));
+    this.#controlCloseForm();
   }
+
+  #controlCloseForm = () => this.#view.removeForm();
+
+  #controlAddIngredient = () => this.#model.updateIngredientsCount(1) && this.#view.addIngredient(this.getState(`uploadRecipe.ingredientsCount`));
 }

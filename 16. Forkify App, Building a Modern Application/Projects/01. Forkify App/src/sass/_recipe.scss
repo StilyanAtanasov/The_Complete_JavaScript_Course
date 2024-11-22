@@ -8,7 +8,6 @@
   &__fig {
     height: 32rem;
     position: relative;
-    // transform: scale(1.04) translateY(-1px);
     transform-origin: top;
 
     &::before {
@@ -49,10 +48,6 @@
       box-decoration-break: clone;
       padding: 1.3rem 2rem;
       background-image: linear-gradient(to right bottom, base.$color-grad-1, base.$color-grad-2);
-    }
-
-    @media only screen and (max-width: base.$bp-medium) {
-      width: 70%;
     }
   }
 

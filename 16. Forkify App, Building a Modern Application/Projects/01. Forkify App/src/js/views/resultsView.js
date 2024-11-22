@@ -11,18 +11,22 @@ export default class ResultsView extends View {
   showSpinner = () => this.renderSpinner(this.UIEls.results.title);
   hideSpinner = () => this.remove(this.UIEls.results.container, `.spinner`);
 
-  previewMarkup = (id, imgUrl, title, publisher) => `<a class="preview__link preview__link--active" href="#${id}">
+  previewMarkup = (id, imgUrl, title, publisher, custom = false) => `<a class="preview__link" href="#${id}">
               <figure class="preview__fig">
                 <img src="${imgUrl}" alt="${title} img" />
               </figure>
               <div class="preview__data">
                 <h4 class="preview__title">${title}</h4>
                 <p class="preview__publisher">${publisher}</p>
-                <div class="preview__user-generated">
+                ${
+                  custom
+                    ? `<div class="preview__user-generated">
                   <svg>
-                    <use href="${this.icons}#icon-user" />
+                    <use href="${this.icons}#icon-check" />
                   </svg>
-                </div>
+                </div>`
+                    : ``
+                }
               </div>
             </a>
           `;
@@ -43,7 +47,14 @@ export default class ResultsView extends View {
   renderResults(results, start, end) {
     for (let i = start; i <= end; i++) {
       const result = results[i];
-      this.render(this.UIEls.results.resultsList, this.previewMarkup(result.id, result.image_url, result.title, result.publisher), `beforeend`);
+      let custom = false;
+
+      if (result.title.includes(`**custom**`)) {
+        custom === true;
+        result.title = result.title.replaceAll(`**custom**`, ``); // Potential BUG
+      }
+
+      this.render(this.UIEls.results.resultsList, this.previewMarkup(result.id, result.image_url, result.title, result.publisher, custom), `beforeend`);
     }
   }
 

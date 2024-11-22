@@ -6,6 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 2rem;
 
   &__logo {
     margin-left: 4rem;
@@ -41,14 +42,6 @@
 
     &::placeholder {
       color: base.$color-grey-light-3;
-    }
-
-    @media only screen and (max-width: base.$bp-medium) {
-      width: auto;
-
-      &::placeholder {
-        color: white;
-      }
     }
   }
 

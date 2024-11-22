@@ -12,11 +12,6 @@ $color-error: rgb(235, 47, 47);
 
 $gradient: linear-gradient(to right bottom, $color-grad-1, $color-grad-2);
 
-$bp-large: 1250px;
-$bp-medium: 980px;
-$bp-small: 600px;
-$bp-smallest: 500px;
-
 * {
   margin: 0;
   padding: 0;
@@ -30,11 +25,7 @@ $bp-smallest: 500px;
 
 html {
   box-sizing: border-box;
-  font-size: 62.5%;
-
-  @media only screen and (max-width: $bp-medium) {
-    font-size: 50%;
-  }
+  font-size: 10px;
 }
 
 body {
@@ -49,7 +40,7 @@ body {
 }
 
 .container {
-  max-width: 70vw;
+  max-width: 80vw;
   min-height: 117rem;
   margin: 2vw auto;
   background-color: #fff;
@@ -63,10 +54,4 @@ body {
   grid-template-areas:
     "head head"
     "list recipe";
-
-  @media only screen and (max-width: $bp-large) {
-    max-width: 100%;
-    margin: 0;
-    border-radius: 0;
-  }
 }

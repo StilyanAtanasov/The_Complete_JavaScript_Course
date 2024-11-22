@@ -8,7 +8,7 @@ export default class AppState {
         query: ``,
         currentPage: 0,
         totalPages: 0,
-        resultsPerPage: PAGE_RESULTS_LIMIT,
+        resultsPerPage: PAGE_RESULTS_LIMIT, // TODO
         response: [],
       },
       currentRecipe: {
@@ -16,10 +16,13 @@ export default class AppState {
         title: ``,
         imageUrl: ``,
         publisher: ``,
-        cooking_time: 0,
+        cookingTime: 0,
         ingredients: [],
         servings: 0,
         sourceUrl: ``,
+      },
+      uploadRecipe: {
+        ingredientsCount: 1,
       },
       popularRecipes: [`63b`], //`417`, `49d`, `45a`, `4b5`, `96b`, `917`, `827`, `30f`, `a73`, `627`, `3dc`, `951`, `62d`, `aab`
       bookmarks: [],

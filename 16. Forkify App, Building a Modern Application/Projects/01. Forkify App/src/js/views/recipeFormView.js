@@ -10,7 +10,31 @@ export default class RecipeFormView extends View {
     document.querySelector(`.btn--close-modal`).addEventListener(`click`, () => handler());
   }
 
+  onSubmit = handler =>
+    document.querySelector(`.upload__btn`).addEventListener(`click`, function (e) {
+      const target = e.target.closest(`.upload__btn`);
+      if (!target) return;
+
+      if (!document.querySelector(`.upload`).reportValidity()) return;
+
+      handler(new FormData(document.querySelector(`.upload`)));
+    });
+
+  onAddIngredient = handler =>
+    document.querySelector(`#add-ingredient-btn`).addEventListener(`click`, function (e) {
+      const target = e.target.closest(`#add-ingredient-btn`);
+      if (!target) return;
+      handler();
+    });
+
   overlayMarkup = () => `<div class="overlay"></div>`;
+
+  ingredientMarkup = number => `<label>Ingredient ${number}</label>
+          <div class="upload__row">
+          <input type="text" name="ingredient-${number}-quantity" placeholder="Quantity (Optional)" maxlength="8"/>
+          <input type="text" name="ingredient-${number}-unit" placeholder="Unit (Optional)" maxlength="10" />
+          <input type="text" required name="ingredient-${number}-name" placeholder="Ingredient Name" minlength="2"  maxlength="120" />
+          </div>`;
 
   formMarkup = () => `<div class="add-recipe-window">
       <button class="btn--close-modal">&times;</button>
@@ -21,35 +45,30 @@ export default class RecipeFormView extends View {
         <section class="upload__column">
           <div class="upload__row">
           <label>Title</label>
-          <input placeholder="Pizza" required name="title" type="text" />
+          <input placeholder="Pizza" required name="title" type="text" minlength="3"  maxlength="50"/>
           </div>
           <div class="upload__row">
           <label>Image URL</label>
-          <input placeholder="Recipe image" required name="imageUrl" type="text" />
+          <input placeholder="Recipe image" name="image_url" type="text" />
           </div>
           <div class="upload__row">
           <label>Publisher</label>
-          <input placeholder="Gordon Ramsay" required name="publisher" type="text" />
+          <input placeholder="Gordon Ramsay" required name="publisher" type="text" minlength="3"  maxlength="30"/>
           </div>
           <div class="upload__row">
           <label>Prep time</label>
-          <input placeholder="60 (in minutes)" required name="cookingTime" type="number" />
+          <input placeholder="60 (in minutes)" required name="cooking_time" type="number" min="1" max="999"/>
           </div>
           <div class="upload__row">
           <label>Servings</label>
-          <input placeholder="4" required name="servings" type="number" />
+          <input placeholder="4" required name="servings" type="number" min="1" max="999"/>
           </div>
         </section>
 
         <h3 class="upload__heading">Ingredients</h3>
         <section class="upload__column">
-        <label>Ingredient 1</label>
-        <div class="upload__row">
-          <input type="text" name="ingredient-1-quantity" placeholder="Quantity (Optional)" />
-          <input type="text" name="ingredient-1-unit" placeholder="Unit (Optional)" />
-          <input type="text" required name="ingredient-1-name" placeholder="Ingredient Name" />
-          </div>
-        <div class="add-btn slim">
+        ${this.ingredientMarkup(1)}
+        <div id="add-ingredient-btn" class="add-btn slim">
           <svg>
             <use href="${this.icons}#icon-plus-circle" ></use>
           </svg>
@@ -64,6 +83,8 @@ export default class RecipeFormView extends View {
           <span>Upload</span>
         </button>
     </div>`;
+
+  addIngredient = number => this.render(document.querySelector(`#add-ingredient-btn`), this.ingredientMarkup(number), `beforeBegin`);
 
   renderForm() {
     this.render(document.body, this.formMarkup(), `beforeEnd`);

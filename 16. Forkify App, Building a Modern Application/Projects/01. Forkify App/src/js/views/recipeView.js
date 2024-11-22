@@ -44,7 +44,7 @@ export default class RecipeView extends View {
             </li>`;
 
   recipeMarkup = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, isBookmarked) => `<figure class="recipe__fig">
-          <img src="${imageUrl}" alt="${title}" class="recipe__img" />
+          <img src="${imageUrl}" alt="${title}" onerror="this.style.display = 'none'" class="recipe__img" />
           <h1 class="recipe__title">
             <span>${title}</span>
           </h1>
@@ -81,7 +81,7 @@ export default class RecipeView extends View {
 
           <div class="recipe__user-generated">
             <svg>
-              <use href="${this.icons}#icon-user" />
+              <use href="${this.icons}#icon-check" />
             </svg>
           </div>
           <button class="btn--round bookmark-btn">
