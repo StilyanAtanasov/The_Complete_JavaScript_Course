@@ -1,6 +1,6 @@
-const { API_URL } = require("../../config/config");
+// const { API_URL } = require("../../config/config");
 
-exports.handler = async function (event) {
+module.exports.handler = async function (event) {
   if (event.httpMethod !== `POST`) {
     return {
       statusCode: 405,
@@ -14,7 +14,7 @@ exports.handler = async function (event) {
     const recipe = event.body;
     if (!recipe) throw new Error(`Invalid recipe data`);
 
-    const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+    const response = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes?key=${API_KEY}`, {
       method: `POST`,
       headers: {
         "Content-Type": `application/json`,
