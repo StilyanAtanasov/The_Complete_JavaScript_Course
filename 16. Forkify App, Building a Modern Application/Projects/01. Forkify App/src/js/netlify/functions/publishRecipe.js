@@ -1,4 +1,3 @@
-const fetch = require("node-fetch");
 const { API_URL } = require("../../config/config");
 
 exports.handler = async function (event) {
