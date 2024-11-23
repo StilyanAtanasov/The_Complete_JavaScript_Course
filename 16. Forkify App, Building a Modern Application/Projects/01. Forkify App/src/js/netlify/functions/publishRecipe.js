@@ -1,4 +1,5 @@
 const { API_URL } = require("../../config/config");
+const { request } = require("./request");
 
 module.exports.handler = async function (event) {
   if (event.httpMethod !== `POST`) {
@@ -14,16 +15,13 @@ module.exports.handler = async function (event) {
     const recipe = event.body;
     if (!recipe) throw new Error(`Invalid recipe data`);
 
-    const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+    const data = request(`${API_URL}?key=${API_KEY}`, {
       method: `POST`,
       headers: {
         "Content-Type": `application/json`,
       },
       body: recipe,
     });
-
-    if (!response.ok) throw new Error(`Failed to upload recipe!`);
-    const data = await response.json();
 
     return {
       statusCode: 200,

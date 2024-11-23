@@ -1,4 +1,3 @@
-import { API_URL } from "../config/config";
 import { timeout } from "../utils/utils";
 import Model from "./model";
 
@@ -9,8 +8,20 @@ export default class SearchModel extends Model {
 
   async searchRecipe(searchPrompt) {
     try {
-      const response = await Promise.race([fetch(`${API_URL}?search=${searchPrompt}`), timeout(5000, `Search request took too long!`)]);
-      if (!response.ok) throw new Error(`Error fetching results`);
+      const response = await Promise.race([
+        fetch(`.netlify/functions/searchRecipes`, {
+          method: `POST`,
+          headers: {
+            "Content-Type": `application/json`,
+          },
+          body: JSON.stringify({
+            searchQuery: searchPrompt,
+          }),
+        }),
+        timeout(5000, `Search request took too long!`),
+      ]);
+
+      if (!response.ok) throw new Error(`Error fetching results: ${(await response.json()).message}`);
 
       const data = await response.json();
       if (!data) throw new Error(`Error parsing response`);

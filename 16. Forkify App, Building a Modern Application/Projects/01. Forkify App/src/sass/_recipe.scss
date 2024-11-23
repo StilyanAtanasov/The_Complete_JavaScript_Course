@@ -123,6 +123,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+
+    & .add-all-products-btn {
+      position: absolute;
+      top: 3rem;
+      right: 3rem;
+      width: 3rem;
+      height: 3rem;
+      cursor: pointer;
+    }
   }
 
   &__ingredient-list {

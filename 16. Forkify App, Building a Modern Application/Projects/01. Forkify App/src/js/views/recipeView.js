@@ -32,6 +32,8 @@ export default class RecipeView extends View {
       handler(Number.parseInt(target.dataset.update_by, 10));
     });
 
+  onAddAllProducts = handler => document.querySelector(`.add-all-products-btn`).addEventListener(`click`, () => handler());
+
   onReturnBack = handler => document.querySelector(`.return-back-btn`).addEventListener(`click`, () => handler());
 
   ingredientMarkup = (ingredient, quantity, unit) => `<li class="recipe__ingredient">
@@ -101,6 +103,9 @@ export default class RecipeView extends View {
         </div>
 
         <div class="recipe__ingredients">
+            <svg class="add-all-products-btn">
+              <use href="${this.icons}#icon-bag" />
+            </svg>
           <h2 class="heading--2">Recipe ingredients</h2>
           <ul class="recipe__ingredient-list">${ingredients.reduce((acc, i) => acc + this.ingredientMarkup(i.description, i.quantity, i.unit), ``)}</ul>
         </div>

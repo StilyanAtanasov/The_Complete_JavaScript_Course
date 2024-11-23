@@ -7,6 +7,7 @@ import BookmarksController from "./controllers/bookmarksController";
 import CommunityRecipesController from "./controllers/communityRecipesController";
 import NavController from "./controllers/navController";
 import RecipeFormController from "./controllers/recipeFormController";
+import ShoppingListController from "./controllers/shoppingListController";
 
 export default class Engine {
   #appState;
@@ -27,6 +28,7 @@ export default class Engine {
     new SearchResultsController(this.#appState);
     new CommunityRecipesController(this.#appState);
     new RecipeFormController(this.#appState);
+    new ShoppingListController(this.#appState);
   }
 
   start() {

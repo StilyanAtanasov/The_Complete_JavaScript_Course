@@ -28,6 +28,8 @@ export default class ResultsController extends Controller {
 
     this.#view.onReturnBack(() => this.#controlSlideRecipe(false));
 
+    this.#view.onAddAllProducts(() => this.eventBus.publish(`AddProduct`, ingredients));
+
     this.#view.onUpdateServings(
       function (arg) {
         this.#model.updateServings(arg);
