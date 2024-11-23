@@ -15,7 +15,7 @@ export default class ResultsController extends Controller {
   }
 
   updateResults(recipesData = this.getState(`search.response`)) {
-    this.#view.removePaginationClickListener();
+    this.#view.removeListeners();
 
     const currentPage = this.getState(`search.currentPage`);
     const recipes = recipesData;
@@ -31,5 +31,7 @@ export default class ResultsController extends Controller {
         this.updateResults();
       }.bind(this)
     );
+
+    this.#view.onResultClick(() => this.eventBus.publish(`RecipeSlideIn`, null)); // FIX
   }
 }

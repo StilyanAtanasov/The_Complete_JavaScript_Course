@@ -1,3 +1,23 @@
+@use "base";
+
+@media (min-width: 2560px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 3000px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 3820px) {
+  html {
+    font-size: 21px;
+  }
+}
+
 @media (max-width: 1450px) {
   .container {
     max-width: 90vw;
@@ -35,6 +55,10 @@
 
   .search__btn {
     padding: 2rem 1rem 2rem 2rem;
+    background-image: none;
+    background-color: transparent;
+    color: base.$color-primary;
+
     & span {
       display: none;
     }
@@ -42,5 +66,137 @@
 
   .recipe__title {
     width: 70%;
+  }
+}
+
+@media (max-width: 800px) {
+  html {
+    font-size: 9px;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .body {
+    overflow-y: scroll;
+    height: 100%;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .recipe {
+    position: absolute;
+    z-index: 1;
+    top: 10rem;
+    left: 0;
+    transform: translateX(150vw);
+
+    &.slide-in {
+      transform: translateX(0);
+    }
+
+    & .return-back-btn {
+      display: block;
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      z-index: 1;
+      cursor: pointer;
+
+      & svg {
+        height: 4rem;
+        width: 4rem;
+        fill: #473f3c;
+      }
+    }
+
+    &__details {
+      padding: 7.5rem 4rem 3.5rem;
+    }
+  }
+
+  .search__field {
+    width: 30vw;
+  }
+
+  .search__results {
+    min-height: calc(100vh - 10rem);
+  }
+
+  .nav {
+    &__list {
+      gap: 0.8rem;
+    }
+
+    &__item span {
+      display: none;
+    }
+  }
+
+  .add-recipe-window {
+    width: 90vw;
+
+    & .upload__row {
+      display: flex;
+      flex-direction: column;
+
+      & input {
+        width: 100%;
+      }
+    }
+
+    & .upload__btn {
+      width: auto;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  html {
+    font-size: 7.5px;
+  }
+}
+
+@media (max-width: 575px) {
+  html {
+    font-size: 7.5px;
+  }
+
+  .search__field {
+    width: 20vw;
+  }
+
+  .nav__list {
+    gap: 0;
+  }
+}
+
+@media (max-width: 470px) {
+  .header__logo {
+    content: url(../img/favicon.png);
+  }
+
+  .recipe {
+    &__info {
+      font-size: 1.5rem;
+    }
+
+    &__details {
+      padding: 7.5rem 3rem 3.5rem;
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  html {
+    font-size: 6.5px;
+  }
+
+  .recipe {
+    &__info {
+      font-size: 1.3rem;
+    }
   }
 }

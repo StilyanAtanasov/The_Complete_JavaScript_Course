@@ -3,6 +3,13 @@
 
 .recipe {
   background-color: base.$color-grey-light-1;
+  grid-area: recipe;
+  position: relative;
+  transition: all 500ms;
+
+  & .return-back-btn {
+    display: none;
+  }
 
   // FIGURE
   &__fig {

@@ -11,6 +11,7 @@ export default class RecipeView extends View {
   showSpinner = () => this.renderSpinner(this.UIEls.recipe.container, `afterBegin`);
 
   onHashChange = handler => [`hashchange`, `load`].forEach(e => window.addEventListener(e, () => handler(window.location.hash)));
+
   onBookmark = handler =>
     document.querySelector(`.bookmark-btn`).addEventListener(
       `click`,
@@ -31,6 +32,8 @@ export default class RecipeView extends View {
       handler(Number.parseInt(target.dataset.update_by, 10));
     });
 
+  onReturnBack = handler => document.querySelector(`.return-back-btn`).addEventListener(`click`, () => handler());
+
   ingredientMarkup = (ingredient, quantity, unit) => `<li class="recipe__ingredient">
               <svg class="recipe__icon">
                 <use href="${this.icons}#icon-check" />
@@ -43,7 +46,13 @@ export default class RecipeView extends View {
               </div>
             </li>`;
 
-  recipeMarkup = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, isBookmarked) => `<figure class="recipe__fig">
+  recipeMarkup = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, isBookmarked) => `
+        <div class="return-back-btn">
+          <svg>
+            <use href="${this.icons}#icon-arrow-left" />
+          </svg>
+        </div>
+        <figure class="recipe__fig">
           <img src="${imageUrl}" alt="${title}" onerror="this.style.display = 'none'" class="recipe__img" />
           <h1 class="recipe__title">
             <span>${title}</span>
@@ -125,4 +134,7 @@ export default class RecipeView extends View {
 
     svg.setAttribute(`href`, newHref);
   }
+
+  slideIn = () => RecipeView.location.classList.add(`slide-in`);
+  slideOut = () => RecipeView.location.classList.remove(`slide-in`);
 }

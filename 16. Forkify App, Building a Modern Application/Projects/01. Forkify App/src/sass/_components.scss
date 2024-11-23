@@ -189,28 +189,6 @@
   }
 }
 
-.error {
-  max-width: 40rem;
-  margin: 0 auto;
-  padding: 5rem 4rem;
-  display: flex;
-  color: base.$color-error;
-
-  svg {
-    height: 3rem;
-    width: 3rem;
-    fill: base.$color-error;
-    transform: translateY(-0.3rem);
-  }
-
-  p {
-    margin-left: 1.5rem;
-    font-size: 1.8rem;
-    line-height: 1.5;
-    font-weight: 600;
-  }
-}
-
 .add-btn {
   display: flex;
   align-items: center;

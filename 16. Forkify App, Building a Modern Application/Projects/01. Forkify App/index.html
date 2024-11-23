@@ -14,68 +14,70 @@
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <img src="src/img/logo.png" alt="Logo" class="header__logo" />
-        <form class="search">
-          <input type="text" class="search__field" placeholder="Search for recipes or ingredients..." />
-          <button type="submit" class="btn search__btn">
-            <svg class="search__icon">
-              <use href="src/img/icons.svg#icon-search"></use>
-            </svg>
-            <span>Search</span>
-          </button>
-        </form>
+    <div class="body">
+      <div class="container">
+        <header class="header">
+          <img src="src/img/logo.png" alt="Logo" class="header__logo" />
+          <form class="search">
+            <input type="text" class="search__field" placeholder="Search for recipes or ingredients..." />
+            <button type="submit" class="btn search__btn">
+              <svg class="search__icon">
+                <use href="src/img/icons.svg#icon-search"></use>
+              </svg>
+              <span>Search</span>
+            </button>
+          </form>
 
-        <nav class="nav">
-          <ul class="nav__list">
-            <li class="nav__item">
-              <button class="nav__btn nav__btn--add-recipe" data-page="PopularRecipes">
-                <svg class="nav__icon">
-                  <use href="src/img/icons.svg#icon-popular"></use>
-                </svg>
-                <span>Popular</span>
-              </button>
-            </li>
-            <li class="nav__item">
-              <button class="nav__btn nav__btn--add-recipe" data-page="CommunityRecipes">
-                <svg class="nav__icon">
-                  <use href="src/img/icons.svg#icon-globe"></use>
-                </svg>
-                <span>Community</span>
-              </button>
-            </li>
-            <li class="nav__item">
-              <button class="nav__btn nav__btn--bookmarks" data-page="Bookmarks">
-                <svg class="nav__icon">
-                  <use href="src/img/icons.svg#icon-bookmark"></use>
-                </svg>
-                <span>Bookmarks</span>
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </header>
+          <nav class="nav">
+            <ul class="nav__list">
+              <li class="nav__item">
+                <button class="nav__btn nav__btn--add-recipe" data-page="PopularRecipes">
+                  <svg class="nav__icon">
+                    <use href="src/img/icons.svg#icon-popular"></use>
+                  </svg>
+                  <span>Popular</span>
+                </button>
+              </li>
+              <li class="nav__item">
+                <button class="nav__btn nav__btn--add-recipe" data-page="CommunityRecipes">
+                  <svg class="nav__icon">
+                    <use href="src/img/icons.svg#icon-globe"></use>
+                  </svg>
+                  <span>Community</span>
+                </button>
+              </li>
+              <li class="nav__item">
+                <button class="nav__btn nav__btn--bookmarks" data-page="Bookmarks">
+                  <svg class="nav__icon">
+                    <use href="src/img/icons.svg#icon-bookmark"></use>
+                  </svg>
+                  <span>Bookmarks</span>
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </header>
 
-      <section class="search__results">
-        <h3 class="search__results--title">Popular Recipes</h3>
-        <div class="search__results--results"></div>
+        <section class="search__results">
+          <h3 class="search__results--title">Popular Recipes</h3>
+          <div class="search__results--results"></div>
 
-        <div class="pagination"></div>
+          <div class="pagination"></div>
 
-        <p class="copyright">© 2024 Stilyan Atanasov. All rights reserved.</p>
-      </section>
+          <p class="copyright">© 2024 Stilyan Atanasov. All rights reserved.</p>
+        </section>
 
-      <div class="recipe">
-        <!-- <div class="error">
-          <div>
-            <svg>
-              <use href="src/img/icons.svg#icon-alert-triangle"></use>
-            </svg>
-          </div>
-          <p>No recipes found for your query. Please try again!</p>
-        </div> -->
+        <div class="recipe"></div>
       </div>
     </div>
   </body>
 </html>
+
+<!-- TODO
+ empty search
+ add ingredient
+ description
+ shopping list 
+ mobile overflow
+ push new id
+ second scroll mobile bug-->

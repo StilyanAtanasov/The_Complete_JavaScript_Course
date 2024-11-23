@@ -9,7 +9,10 @@ export default class NavController extends Controller {
     this.#view = new NavView();
   }
 
-  #controlNav = page => this.eventBus.publish(`Open${page}`, null);
+  #controlNav(page) {
+    this.eventBus.publish(`Open${page}`, null);
+    this.eventBus.publish(`RecipeSlideOut`, null);
+  }
 
   init = () => this.#view.onClick(this.#controlNav.bind(this));
 }

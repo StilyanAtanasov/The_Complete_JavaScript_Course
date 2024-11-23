@@ -11,6 +11,9 @@ export default class ResultsController extends Controller {
 
     this.#model = new RecipeModel(appState);
     this.#view = new RecipeView();
+
+    this.eventBus.subscribe(`RecipeSlideIn`, this.#controlSlideRecipe.bind(this, true));
+    this.eventBus.subscribe(`RecipeSlideOut`, this.#controlSlideRecipe.bind(this, false));
   }
 
   async #controlRecipe(hash) {
@@ -22,6 +25,8 @@ export default class ResultsController extends Controller {
 
     const { id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl } = await this.#model.fetchRecipe(recipeId);
     this.#view.renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, this.#isBookmarked(id));
+
+    this.#view.onReturnBack(() => this.#controlSlideRecipe(false));
 
     this.#view.onUpdateServings(
       function (arg) {
@@ -42,6 +47,8 @@ export default class ResultsController extends Controller {
       }.bind(this)
     );
   }
+
+  #controlSlideRecipe = (slideIn = true) => (slideIn ? this.#view.slideIn() : this.#view.slideOut());
 
   #isBookmarked = id => this.getState(`bookmarks`).reduce((acc, b) => acc || b.id === id, false);
 

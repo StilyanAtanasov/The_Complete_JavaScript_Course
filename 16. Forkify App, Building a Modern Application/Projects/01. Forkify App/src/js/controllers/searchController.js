@@ -15,6 +15,7 @@ export default class SearchController extends Controller {
   async #controlSearch() {
     this.#view.updateTitle();
     this.#view.removeCurrentResults();
+    this.eventBus.publish(`RecipeSlideOut`, null);
     this.#view.showSpinner();
 
     const prompt = this.#view.getSearchPrompt();
