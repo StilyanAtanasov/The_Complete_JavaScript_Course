@@ -1,6 +1,6 @@
 import ResultsController from "./resultsController";
 import ShoppingListView from "../views/shoppingListView";
-import ShoppingListModel from "../models/ShoppingListModel";
+import ShoppingListModel from "../models/shoppingListModel";
 
 export default class ShoppingListController extends ResultsController {
   #model;
@@ -20,12 +20,16 @@ export default class ShoppingListController extends ResultsController {
   #controlShoppingListResults() {
     this.#view.removeCurrentResults();
     this.#view.updateTitle();
-  }
-
-  #controlAddProduct(products) {
-    this.#model.updateShoppingList(products);
     this.#view.emptyList();
     this.#view.renderProducts(this.getState(`shoppingList`));
+
+    this.#view.onRemove(this.#controlRemoveProduct.bind(this)); // FIX
+  }
+
+  #controlAddProduct = products => this.#model.addProducts(products);
+
+  #controlRemoveProduct(unit, name) {
+    this.#model.removeProduct(unit, name);
   }
 
   init = () => this.#model.getStoredList();

@@ -65,3 +65,35 @@
   margin-top: auto;
   padding-top: 3rem;
 }
+
+.list-product {
+  display: inline-block;
+  padding: 1rem 1.5rem;
+  border-radius: 20px;
+  background: base.$gradient;
+  margin: 0.2rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  position: relative;
+  cursor: pointer;
+
+  & svg {
+    visibility: hidden;
+    top: 10%;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 80%;
+    z-index: 1;
+    color: base.$color-error;
+    backdrop-filter: blur(1.5px);
+  }
+
+  &:hover {
+    background: base.$color-grad-1;
+
+    & svg {
+      visibility: visible;
+    }
+  }
+}
