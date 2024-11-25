@@ -8,7 +8,7 @@ export default class BookmarksController extends ResultsController {
     super(appState);
 
     this.#view = new CommunityRecipes();
-    this.eventBus.subscribe(`OpenCommunityRecipes`, this.#controlCommunityRecipesResults.bind(this));
+    this.eventBus.subscribe(`OpenCommunityRecipes`, this.handler(this.#controlCommunityRecipesResults.bind(this)));
   }
 
   #controlCommunityRecipesResults() {

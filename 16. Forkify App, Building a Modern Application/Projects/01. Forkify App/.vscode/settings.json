@@ -1,0 +1,5 @@
+{
+    "files.autoSave": "onFocusChange",
+    "editor.defaultFormatter": "vscode.emmet",
+    "editor.formatOnSave": true
+}

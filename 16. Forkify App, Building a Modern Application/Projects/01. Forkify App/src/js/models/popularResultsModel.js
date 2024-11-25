@@ -7,17 +7,17 @@ export default class PopularResultsModel extends ResultsModel {
   }
 
   async getPopularRecipes() {
+    try {
     const recipesId = this.appState.getState(`popularRecipes`);
     const recipePrefix = `664c8f193e7aa067e94e8`;
 
     const results = await Promise.allSettled(
       recipesId.map(async id => {
-        try {
           const response = await fetch(`${API_URL}/${recipePrefix}${id}`);
-          if (!response.ok) throw new Error(`Error fetching recipe`);
+          if (!response.ok) throw new Error();
 
           const data = await response.json();
-          if (!data) throw new Error(`Error reading recipe data`);
+          if (!data) throw new Error();
 
           const recipe = data.data.recipe;
           return {
@@ -26,10 +26,6 @@ export default class PopularResultsModel extends ResultsModel {
             image_url: recipe.image_url,
             publisher: recipe.publisher,
           };
-        } catch (err) {
-          console.error(`Failed to fetch recipe with ID ${id}: ${err.message}`);
-          return null;
-        }
       })
     );
 
@@ -41,5 +37,9 @@ export default class PopularResultsModel extends ResultsModel {
     this.appState.updateState(`search.totalPages`, totalPages);
 
     return recipes;
+  }
+  catch {
+throw new Error(`Error getting popular recipes!`)
+  }
   }
 }

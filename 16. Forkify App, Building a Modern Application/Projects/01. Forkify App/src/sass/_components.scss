@@ -227,3 +227,42 @@
     transition: all 300ms;
   }
 }
+
+.notification {
+  position: absolute;
+  z-index: 20;
+  top: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 2px solid base.$color-primary;
+  border-radius: 20px;
+  color: base.$color-grey-light-2;
+  background-color: base.$color-grey-dark-2;
+  font-size: 2.3rem;
+  font-weight: 700;
+  padding: 1.5rem 7rem;
+  animation: notification 6s forwards;
+
+  &.error {
+    border: 2px solid base.$color-error;
+  }
+}
+
+@keyframes notification {
+  0% {
+    visibility: hidden;
+    top: -10vh;
+  }
+  5% {
+    visibility: visible;
+    top: 3rem;
+  }
+  95% {
+    visibility: visible;
+    top: 3rem;
+  }
+  100% {
+    visibility: hidden;
+    top: -10vh;
+  }
+}

@@ -25,5 +25,5 @@ export default class SearchController extends Controller {
     this.eventBus.publish(`searched`, prompt);
   }
 
-  init = () => this.#view.onSearch(this.#controlSearch.bind(this));
+  init = () => this.#view.onSearch(this.handler(this.#controlSearch.bind(this)));
 }

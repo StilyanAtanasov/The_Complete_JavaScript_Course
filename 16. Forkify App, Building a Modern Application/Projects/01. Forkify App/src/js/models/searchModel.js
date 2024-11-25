@@ -18,16 +18,16 @@ export default class SearchModel extends Model {
             searchQuery: searchPrompt,
           }),
         }),
-        timeout(5000, `Search request took too long!`),
+        timeout(5000, `Search request took too long!`), // BUG
       ]);
 
       if (!response.ok) throw new Error(`Error fetching results: ${(await response.json()).message}`);
 
       const data = await response.json();
-      if (!data) throw new Error(`Error parsing response`);
+      if (!data) throw new Error();
 
       const recipes = data.data.recipes;
-      recipes.length === 0 && console.log(`No recipes found!`); // TODO
+      if (recipes.length === 0) return null;
 
       const totalPages = Number.parseInt(recipes.length / this.appState.getState(`search.resultsPerPage`)) + 1;
 
@@ -37,8 +37,8 @@ export default class SearchModel extends Model {
       this.appState.updateState(`search.totalPages`, totalPages);
 
       return response;
-    } catch (err) {
-      console.error(err.message); // TODO
+    } catch {
+      throw new Error(`Error searching for: ${searchPrompt}! Please, try again later!`);
     }
   }
 }

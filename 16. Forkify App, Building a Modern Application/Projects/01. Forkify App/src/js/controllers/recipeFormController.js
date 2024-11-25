@@ -11,15 +11,15 @@ export default class RecipeFormController extends Controller {
 
     this.#model = new RecipeFormModel(appState);
     this.#view = new RecipeFormView();
-    this.eventBus.subscribe(`OpenRecipeForm`, this.#controlOpenForm.bind(this));
+    this.eventBus.subscribe(`OpenRecipeForm`, this.handler(this.#controlOpenForm.bind(this)));
   }
 
   #controlOpenForm() {
     this.#view.renderForm();
 
-    this.#view.onCloseForm(this.#controlCloseForm.bind(this));
-    this.#view.onSubmit(this.#controlUploadRecipe.bind(this));
-    this.#view.onAddIngredient(this.#controlAddIngredient.bind(this));
+    this.#view.onCloseForm(this.handler(this.#controlCloseForm.bind(this)));
+    this.#view.onSubmit(this.handler(this.#controlUploadRecipe.bind(this)));
+    this.#view.onAddIngredient(this.handler(this.#controlAddIngredient.bind(this)));
   }
 
   #controlUploadRecipe(data) {

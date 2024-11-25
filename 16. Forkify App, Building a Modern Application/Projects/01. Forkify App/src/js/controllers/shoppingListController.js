@@ -12,8 +12,8 @@ export default class ShoppingListController extends ResultsController {
     this.#model = new ShoppingListModel(appState);
     this.#view = new ShoppingListView();
 
-    this.eventBus.subscribe(`OpenShoppingList`, this.#controlShoppingListResults.bind(this));
-    this.eventBus.subscribe(`AddProduct`, this.#controlAddProduct.bind(this));
+    this.eventBus.subscribe(`OpenShoppingList`, this.handler(this.#controlShoppingListResults.bind(this)));
+    this.eventBus.subscribe(`AddProduct`, this.handler(this.#controlAddProduct.bind(this)));
     this.init();
   }
 
@@ -28,9 +28,7 @@ export default class ShoppingListController extends ResultsController {
 
   #controlAddProduct = products => this.#model.addProducts(products);
 
-  #controlRemoveProduct(unit, name) {
-    this.#model.removeProduct(unit, name);
-  }
+  #controlRemoveProduct = (unit, name) => this.#model.removeProduct(unit, name);
 
-  init = () => this.#model.getStoredList();
+  init = () => this.handler(this.#model.getStoredList)();
 }

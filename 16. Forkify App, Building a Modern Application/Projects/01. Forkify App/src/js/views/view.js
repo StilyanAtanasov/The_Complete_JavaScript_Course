@@ -18,6 +18,11 @@ export default class View {
     element && container.removeChild(element);
   }
 
+  notificationMarkup = (message, error = false) => `
+  <div class="notification ${error ? `error` : ``}">
+    <p>${message}</p>
+  </div>`;
+
   renderSpinner = (container, position = `afterEnd`) =>
     this.render(
       container,
@@ -41,5 +46,18 @@ export default class View {
         Array.from(el.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value));
       }
     });
+  }
+
+  renderNotification(message, milliseconds, isError = false) {
+    this.render(document.body, this.notificationMarkup(message, isError), `afterBegin`);
+    setTimeout(function () {
+      const notifications = document.getElementsByClassName(`notification`);
+      Array.from(notifications).forEach(function (n) {
+        if (n.querySelector(`p`).textContent === message) {
+          document.body.removeChild(n);
+          return;
+        }
+      });
+    }, milliseconds);
   }
 }

@@ -9,10 +9,10 @@ export default class RecipeModel extends Model {
   async fetchRecipe(id) {
     try {
       const response = await fetch(`${API_URL}/${id}`);
-      if (!response.ok) throw new Error(`Error fetching recipe`);
+      if (!response.ok) throw new Error();
 
       const data = await response.json();
-      if (!data) throw new Error(`Error reading recipe data`);
+      if (!data) throw new Error();
 
       const recipe = data.data.recipe;
       const recipeData = {
@@ -29,12 +29,13 @@ export default class RecipeModel extends Model {
       this.appState.updateState(`currentRecipe`, recipeData);
 
       return recipeData;
-    } catch (err) {
-      console.error(err.message); // TODO
+    } catch {
+      throw new Error(`Error finding desired recipe!`);
     }
   }
 
   updateServings(updateBy) {
+    try{
     const currentServings = this.appState.getState(`currentRecipe.servings`);
     const newServings = currentServings + updateBy;
     if (newServings <= 0 || newServings > 1000) return;
@@ -51,5 +52,9 @@ export default class RecipeModel extends Model {
     );
 
     this.appState.updateState(`currentRecipe.servings`, newServings);
+  }
+  catch {
+    throw new Error(`Error updating servings right now!`);
+  }
   }
 }

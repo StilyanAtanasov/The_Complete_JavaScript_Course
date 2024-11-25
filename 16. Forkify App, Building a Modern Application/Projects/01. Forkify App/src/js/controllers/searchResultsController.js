@@ -10,7 +10,7 @@ export default class SearchResultsController extends ResultsController {
     super(appState);
     this.#model = new ResultsModel(appState);
     this.#view = new SearchResultsView();
-    this.eventBus.subscribe(`searched`, this.#controlSearchResults.bind(this));
+    this.eventBus.subscribe(`searched`, this.handler(this.#controlSearchResults.bind(this)));
   }
 
   async #controlSearchResults(prompt) {

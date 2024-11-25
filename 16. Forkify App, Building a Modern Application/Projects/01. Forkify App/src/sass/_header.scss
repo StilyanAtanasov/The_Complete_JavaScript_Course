@@ -88,6 +88,11 @@
       fill: base.$color-primary;
       margin-right: 0.7rem;
       transform: translateY(-1px);
+
+      &.outline {
+        stroke-width: 2;
+        stroke: base.$color-primary;
+      }
     }
 
     &:focus {

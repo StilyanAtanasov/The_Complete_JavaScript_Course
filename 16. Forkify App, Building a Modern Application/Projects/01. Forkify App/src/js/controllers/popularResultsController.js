@@ -11,7 +11,7 @@ export default class PopularResultsController extends ResultsController {
 
     this.#model = new PopularResultsModel(appState);
     this.#view = new PopularResultsView();
-    this.eventBus.subscribe(`OpenPopularRecipes`, this.#controlPopularRecipes.bind(this))
+    this.eventBus.subscribe(`OpenPopularRecipes`, this.handler( this.#controlPopularRecipes.bind(this)))
   }
 
   async #controlPopularRecipes() {
@@ -25,5 +25,5 @@ export default class PopularResultsController extends ResultsController {
     this.#view.hideSpinner();
   }
 
-  init = () => this.#controlPopularRecipes();
+  init = () => this.handler( this.#controlPopularRecipes())();
 }

@@ -32,7 +32,7 @@
             <ul class="nav__list">
               <li class="nav__item">
                 <button class="nav__btn nav__btn--add-recipe" data-page="PopularRecipes">
-                  <svg class="nav__icon">
+                  <svg>
                     <use href="src/img/icons.svg#icon-popular"></use>
                   </svg>
                   <span>Popular</span>
@@ -40,26 +40,26 @@
               </li>
               <li class="nav__item">
                 <button class="nav__btn nav__btn--add-recipe" data-page="CommunityRecipes">
-                  <svg class="nav__icon">
+                  <svg>
                     <use href="src/img/icons.svg#icon-globe"></use>
                   </svg>
                   <span>Community</span>
                 </button>
               </li>
               <li class="nav__item">
-                <button class="nav__btn nav__btn--bookmarks" data-page="ShoppingList">
-                  <svg class="nav__icon">
-                    <use href="src/img/icons.svg#icon-shopping-list"></use>
-                  </svg>
-                  <span>List</span>
-                </button>
-              </li>
-              <li class="nav__item">
                 <button class="nav__btn nav__btn--bookmarks" data-page="Bookmarks">
-                  <svg class="nav__icon">
+                  <svg>
                     <use href="src/img/icons.svg#icon-bookmark"></use>
                   </svg>
                   <span>Bookmarks</span>
+                </button>
+              </li>
+              <li class="nav__item">
+                <button class="nav__btn nav__btn--shopping-list" data-page="ShoppingList">
+                  <svg class="outline">
+                    <use href="src/img/icons.svg#icon-shopping-list"></use>
+                  </svg>
+                  <span>List</span>
                 </button>
               </li>
             </ul>
@@ -83,11 +83,13 @@
 
 <!-- TODO
  empty search
+ end search on fail
  add ingredient
- description
+ recipe description
  shopping list 
  mobile overflow
  push new id
  bookmarks fill mode bug on servings update
- 
- convert units-->
+ handle above 100 request 
+ convert units
+ error design and responsive-->

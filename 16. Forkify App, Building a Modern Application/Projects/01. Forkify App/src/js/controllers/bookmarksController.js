@@ -12,8 +12,8 @@ export default class BookmarksController extends ResultsController {
     this.#model = new BookmarksModel(appState);
     this.#view = new BookmarksView();
 
-    this.eventBus.subscribe(`OpenBookmarks`, this.#controlBookmarksResults.bind(this));
-    this.eventBus.subscribe(`bookmark`, this.#controlOnBookmark.bind(this));
+    this.eventBus.subscribe(`OpenBookmarks`, this.handler(this.#controlBookmarksResults.bind(this)));
+    this.eventBus.subscribe(`bookmark`, this.handler(this.#controlOnBookmark.bind(this)));
   }
 
   #controlBookmarksResults() {
@@ -27,5 +27,5 @@ export default class BookmarksController extends ResultsController {
     this.getState(`search.query`) === `page-bookmarks` && this.updateResults(this.getState(`bookmarks`));
   }
 
-  init = () => this.#model.getStoredBookmarks();
+  init = () => this.handler(this.#model.getStoredBookmarks)();
 }

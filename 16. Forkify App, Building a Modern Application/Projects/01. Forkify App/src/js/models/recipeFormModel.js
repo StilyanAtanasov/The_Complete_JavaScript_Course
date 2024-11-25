@@ -7,14 +7,20 @@ export default class RecipeFormModel extends Model {
   }
 
   updateIngredientsCount(incrementBy) {
+    try {
     const newIngredientsCount = this.appState.getState(`uploadRecipe.ingredientsCount`) + incrementBy;
-    if (newIngredientsCount > MAX_INGREDIENTS_COUNT) return false;
+    if (newIngredientsCount > MAX_INGREDIENTS_COUNT) throw new Error(`Recipe could consist of maximum ${MAX_INGREDIENTS_COUNT} ingredients`)
 
     this.appState.updateState(`uploadRecipe.ingredientsCount`, newIngredientsCount);
     return true;
+    }
+    catch(err) {
+throw new Error(err.message)
+    }
   }
 
   createRecipe(data) {
+    try {
     const ingredients = [];
     const recipe = { ...Object.fromEntries([...data]), source_url: `no-source` };
 
@@ -37,6 +43,10 @@ export default class RecipeFormModel extends Model {
     recipe.ingredients = ingredients;
     return recipe;
   }
+  catch {
+    throw new Error(`Error creating your recipe! Try again later!`)
+  }
+  }
 
   async submitRecipe(recipe) {
     try {
@@ -48,14 +58,12 @@ export default class RecipeFormModel extends Model {
         body: JSON.stringify(recipe),
       });
 
-      if (!response.ok) throw new Error(`Failed to fetch recipe: ${response.statusText ?? ``}`);
+      if (!response.ok) throw new Error(`Error submitting your recipe! Try again later!`);
       const data = await response.json();
 
-      console.log(data);
-      console.log(`Recipe submitted successfully`); // FIX
       return data;
     } catch (err) {
-      console.error(err.message); // TODO
+      throw new Error(err.message); // TODO
     }
   }
 }

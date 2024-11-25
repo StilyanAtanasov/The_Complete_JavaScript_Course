@@ -32,6 +32,6 @@ export default class ResultsController extends Controller {
       }.bind(this)
     );
 
-    this.#view.onResultClick(() => this.eventBus.publish(`RecipeSlideIn`, null)); // FIX
+    this.#view.onResultClick(this.handler(() => this.eventBus.publish(`RecipeSlideIn`, null))); // FIX
   }
 }

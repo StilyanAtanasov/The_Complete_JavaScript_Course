@@ -14,5 +14,5 @@ export default class NavController extends Controller {
     this.eventBus.publish(`RecipeSlideOut`, null);
   }
 
-  init = () => this.#view.onClick(this.#controlNav.bind(this));
+  init = () => this.#view.onClick(this.handler(this.#controlNav.bind(this)));
 }
