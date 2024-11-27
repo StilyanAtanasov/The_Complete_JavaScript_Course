@@ -21,7 +21,6 @@
     "sass-migrator": "^2.2.1"
   },
   "dependencies": {
-    "convert-units": "^2.3.4",
     "fracty": "^1.0.11"
   }
 }

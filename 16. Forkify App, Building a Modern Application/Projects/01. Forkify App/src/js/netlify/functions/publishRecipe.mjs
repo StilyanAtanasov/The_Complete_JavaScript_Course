@@ -1,7 +1,7 @@
-const { API_URL } = require("../../config/config");
-const { request } = require("./request");
+import { API_URL } from "../../config/config";
+import { request } from "../../utils/utils.js";
 
-module.exports.handler = async function (event) {
+async function publishRecipe(event) {
   if (event.httpMethod !== `POST`) {
     return {
       statusCode: 405,
@@ -15,7 +15,7 @@ module.exports.handler = async function (event) {
     const recipe = event.body;
     if (!recipe) throw new Error(`Invalid recipe data`);
 
-    const data = request(`${API_URL}?key=${API_KEY}`, {
+    const data = await request(`${API_URL}?key=${API_KEY}`, {
       method: `POST`,
       headers: {
         "Content-Type": `application/json`,
@@ -46,4 +46,6 @@ module.exports.handler = async function (event) {
       body: JSON.stringify({ message: err.message }),
     };
   }
-};
+}
+
+export { publishRecipe as handler };

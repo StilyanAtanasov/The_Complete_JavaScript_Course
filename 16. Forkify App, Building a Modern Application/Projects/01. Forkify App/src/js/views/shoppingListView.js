@@ -18,8 +18,7 @@ export default class ShoppingListView extends ResultsView {
 
   updateTitle = () => this.updateText(this.UIEls.results.title, `Shopping List`);
 
-  renderProducts = products => products.forEach(p => this.render(ShoppingListView.location, this.productMarkup(p.description, p.quantity, p.unit), `beforeEnd`));
-  emptyList = () => (ShoppingListView.location.innerHTML = ``);
+  renderProducts = products => products.forEach(p => this.render(ShoppingListView.location, this.productMarkup(p.description, p.quantity || ``, p.unit || ``), `beforeEnd`));
 
   onRemove = handler =>
     this.UIEls.results.container.addEventListener(`click`, function (e) {

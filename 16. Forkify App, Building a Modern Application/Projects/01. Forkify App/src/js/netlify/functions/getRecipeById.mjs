@@ -1,7 +1,7 @@
-const { API_URL } = require("../../config/config");
-const { request } = require("./request");
+import { API_URL } from "../../config/config.js";
+import { request } from "../../utils/utils.js";
 
-module.exports.handler = async function (event) {
+async function getRecipeById(event) {
   if (event.httpMethod !== `POST`) {
     return {
       statusCode: 405,
@@ -10,10 +10,10 @@ module.exports.handler = async function (event) {
   }
 
   try {
-    const id = event.body.id;
-    if (!id) throw new Error(`Invalid query`);
+    const id = JSON.parse(event.body).id;
+    if (!id) throw new Error(`Invalid recpice id!`);
 
-    const data = await request(`${API_URL}?${id}`);
+    const data = await request(`${API_URL}/${id}`);
 
     return {
       statusCode: 200,
@@ -29,4 +29,6 @@ module.exports.handler = async function (event) {
       body: JSON.stringify({ message: err.message }),
     };
   }
-};
+}
+
+export { getRecipeById as handler };

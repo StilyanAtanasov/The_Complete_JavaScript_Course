@@ -20,15 +20,20 @@ export default class ShoppingListController extends ResultsController {
   #controlShoppingListResults() {
     this.#view.removeCurrentResults();
     this.#view.updateTitle();
-    this.#view.emptyList();
     this.#view.renderProducts(this.getState(`shoppingList`));
 
-    this.#view.onRemove(this.#controlRemoveProduct.bind(this)); // FIX
+    this.#view.onRemove(this.handler(this.#controlRemoveProduct.bind(this))); // FIX
   }
 
-  #controlAddProduct = products => this.#model.addProducts(products);
+  #controlAddProduct = products => this.#model.addProducts(products) && this.#reloadList();
 
-  #controlRemoveProduct = (unit, name) => this.#model.removeProduct(unit, name);
+  #controlRemoveProduct = (unit, name) => this.#model.removeProduct(unit, name) && this.#reloadList();;
+
+  #reloadList () {
+    if(this.getState(`currentPage`) !== `ShoppingList`) return ;
+    this.#view.removeCurrentResults();
+    this.#view.renderProducts(this.getState(`shoppingList`));
+  }
 
   init = () => this.handler(this.#model.getStoredList)();
 }

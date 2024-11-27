@@ -1,5 +1,5 @@
 import ResultsModel from "./resultsModel";
-import convert from "convert-units";
+import { unitMap, unitAbbreviation } from "../utils/utils";
 
 export default class ShoppingListModel extends ResultsModel {
   constructor(appState) {
@@ -8,49 +8,54 @@ export default class ShoppingListModel extends ResultsModel {
 
   addProducts(newProducts) {
     try {
-    const shoppingList = this.appState.getState(`shoppingList`);
+      const shoppingList = this.appState.getState(`shoppingList`);
 
-    newProducts.forEach(product => {
-      const { description, quantity, unit } = product;
-      const existingProduct = shoppingList.find(item => item.description === description);
+      for (const product of newProducts) {
+        const { description, quantity, unit } = product;
+        const existingProduct = shoppingList.find(item => item.description === description);
 
-      if (existingProduct) {
-        try {
-          const newQuantity = convert(quantity).from(unit).to(existingProduct.unit);
-          existingProduct.quantity += newQuantity;
-        } catch (err) {
-          //   shoppingList.push({ description, quantity, unit }); FIX
+        if (!existingProduct) {
+          shoppingList.push({ description, quantity, unit });
+          continue;
         }
-      }
-      shoppingList.push({ description, quantity, unit });
-    });
 
-    this.updateShoppingList(shoppingList);
-  }
-  catch {
-    throw new Error(`Error adding products!`)
-  }
+        if (!existingProduct.unit) {
+          existingProduct.quantity += quantity;
+          continue;
+        }
+
+        const tryConvert = unitMap[existingProduct.unit][unit];
+        const convert = tryConvert ? tryConvert : unitMap[existingProduct.unit][unitAbbreviation[unit]];
+
+        existingProduct && convert ? (existingProduct.quantity += quantity * convert) : shoppingList.push({ description, quantity, unit });
+      }
+
+      this.updateShoppingList(shoppingList);
+      return true;
+    } catch (err) {
+      console.error(err);
+      throw new Error(`Error adding products!`);
+    }
   }
 
   removeProduct(unit, description) {
     try {
-    const shoppingList = this.appState.getState(`shoppingList`);
-    const updatedShoppingList = shoppingList.filter(product => product.unit !== unit || product.description !== description);
+      const shoppingList = this.appState.getState(`shoppingList`);
+      const updatedShoppingList = shoppingList.filter(product => product.unit !== unit || product.description !== description);
 
-    this.updateShoppingList(updatedShoppingList);
-    }
-    catch {
-      throw new Error(`Error removing product: ${description}!`)
+      this.updateShoppingList(updatedShoppingList);
+      return true;
+    } catch {
+      throw new Error(`Error removing product: ${description}!`);
     }
   }
 
   updateShoppingList(shoppingList) {
-    try{
-    this.appState.updateState(`shoppingList`, shoppingList);
-    this.syncLocalStorage(shoppingList);
-    }
-    catch {
-      throw new Error(`Error updating shoppping list!`)
+    try {
+      this.appState.updateState(`shoppingList`, shoppingList);
+      this.syncLocalStorage(shoppingList);
+    } catch {
+      throw new Error(`Error updating shoppping list!`);
     }
   }
 

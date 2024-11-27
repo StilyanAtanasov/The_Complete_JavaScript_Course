@@ -1,5 +1,6 @@
 import Model from "./model";
 import { MAX_INGREDIENTS_COUNT } from "../config/config";
+import { timeout } from "../utils/utils";
 
 export default class RecipeFormModel extends Model {
   constructor(appState) {
@@ -8,61 +9,63 @@ export default class RecipeFormModel extends Model {
 
   updateIngredientsCount(incrementBy) {
     try {
-    const newIngredientsCount = this.appState.getState(`uploadRecipe.ingredientsCount`) + incrementBy;
-    if (newIngredientsCount > MAX_INGREDIENTS_COUNT) throw new Error(`Recipe could consist of maximum ${MAX_INGREDIENTS_COUNT} ingredients`)
+      const newIngredientsCount = this.appState.getState(`uploadRecipe.ingredientsCount`) + incrementBy;
+      if (newIngredientsCount > MAX_INGREDIENTS_COUNT) throw new Error(`Recipe could consist of maximum ${MAX_INGREDIENTS_COUNT} ingredients`);
 
-    this.appState.updateState(`uploadRecipe.ingredientsCount`, newIngredientsCount);
-    return true;
-    }
-    catch(err) {
-throw new Error(err.message)
+      this.appState.updateState(`uploadRecipe.ingredientsCount`, newIngredientsCount);
+      return true;
+    } catch (err) {
+      throw new Error(err.message);
     }
   }
 
   createRecipe(data) {
     try {
-    const ingredients = [];
-    const recipe = { ...Object.fromEntries([...data]), source_url: `no-source` };
+      const ingredients = [];
+      const recipe = { ...Object.fromEntries([...data]), source_url: `no-source` };
 
-    for (const key in recipe) {
-      if (key.startsWith(`ingredient`)) {
-        const [_, index, field] = key.split(`-`);
-        const ingredientIndex = parseInt(index, 10) - 1;
+      for (const key in recipe) {
+        if (key.startsWith(`ingredient`)) {
+          const [_, index, field] = key.split(`-`);
+          const ingredientIndex = parseInt(index, 10) - 1;
 
-        if (!ingredients[ingredientIndex]) ingredients[ingredientIndex] = { description: ``, quantity: ``, unit: `` };
+          if (!ingredients[ingredientIndex]) ingredients[ingredientIndex] = { description: ``, quantity: ``, unit: `` };
 
-        if (field === `name`) ingredients[ingredientIndex].description = recipe[key];
-        if (field === `quantity`) ingredients[ingredientIndex].quantity = recipe[key];
-        if (field === `unit`) ingredients[ingredientIndex].unit = recipe[key];
+          if (field === `name`) ingredients[ingredientIndex].description = recipe[key];
+          if (field === `quantity`) ingredients[ingredientIndex].quantity = recipe[key];
+          if (field === `unit`) ingredients[ingredientIndex].unit = recipe[key];
 
-        delete recipe[key];
+          delete recipe[key];
+        }
       }
-    }
 
-    if (!recipe.title.includes(`**custom**`)) recipe.title = `**custom** ${recipe.title}`;
-    recipe.ingredients = ingredients;
-    return recipe;
-  }
-  catch {
-    throw new Error(`Error creating your recipe! Try again later!`)
-  }
+      if (!recipe.title.includes(`**custom**`)) recipe.title = `**custom** ${recipe.title}`;
+      recipe.ingredients = ingredients;
+      return recipe;
+    } catch {
+      throw new Error(`Error creating your recipe! Try again later!`);
+    }
   }
 
   async submitRecipe(recipe) {
     try {
-      const response = await fetch(`.netlify/functions/publishRecipe`, {
-        method: `POST`,
-        headers: {
-          "Content-Type": `application/json`,
-        },
-        body: JSON.stringify(recipe),
-      });
+      const response = await Promise.race([
+        fetch(`.netlify/functions/publishRecipe`, {
+          method: `POST`,
+          headers: {
+            "Content-Type": `application/json`,
+          },
+          body: JSON.stringify(recipe),
+        }),
+        timeout(5000, `Search request took too long!`),
+      ]);
 
       if (!response.ok) throw new Error(`Error submitting your recipe! Try again later!`);
       const data = await response.json();
 
       return data;
     } catch (err) {
+      console.log(err.message);
       throw new Error(err.message); // TODO
     }
   }

@@ -1,7 +1,7 @@
-const { API_URL } = require("../../config/config");
-const { request } = require("./request");
+import { API_URL } from "../../config/config.js";
+import { request } from "../../utils/utils.js";
 
-module.exports.handler = async function (event) {
+async function searchRecipes(event) {
   if (event.httpMethod !== `POST`) {
     return {
       statusCode: 405,
@@ -11,6 +11,7 @@ module.exports.handler = async function (event) {
 
   try {
     const API_KEY = process.env.API_KEY;
+    if (!API_KEY) throw new Error(`Error getting results`);
 
     const searchQuery = JSON.parse(event.body).searchQuery;
     if (!searchQuery) throw new Error(`Invalid query : ${searchQuery}`);
@@ -27,8 +28,9 @@ module.exports.handler = async function (event) {
   } catch (err) {
     return {
       statusCode: 500,
-      statusText: err.message,
-      body: JSON.stringify({ message: err.message }),
+      body: JSON.stringify({ message: err.message, stack: err.stack, response }),
     };
   }
-};
+}
+
+export { searchRecipes as handler };

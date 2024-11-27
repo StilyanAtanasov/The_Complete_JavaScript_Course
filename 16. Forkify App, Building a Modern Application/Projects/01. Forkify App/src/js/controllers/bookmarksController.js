@@ -19,9 +19,7 @@ export default class BookmarksController extends ResultsController {
   #controlBookmarksResults() {
     this.#view.removeCurrentResults();
     this.#view.updateTitle();
-    if (this.#model.searchBookmarks() && this.getState(`currentPage`) === `Bookmarks`) {
-      this.updateResults();
-    }
+    this.#model.searchBookmarks() && this.getState(`currentPage`) === `Bookmarks` && this.updateResults();
   }
 
   #controlOnBookmark(recipe) {
