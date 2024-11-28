@@ -31,11 +31,11 @@
           <nav class="nav">
             <ul class="nav__list">
               <li class="nav__item">
-                <button class="nav__btn nav__btn--add-recipe" data-page="PopularRecipes">
+                <button class="nav__btn nav__btn--add-recipe" data-page="Feed">
                   <svg>
                     <use href="src/img/icons.svg#icon-popular"></use>
                   </svg>
-                  <span>Popular</span>
+                  <span>Feed</span>
                 </button>
               </li>
               <li class="nav__item">
@@ -67,7 +67,7 @@
         </header>
 
         <section class="search__results">
-          <h3 class="search__results--title">Popular Recipes</h3>
+          <h3 class="search__results--title">Feed</h3>
           <div class="search__results--results"></div>
 
           <div class="pagination"></div>
@@ -99,8 +99,11 @@
  publishRecipe errors
  errors bug
  improve DRY principles
- migrate popular to feed
+ improve feed
  improve error handling
+ fix search validation for white space
+ fix empty page
+ fix getQueue();
  
  Design:
  mobile overflow

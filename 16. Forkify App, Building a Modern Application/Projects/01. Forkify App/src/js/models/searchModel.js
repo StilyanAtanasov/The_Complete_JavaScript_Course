@@ -15,7 +15,7 @@ export default class SearchModel extends Model {
 
     const minLength = PROMPT_MIN_LENGTH;
     const hasValidLength = formatted.length >= minLength;
-    const isAlphanumeric = /^[a-zA-Z0-9]+$/.test(formatted);
+    const isAlphanumeric = /^[a-zA-Z0-9\s]+$/.test(formatted);
     const noRepeatingChars = !/(.)\1{2,}/.test(formatted);
     const containsLetter = /[a-zA-Z]/.test(formatted);
 

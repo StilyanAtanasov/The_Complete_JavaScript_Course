@@ -5,3 +5,5 @@ export const MAX_INGREDIENTS_COUNT = 20;
 export const RECIPE_HISTORY_LENGTH = 10;
 export const SEARCH_HISTORY_LENGTH = 1;
 export const PROMPT_MIN_LENGTH = 2;
+export const FEED_MAX_RESULTS = 70;
+export const FEED_MAX_TOPICS = 3;

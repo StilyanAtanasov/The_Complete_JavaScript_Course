@@ -1,6 +1,6 @@
 import AppState from "./appState";
 import SearchResultsController from "./controllers/searchResultsController";
-import PopularResultsController from "./controllers/popularResultsController";
+import FeedResultsController from "./controllers/feedResultsController";
 import SearchController from "./controllers/searchController";
 import RecipeController from "./controllers/recipeController";
 import BookmarksController from "./controllers/bookmarksController";
@@ -11,7 +11,7 @@ import ShoppingListController from "./controllers/shoppingListController";
 
 export default class Engine {
   #appState;
-  #popularResultsController;
+  #feedResultsController;
   #searchController;
   #recipeController;
   #bookmarksController;
@@ -21,7 +21,7 @@ export default class Engine {
     this.#appState = new AppState();
     this.#searchController = new SearchController(this.#appState);
     this.#recipeController = new RecipeController(this.#appState);
-    this.#popularResultsController = new PopularResultsController(this.#appState);
+    this.#feedResultsController = new FeedResultsController(this.#appState);
     this.#bookmarksController = new BookmarksController(this.#appState);
     this.#navController = new NavController(this.#appState);
 
@@ -34,7 +34,7 @@ export default class Engine {
   start() {
     this.#searchController.init();
     this.#recipeController.init();
-    // this.#popularResultsController.init();
+    // this.#feedResultsController.init();
     this.#bookmarksController.init();
     this.#navController.init();
   }
