@@ -13,17 +13,17 @@ export default class SearchController extends Controller {
   }
 
   async #controlSearch() {
-    const prompt = this.#view.getSearchPrompt();
+    const prompt = this.#model.validateSearchQuery(this.#view.getSearchPrompt());
     this.#view.clearInputField();
 
-    if(!this.#model.validateSearch(prompt)) return;  
-      this.#view.updateTitle();
+    this.#view.updateTitle();
     this.#view.removeCurrentResults();
     this.eventBus.publish(`RecipeSlideOut`, null);
     this.#view.showSpinner();
 
-    await this.#model.searchRecipe(prompt);
-    this.eventBus.publish(`searched`, prompt);
+    const stored = this.#model.checkHistory(prompt);
+    const response = stored || (await this.#model.searchRecipe(prompt));
+    this.eventBus.publish(`searched`, prompt, response);
   }
 
   init = () => this.#view.onSearch(this.handler(this.#controlSearch.bind(this)));

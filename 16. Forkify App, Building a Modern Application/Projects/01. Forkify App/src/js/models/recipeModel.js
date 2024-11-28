@@ -1,3 +1,5 @@
+import { RECIPE_HISTORY_LENGTH } from "../config/config";
+import FixedQueue from "../utils/fixedQueue";
 import { timeout } from "../utils/utils";
 import Model from "./model";
 
@@ -6,8 +8,25 @@ export default class RecipeModel extends Model {
     super(appState);
   }
 
+  checkHistory(id) {
+    const recipeHistory = this.appState.getState(`recipeHistory`).getQueue();
+
+    const found = recipeHistory.find(h => h.id === id);
+    return found || false;
+  }
+
+  syncLocalStorage = recipeHistory => recipeHistory && window.localStorage.setItem(`recipeHistory`, JSON.stringify(recipeHistory));
+  initRecipeHistory = () => history && this.appState.updateState(`recipeHistory`, FixedQueue.from(JSON.parse(window.localStorage.getItem(`recipeHistory`)), RECIPE_HISTORY_LENGTH));
+
+  updateHistory(recipe) {
+    if (!recipe) return;
+    const newHistory = this.appState.getState(`recipeHistory`).enqueue(recipe);
+    this.syncLocalStorage(newHistory.getQueue());
+  }
+
   async fetchRecipe(id) {
     try {
+      console.log(`fetching`);
       const response = await Promise.race([
         fetch(`.netlify/functions/getRecipeById`, {
           method: `POST`,
@@ -37,10 +56,10 @@ export default class RecipeModel extends Model {
       };
 
       this.appState.updateState(`currentRecipe`, recipeData);
+      this.updateHistory(recipeData);
 
       return recipeData;
     } catch (err) {
-      console.log(err.message);
       throw new Error(`Error finding desired recipe!`);
     }
   }

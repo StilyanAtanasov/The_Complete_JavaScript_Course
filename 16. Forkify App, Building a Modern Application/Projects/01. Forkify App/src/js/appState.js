@@ -1,4 +1,5 @@
-import { PAGE_RESULTS_LIMIT } from "./config/config";
+import { PAGE_RESULTS_LIMIT, RECIPE_HISTORY_LENGTH, SEARCH_HISTORY_LENGTH } from "./config/config";
+import FixedQueue from "./utils/fixedQueue";
 
 export default class AppState {
   #appState;
@@ -28,6 +29,8 @@ export default class AppState {
       bookmarks: [],
       shoppingList: [],
       currentPage: `PopularResults`,
+      recipeHistory: new FixedQueue(RECIPE_HISTORY_LENGTH),
+      searchHistory: new FixedQueue(SEARCH_HISTORY_LENGTH),
     };
   }
 

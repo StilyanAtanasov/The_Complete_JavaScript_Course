@@ -23,7 +23,10 @@ export default class ResultsController extends Controller {
     this.#view.removeCurrentRecipe();
     this.#view.showSpinner();
 
-    const { id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl } = await this.#model.fetchRecipe(recipeId);
+    const stored = this.#model.checkHistory(recipeId);
+    const recipe = stored !== false ? stored : await this.#model.fetchRecipe(recipeId);
+
+    const { id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl } = recipe;
     this.#view.renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, this.#isBookmarked(id));
 
     this.#view.onReturnBack(() => this.#controlSlideRecipe(false));
@@ -54,5 +57,8 @@ export default class ResultsController extends Controller {
 
   #isBookmarked = id => this.getState(`bookmarks`).reduce((acc, b) => acc || b.id === id, false);
 
-  init = () => this.#view.onHashChange(this.handler(this.#controlRecipe.bind(this)));
+  init() {
+    this.#model.initRecipeHistory();
+    this.#view.onHashChange(this.handler(this.#controlRecipe.bind(this)));
+  }
 }

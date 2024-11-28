@@ -13,10 +13,10 @@ export default class SearchResultsController extends ResultsController {
     this.eventBus.subscribe(`searched`, this.handler(this.#controlSearchResults.bind(this)));
   }
 
-  async #controlSearchResults(prompt) {
+  async #controlSearchResults(prompt, response) {
     this.#view.updateTitle(prompt);
     this.#view.hideSpinner();
 
-    this.updateResults();
+    this.updateResults(response);
   }
 }

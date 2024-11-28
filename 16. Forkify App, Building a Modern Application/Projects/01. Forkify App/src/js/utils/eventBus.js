@@ -8,7 +8,8 @@ export default class EventBus {
     this.subscribers[event].push(callback);
   }
 
+  // TODO
   unsubscribe = (event, callback) => this.subscribers[event] && (his.subscribers[event] = this.subscribers[event].filter(c => c !== callback));
 
-  publish = (event, data) => this.subscribers[event]?.forEach(callback => callback(data));
+  publish = (event, ...args) => this.subscribers[event]?.forEach(callback => callback(...args));
 }
