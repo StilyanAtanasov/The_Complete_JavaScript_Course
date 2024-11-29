@@ -7,4 +7,6 @@ export const SEARCH_HISTORY_LENGTH = 1;
 export const PROMPT_MIN_LENGTH = 2;
 export const FEED_MAX_RESULTS = 70;
 export const FEED_MAX_TOPICS = 3;
+export const COMMUNITY_MAX_TOPICS = 5;
 export const FEED_UPDATE_MILLISECONDS = 86_400_000;
+export const COMMUNITY_UPDATE_MILLISECONDS = 172_800_000;

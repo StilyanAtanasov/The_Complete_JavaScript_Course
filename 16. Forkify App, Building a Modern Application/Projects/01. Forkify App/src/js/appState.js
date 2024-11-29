@@ -14,11 +14,13 @@ export default class AppState {
         ingredients: [],
         servings: 0,
         sourceUrl: ``,
+        custom: false,
       },
       uploadRecipe: {
         ingredientsCount: 1,
       },
       feed: {},
+      community: {},
       bookmarks: [],
       shoppingList: [],
       currentPage: `PopularResults`,

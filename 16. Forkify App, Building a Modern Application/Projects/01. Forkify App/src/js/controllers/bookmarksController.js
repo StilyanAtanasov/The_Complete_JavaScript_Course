@@ -21,6 +21,8 @@ export default class BookmarksController extends ResultsController {
     this.#view.updateTitle();
     const response = this.#model.searchBookmarks();
 
+    if (!response) return; // FIX
+
     const { results, currentPage, totalPages } = this.#model.buildResultsData(response);
 
     this.getState(`currentPage`) === `Bookmarks` && this.updateResults(results, currentPage, totalPages);

@@ -87,6 +87,22 @@ export async function request(url, options = {}) {
   return await response.json();
 }
 
+export const requestMultipleQueries = async queries =>
+  await Promise.allSettled(
+    queries.map(q =>
+      Promise.race([
+        fetch(`.netlify/functions/searchRecipes`, {
+          method: `POST`,
+          headers: {
+            "Content-Type": `application/json`,
+          },
+          body: JSON.stringify({ searchQuery: q }),
+        }).then(res => res.json()),
+        timeout(5000, `Request took too long!`),
+      ])
+    )
+  );
+
 export const getRandomIndex = lenght => Math.floor(Math.random() * lenght);
 
 export function shuffleArray(array) {
@@ -96,6 +112,29 @@ export function shuffleArray(array) {
   }
 
   return array;
+}
+
+export function getRadomQueries(count, queriesArr) {
+  const queries = [];
+  for (let i = 0; i < count; i++) {
+    const index = getRandomIndex(queriesArr.length);
+    const query = queriesArr[index];
+
+    if (!queries.includes(query)) {
+      queries.push(query);
+      continue;
+    } else {
+      for (let j = 1; j <= i + 1; j++) {
+        const newQuery = queriesArr[index + j];
+        if (!queries.includes(query)) {
+          queries.push(newQuery);
+          break;
+        }
+      }
+    }
+  }
+
+  return queries;
 }
 
 export const popularQueries = [

@@ -48,6 +48,7 @@ export default class ResultsController extends Controller {
           title: this.getState(`currentRecipe.title`),
           image_url: this.getState(`currentRecipe.imageUrl`),
           publisher: this.getState(`currentRecipe.publisher`),
+          custom: this.getState(`currentRecipe.custom`),
         });
       }.bind(this)
     );

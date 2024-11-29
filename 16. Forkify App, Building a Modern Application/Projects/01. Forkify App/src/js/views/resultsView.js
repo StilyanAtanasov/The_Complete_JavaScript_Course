@@ -55,6 +55,8 @@ export default class ResultsView extends View {
   renderPagination(currentPage, totalPages) {
     this.UIEls.results.paginationContainer.innerHTML = ``;
 
+    if (totalPages < 1) return;
+
     const renderInPaginationContainer = markup => this.render(this.UIEls.results.paginationContainer, markup, `beforeEnd`);
     if (currentPage > 1) renderInPaginationContainer(this.paginationBtnMarkup(`left`, -1));
     renderInPaginationContainer(this.currentPageMarkup(currentPage, totalPages));

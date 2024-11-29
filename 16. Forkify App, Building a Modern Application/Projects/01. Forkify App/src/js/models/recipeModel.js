@@ -43,7 +43,6 @@ export default class RecipeModel extends Model {
       if (!data) throw new Error();
 
       const recipe = data.data;
-      console.log(recipe);
 
       this.appState.updateState(`currentRecipe`, recipe);
       this.updateHistory(recipe);
