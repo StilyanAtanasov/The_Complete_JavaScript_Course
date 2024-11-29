@@ -19,17 +19,18 @@ export default class FeedResultsController extends ResultsController {
     this.#view.showSpinner();
 
     this.#view.updateTitle();
+    const feedData = this.getState(`feed`);
 
-    console.log(this.getState(`feed`));
-    const feed = this.getState(`feed`).length !== 0 ? this.getState(`feed`) : await this.#model.generateFeed();
+    const feed = this.#model.chackValidFeed(feedData) ? feedData.results : await this.#model.generateFeed();
+    const { results, currentPage, totalPages } = this.#model.buildResultsData(feed);
 
-    this.updateResults(feed);
+    this.updateResults(results, currentPage, totalPages);
     this.#view.hideSpinner();
   }
 
   init() {
     this.#model.getStoredFeed();
-    this.handler(this.#controlFeed())();
+    this.handler(this.#controlFeed.bind(this))();
     this.eventBus.publish(`UpdatePage`, `FeedRecipes`);
   }
 }

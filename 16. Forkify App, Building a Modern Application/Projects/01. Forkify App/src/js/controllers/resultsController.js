@@ -1,37 +1,37 @@
-import ResultsModel from "../models/resultsModel";
 import ResultsView from "../views/resultsView";
 import Controller from "./controller";
 import { getPageBounds } from "../utils/utils";
+import { PAGE_RESULTS_LIMIT } from "../config/config";
 
 export default class ResultsController extends Controller {
-  #model;
   #view;
 
   constructor(appState) {
     super(appState);
 
-    this.#model = new ResultsModel(appState);
     this.#view = new ResultsView();
   }
 
-  updateResults(recipesData = this.getState(`search.response`)) {
-    this.#view.removeListeners();
+  updateResults(results, currentPage, totalPages) {
+    try {
+      this.#view.removeListeners();
 
-    const currentPage = this.getState(`search.currentPage`);
-    const recipes = recipesData;
-    const pageBounds = getPageBounds(currentPage, this.getState(`search.resultsPerPage`), recipes.length);
+      const pageBounds = getPageBounds(currentPage, PAGE_RESULTS_LIMIT, results.length);
 
-    this.#view.renderResults(recipes, pageBounds.start, pageBounds.end);
-    this.#view.renderPagination(currentPage, this.getState(`search.totalPages`));
+      this.#view.renderResults(results, pageBounds.start, pageBounds.end);
+      this.#view.renderPagination(currentPage, totalPages);
 
-    this.#view.onPaginationClick(
-      function (arg) {
-        this.#model.changeResultsPage(arg);
-        this.#view.removeCurrentResults();
-        this.updateResults();
-      }.bind(this)
-    );
+      this.#view.onPaginationClick(
+        function (changeBy) {
+          this.#view.removeCurrentResults();
+          this.updateResults(results, currentPage + changeBy, totalPages);
+        }.bind(this)
+      );
 
-    this.#view.onResultClick(this.handler(() => this.eventBus.publish(`RecipeSlideIn`, null))); // FIX
+      this.#view.onResultClick(this.handler(() => this.eventBus.publish(`RecipeSlideIn`, null))); // FIX
+    } catch (err) {
+      console.log(err.message);
+      throw new Error(`Error updating results!`);
+    }
   }
 }

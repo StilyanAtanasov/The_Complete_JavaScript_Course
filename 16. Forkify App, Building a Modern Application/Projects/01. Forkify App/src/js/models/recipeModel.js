@@ -16,7 +16,7 @@ export default class RecipeModel extends Model {
   }
 
   syncLocalStorage = recipeHistory => recipeHistory && window.localStorage.setItem(`recipeHistory`, JSON.stringify(recipeHistory));
-  initRecipeHistory = () => history && this.appState.updateState(`recipeHistory`, FixedQueue.from(JSON.parse(window.localStorage.getItem(`recipeHistory`)), RECIPE_HISTORY_LENGTH));
+  initRecipeHistory = () => this.appState.updateState(`recipeHistory`, FixedQueue.from(JSON.parse(window.localStorage.getItem(`recipeHistory`)), RECIPE_HISTORY_LENGTH));
 
   updateHistory(recipe) {
     if (!recipe) return;
@@ -26,7 +26,6 @@ export default class RecipeModel extends Model {
 
   async fetchRecipe(id) {
     try {
-      console.log(`fetching`);
       const response = await Promise.race([
         fetch(`.netlify/functions/getRecipeById`, {
           method: `POST`,

@@ -12,6 +12,7 @@ export default class SearchModel extends Model {
     if (!prompt || typeof prompt !== `string`) throw new Error(`Invalid search query!`);
 
     const formatted = prompt.toLowerCase();
+    console.log(formatted);
 
     const minLength = PROMPT_MIN_LENGTH;
     const hasValidLength = formatted.length >= minLength;
@@ -35,7 +36,7 @@ export default class SearchModel extends Model {
   }
 
   syncLocalStorage = searchHistory => searchHistory && window.localStorage.setItem(`searchHistory`, JSON.stringify(searchHistory));
-  initsearchHistory = () => history && this.appState.updateState(`searchHistory`, FixedQueue.from(JSON.parse(window.localStorage.getItem(`searchHistory`)), SEARCH_HISTORY_LENGTH));
+  initSearchHistory = () => this.appState.updateState(`searchHistory`, FixedQueue.from(JSON.parse(window.localStorage.getItem(`searchHistory`)), SEARCH_HISTORY_LENGTH));
 
   updateHistory(query, response) {
     if (!response) return;
@@ -62,14 +63,7 @@ export default class SearchModel extends Model {
       if (!data) throw new Error();
 
       const recipes = data.data.data.recipes;
-      if (recipes.length === 0) return null;
-
-      const totalPages = Number.parseInt(recipes.length / this.appState.getState(`search.resultsPerPage`)) + 1;
-
-      this.appState.updateState(`search.query`, searchPrompt);
-      this.appState.updateState(`search.response`, recipes);
-      this.appState.updateState(`search.currentPage`, 1);
-      this.appState.updateState(`search.totalPages`, totalPages);
+      if (recipes.length === 0) return null; // FIX
 
       this.updateHistory(searchPrompt, recipes);
 

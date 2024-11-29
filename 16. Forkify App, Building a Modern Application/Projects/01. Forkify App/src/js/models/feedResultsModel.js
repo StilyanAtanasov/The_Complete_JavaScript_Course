@@ -1,5 +1,5 @@
 import ResultsModel from "./resultsModel";
-import { FEED_MAX_RESULTS, FEED_MAX_TOPICS } from "../config/config";
+import { FEED_MAX_RESULTS, FEED_MAX_TOPICS, FEED_UPDATE_MILLISECONDS } from "../config/config";
 import { popularQueries, getRandomIndex, shuffleArray, timeout } from "../utils/utils";
 
 export default class FeedResultsModel extends ResultsModel {
@@ -7,15 +7,17 @@ export default class FeedResultsModel extends ResultsModel {
     super(appState);
   }
 
-  syncLocalStorage = feed => window.localStorage.setItem(`feed`, JSON.stringify(feed));
-  getStoredFeed = () => this.appState.updateState(`feed`, JSON.parse(window.localStorage.getItem(`feed`) || []));
+  syncLocalStorage = feedData => window.localStorage.setItem(`feed`, JSON.stringify(feedData));
+  getStoredFeed = () => this.appState.updateState(`feed`, JSON.parse(window.localStorage.getItem(`feed`)));
 
-  updateFeed(feed) {
-    if (!feed) return;
+  updateFeed(feedData) {
+    if (!feedData) return;
 
-    this.appState.updateState(`feed`, feed);
-    this.syncLocalStorage(feed);
+    this.appState.updateState(`feed`, feedData);
+    this.syncLocalStorage(feedData);
   }
+
+  chackValidFeed = feedData => (Date.now() - feedData.ellapsedMilliseconds < FEED_UPDATE_MILLISECONDS ? true : false);
 
   async generateFeed() {
     try {
@@ -54,13 +56,13 @@ export default class FeedResultsModel extends ResultsModel {
 
       const recipes = response.filter(result => result.status === "fulfilled" && result.value?.data?.data?.recipes).flatMap(result => result.value.data.data.recipes);
       const randomised = shuffleArray(recipes).slice(0, FEED_MAX_RESULTS);
-      const totalPages = Number.parseInt(randomised.length / this.appState.getState(`search.resultsPerPage`)) + 1;
 
-      this.appState.updateState(`search.response`, randomised);
-      this.appState.updateState(`search.currentPage`, 1);
-      this.appState.updateState(`search.totalPages`, totalPages);
+      const feedData = {
+        ellapsedMilliseconds: Date.now(),
+        results: randomised,
+      };
 
-      this.updateFeed(randomised);
+      this.updateFeed(feedData);
 
       return randomised;
     } catch {

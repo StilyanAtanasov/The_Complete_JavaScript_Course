@@ -18,11 +18,10 @@ export default class FixedQueue {
   #storeItems = items => items && (this.#queue = items.slice(0, this.size));
 
   static from(data, size) {
-    if (!data) return;
-
     const instance = new FixedQueue(size);
-    instance.#storeItems(data);
+    if (!data) return instance;
 
+    instance.#storeItems(data);
     return instance;
   }
 }

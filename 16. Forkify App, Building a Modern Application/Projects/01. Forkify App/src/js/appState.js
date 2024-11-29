@@ -1,17 +1,10 @@
-import { PAGE_RESULTS_LIMIT, RECIPE_HISTORY_LENGTH, SEARCH_HISTORY_LENGTH } from "./config/config";
+import { RECIPE_HISTORY_LENGTH, SEARCH_HISTORY_LENGTH } from "./config/config";
 import FixedQueue from "./utils/fixedQueue";
 
 export default class AppState {
   #appState;
   constructor() {
     this.#appState = {
-      search: {
-        query: ``,
-        currentPage: 0,
-        totalPages: 0,
-        resultsPerPage: PAGE_RESULTS_LIMIT, // TODO
-        response: [],
-      },
       currentRecipe: {
         id: ``,
         title: ``,
@@ -25,7 +18,7 @@ export default class AppState {
       uploadRecipe: {
         ingredientsCount: 1,
       },
-      feed: [],
+      feed: {},
       bookmarks: [],
       shoppingList: [],
       currentPage: `PopularResults`,

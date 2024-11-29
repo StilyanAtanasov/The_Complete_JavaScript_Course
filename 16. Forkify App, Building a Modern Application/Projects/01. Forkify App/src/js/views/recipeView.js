@@ -103,9 +103,11 @@ export default class RecipeView extends View {
         </div>
 
         <div class="recipe__ingredients">
-            <svg class="add-all-products-btn">
+          <div class="add-all-products-btn">
+            <svg>
               <use href="${this.icons}#icon-bag" />
             </svg>
+          </div>
           <h2 class="heading--2">Recipe ingredients</h2>
           <ul class="recipe__ingredient-list">${ingredients.reduce((acc, i) => acc + this.ingredientMarkup(i.description, i.quantity, i.unit), ``)}</ul>
         </div>

@@ -17,6 +17,8 @@ export default class SearchResultsController extends ResultsController {
     this.#view.updateTitle(prompt);
     this.#view.hideSpinner();
 
-    this.updateResults(response);
+    const { results, currentPage, totalPages } = this.#model.buildResultsData(response);
+
+    this.updateResults(results, currentPage, totalPages);
   }
 }

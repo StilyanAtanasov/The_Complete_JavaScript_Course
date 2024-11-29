@@ -26,5 +26,8 @@ export default class SearchController extends Controller {
     this.eventBus.publish(`searched`, prompt, response);
   }
 
-  init = () => this.#view.onSearch(this.handler(this.#controlSearch.bind(this)));
+  init() {
+    this.#model.initSearchHistory();
+    this.#view.onSearch(this.handler(this.#controlSearch.bind(this)));
+  }
 }

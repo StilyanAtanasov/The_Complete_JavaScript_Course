@@ -12,7 +12,11 @@ export default class ShoppingListModel extends ResultsModel {
 
       for (const product of newProducts) {
         const { description, quantity, unit } = product;
-        const existingProduct = shoppingList.find(item => item.description === description);
+        let existingProduct = shoppingList.find(item => item.description === description && (!item.unit || item.unit === unit));
+
+        if (!existingProduct) {
+          existingProduct = shoppingList.find(item => item.description === description);
+        }
 
         if (!existingProduct) {
           shoppingList.push({ description, quantity, unit });
@@ -24,10 +28,8 @@ export default class ShoppingListModel extends ResultsModel {
           continue;
         }
 
-        const tryConvert = unitMap[existingProduct.unit][unit];
-        const convert = tryConvert ? tryConvert : unitMap[existingProduct.unit][unitAbbreviation[unit]];
-
-        existingProduct && convert ? (existingProduct.quantity += quantity * convert) : shoppingList.push({ description, quantity, unit });
+        const tryConvert = unitMap[existingProduct.unit]?.[unit] || unitMap[existingProduct.unit]?.[unitAbbreviation[unit]];
+        tryConvert ? (existingProduct.quantity += quantity * tryConvert) : shoppingList.push({ description, quantity, unit });
       }
 
       this.updateShoppingList(shoppingList);

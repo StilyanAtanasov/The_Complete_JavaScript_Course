@@ -84,8 +84,9 @@
 
   &__row {
     display: flex;
-    gap: 2rem;
     justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
     width: 100%;
   }
 

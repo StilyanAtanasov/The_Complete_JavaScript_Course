@@ -129,9 +129,22 @@
       position: absolute;
       top: 3rem;
       right: 3rem;
-      width: 3rem;
-      height: 3rem;
       cursor: pointer;
+      border-radius: 100%;
+      padding: 1.3rem;
+      background: base.$gradient;
+      display: flex;
+      transition: all 250ms;
+
+      & svg {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+
+      &:hover {
+        scale: 1.1;
+        background: linear-gradient(to right bottom, base.$color-grad-1, base.$color-grad-1);
+      }
     }
   }
 
