@@ -42,23 +42,15 @@ export default class RecipeModel extends Model {
       const data = await response.json();
       if (!data) throw new Error();
 
-      const recipe = data.data.data.recipe;
-      const recipeData = {
-        title: recipe.title,
-        id: recipe.id,
-        imageUrl: recipe.image_url,
-        cookingTime: recipe.cooking_time,
-        servings: recipe.servings,
-        ingredients: recipe.ingredients,
-        publisher: recipe.publisher,
-        sourceUrl: recipe.source_url,
-      };
+      const recipe = data.data;
+      console.log(recipe);
 
-      this.appState.updateState(`currentRecipe`, recipeData);
-      this.updateHistory(recipeData);
+      this.appState.updateState(`currentRecipe`, recipe);
+      this.updateHistory(recipe);
 
-      return recipeData;
+      return recipe;
     } catch (err) {
+      console.log(err);
       throw new Error(`Error finding desired recipe!`);
     }
   }

@@ -48,7 +48,7 @@ export default class RecipeView extends View {
               </div>
             </li>`;
 
-  recipeMarkup = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, isBookmarked) => `
+  recipeMarkup = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, custom, isBookmarked) => `
         <div class="return-back-btn">
           <svg>
             <use href="${this.icons}#icon-arrow-left" />
@@ -90,16 +90,22 @@ export default class RecipeView extends View {
             </div>
           </div>
 
-          <div class="recipe__user-generated">
-            <svg>
-              <use href="${this.icons}#icon-check" />
-            </svg>
-          </div>
+          <div class="recipe__details-right-btns">
+          ${
+            !custom
+              ? `<div class="recipe__verified">
+                   <svg>
+                    <use href="${this.icons}#icon-check" />
+                   </svg>
+                 </div>`
+              : ``
+          }
           <button class="btn--round bookmark-btn">
             <svg>
               <use href="${this.icons}#icon-bookmark${isBookmarked ? `-fill` : ``}" />
             </svg>
           </button>
+          </div>
         </div>
 
         <div class="recipe__ingredients">
@@ -126,9 +132,9 @@ export default class RecipeView extends View {
           </a>
         </div>`;
 
-  renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, isBookmarked = false) {
+  renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, custom, isBookmarked = false) {
     this.UIEls.recipe.container.innerHTML = ``;
-    this.render(RecipeView.location, this.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, isBookmarked));
+    this.render(RecipeView.location, this.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, custom, isBookmarked));
   }
 
   removeCurrentRecipe = () => (this.UIEls.recipe.container.innerHTML = ``);

@@ -26,8 +26,8 @@ export default class ResultsController extends Controller {
     const stored = this.#model.checkHistory(recipeId);
     const recipe = stored !== false ? stored : await this.#model.fetchRecipe(recipeId);
 
-    const { id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl } = recipe;
-    this.#view.renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, this.#isBookmarked(id));
+    const { id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, custom } = recipe;
+    this.#view.renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, custom, this.#isBookmarked(id));
 
     this.#view.onReturnBack(() => this.#controlSlideRecipe(false));
 
@@ -36,8 +36,8 @@ export default class ResultsController extends Controller {
     this.#view.onUpdateServings(
       function (arg) {
         this.#model.updateServings(arg);
-        const { title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl } = this.getState(`currentRecipe`);
-        this.#view.update(this.#view.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl));
+        const { title, cookingTime, imageUrl, ingredients, publisher, servings, custom, sourceUrl } = this.getState(`currentRecipe`);
+        this.#view.update(this.#view.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, custom));
       }.bind(this)
     );
 

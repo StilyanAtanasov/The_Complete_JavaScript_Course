@@ -18,11 +18,19 @@ async function searchRecipes(event) {
 
     const data = await request(`${API_URL}?search=${searchQuery}&key=${API_KEY}`);
 
+    const filtered = data.data.recipes.map(({ id, image_url, key, publisher, title }) => ({
+      id,
+      image_url,
+      custom: key ? true : false,
+      publisher,
+      title,
+    }));
+
     return {
       statusCode: 200,
       body: JSON.stringify({
         message: `Search successful!`,
-        data,
+        data: filtered,
       }),
     };
   } catch (err) {

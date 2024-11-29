@@ -20,8 +20,8 @@ export default class ResultsView extends View {
                 <h4 class="preview__title">${title}</h4>
                 <p class="preview__publisher">${publisher}</p>
                 ${
-                  custom
-                    ? `<div class="preview__user-generated">
+                  !custom
+                    ? `<div class="preview__verified">
                   <svg>
                     <use href="${this.icons}#icon-check" />
                   </svg>
@@ -48,14 +48,7 @@ export default class ResultsView extends View {
   renderResults(results, start, end) {
     for (let i = start; i <= end; i++) {
       const result = results[i];
-      let custom = false;
-
-      if (result.title.includes(`**custom**`)) {
-        custom === true;
-        result.title = result.title.replaceAll(`**custom**`, ``); // Potential BUG
-      }
-
-      this.render(this.UIEls.results.resultsList, this.previewMarkup(result.id, result.image_url, result.title, result.publisher, custom), `beforeend`);
+      this.render(this.UIEls.results.resultsList, this.previewMarkup(result.id, result.image_url, result.title, result.publisher, result.custom), `beforeend`);
     }
   }
 

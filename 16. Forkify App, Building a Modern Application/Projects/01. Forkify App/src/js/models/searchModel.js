@@ -12,7 +12,6 @@ export default class SearchModel extends Model {
     if (!prompt || typeof prompt !== `string`) throw new Error(`Invalid search query!`);
 
     const formatted = prompt.toLowerCase();
-    console.log(formatted);
 
     const minLength = PROMPT_MIN_LENGTH;
     const hasValidLength = formatted.length >= minLength;
@@ -62,7 +61,8 @@ export default class SearchModel extends Model {
       const data = await response.json();
       if (!data) throw new Error();
 
-      const recipes = data.data.data.recipes;
+      const recipes = data.data;
+
       if (recipes.length === 0) return null; // FIX
 
       this.updateHistory(searchPrompt, recipes);
