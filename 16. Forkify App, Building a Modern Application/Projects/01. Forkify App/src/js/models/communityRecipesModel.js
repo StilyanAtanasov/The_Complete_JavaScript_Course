@@ -23,8 +23,6 @@ export default class CommunityRecipesModel extends ResultsModel {
     try {
       const response = await requestMultipleQueries(getRadomQueries(COMMUNITY_MAX_TOPICS, popularQueries));
 
-      console.log(response);
-
       const recipes = response
         .filter(result => result.status === "fulfilled" && result.value?.data?.data?.recipes)
         .flatMap(result => result.value.data.data.recipes)

@@ -15,7 +15,8 @@ export default class SearchView extends View {
       handler();
     });
 
-  updateTitle = () => this.updateText(this.UIEls.results.title, `Searching...`);
+  updateTitle = title => title && this.updateText(this.UIEls.results.title, title);
+  hideSpinner = () => this.remove(this.UIEls.results.container, `.spinner`);
 
   showSpinner = () => this.renderSpinner(this.UIEls.results.title);
   removeCurrentResults() {

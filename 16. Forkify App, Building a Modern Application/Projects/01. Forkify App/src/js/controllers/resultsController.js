@@ -28,7 +28,7 @@ export default class ResultsController extends Controller {
         }.bind(this)
       );
 
-      this.#view.onResultClick(this.handler(() => this.eventBus.publish(`RecipeSlideIn`, null))); // FIX
+      this.#view.onResultClick(this.handler((title => title === this.getState(`currentRecipe`).title && this.eventBus.publish(`RecipeSlideIn`, null)).bind(this)));
     } catch (err) {
       console.log(err.message);
       throw new Error(`Error updating results!`);

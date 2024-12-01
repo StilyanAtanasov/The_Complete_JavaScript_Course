@@ -11,21 +11,24 @@ async function getRecipeById(event) {
 
   try {
     const recipeId = JSON.parse(event.body).id;
-    if (!recipeId) throw new Error(`Invalid recpice id!`);
+    if (!recipeId) throw new Error(`Invalid recipe id!`);
 
     const data = await request(`${API_URL}/${recipeId}`);
 
     const { title, id, image_url, cooking_time, servings, ingredients, publisher, source_url, key } = data.data.recipe;
+    const ingredientsOnly = ingredients.filter(i => !i.description.includes(`**directions**`));
+    const directions = ingredients.find(i => i.description.includes(`**directions**`))?.description.replaceAll(`**directions**`, ``);
     const filtered = {
       title,
       id,
       imageUrl: image_url,
       cookingTime: cooking_time,
       servings,
-      ingredients,
+      ingredients: ingredientsOnly,
       publisher,
       sourceUrl: source_url,
-      custom: key ? true : false,
+      verified: key ? false : true,
+      directions: directions || null,
     };
 
     return {

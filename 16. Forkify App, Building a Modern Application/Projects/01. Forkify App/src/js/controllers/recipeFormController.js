@@ -23,7 +23,7 @@ export default class RecipeFormController extends Controller {
   }
 
   #controlUploadRecipe(data) {
-    const recipe = this.#model.submitRecipe(this.#model.createRecipe(data));
+    this.#model.submitRecipe(this.#model.createRecipe(data));
     this.#controlCloseForm();
   }
 

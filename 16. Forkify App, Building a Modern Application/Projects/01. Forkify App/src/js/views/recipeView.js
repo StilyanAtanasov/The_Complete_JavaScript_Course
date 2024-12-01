@@ -10,8 +10,6 @@ export default class RecipeView extends View {
 
   showSpinner = () => this.renderSpinner(this.UIEls.recipe.container, `afterBegin`);
 
-  onHashChange = handler => [`hashchange`, `load`].forEach(e => window.addEventListener(e, () => handler(window.location.hash)));
-
   onBookmark = handler =>
     document.querySelector(`.bookmark-btn`).addEventListener(
       `click`,
@@ -34,21 +32,38 @@ export default class RecipeView extends View {
 
   onAddAllProducts = handler => document.querySelector(`.add-all-products-btn`).addEventListener(`click`, () => handler());
 
+  onAddProduct = handler =>
+    document.querySelector(`.recipe__ingredients`).addEventListener(`click`, function (e) {
+      const target = e.target.closest(`.recipe__ingredient`);
+      if (!target) return;
+
+      const quantity = target.querySelector(`.recipe__ingredient--quantity`).textContent.trim() || ``;
+      const unit = target.querySelector(`.recipe__ingredient--unit`).textContent.trim() || ``;
+      const description = target.querySelector(`.recipe__ingredient--name`).textContent.trim();
+
+      handler(quantity, unit, description);
+    });
+
   onReturnBack = handler => document.querySelector(`.return-back-btn`).addEventListener(`click`, () => handler());
 
-  ingredientMarkup = (ingredient, quantity, unit) => `<li class="recipe__ingredient">
-              <svg class="recipe__icon">
+  ingredientMarkup = (ingredient, quantity, unit) => `
+            <li class="recipe__ingredient">
+              <svg class="recipe__ingredient--icon">
                 <use href="${this.icons}#icon-check" />
               </svg>
-              
-              <div class="recipe__description">
-              ${quantity ? `<div class="recipe__quantity">${formatFraction(quantity)}</div>` : ``}
-                <span class="recipe__unit">${unit}</span>
-                ${ingredient}
+              <div class="recipe__ingredient--description">
+              <div class="recipe__ingredient--quantity">${quantity ? formatFraction(quantity) : ``}</div>
+                <span class="recipe__ingredient--unit">${unit}</span>
+                <span class="recipe__ingredient--name"> ${ingredient}</span>
               </div>
+              <button class="btn--tiny">
+                <svg>
+                  <use href="${this.icons}#icon-plus-circle" />
+                </svg>
+              </button>
             </li>`;
 
-  recipeMarkup = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, custom, isBookmarked) => `
+  recipeMarkup = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked) => `
         <div class="return-back-btn">
           <svg>
             <use href="${this.icons}#icon-arrow-left" />
@@ -92,7 +107,7 @@ export default class RecipeView extends View {
 
           <div class="recipe__details-right-btns">
           ${
-            !custom
+            verified
               ? `<div class="recipe__verified">
                    <svg>
                     <use href="${this.icons}#icon-check" />
@@ -121,8 +136,11 @@ export default class RecipeView extends View {
         <div class="recipe__directions">
           <h2 class="heading--2">How to cook it</h2>
           <p class="recipe__directions-text">
-            This recipe was carefully designed and tested by
-            <span class="recipe__publisher">${publisher}</span>. Please check out directions at their website.
+          ${
+            directions ||
+            `This recipe was carefully designed and tested by
+            <span class="recipe__publisher">${publisher}</span>. Please check out directions at their website.`
+          }
           </p>
           <a class="btn--small recipe__btn" href="${sourceUrl}" target="_blank">
             <span>Directions</span>
@@ -132,9 +150,10 @@ export default class RecipeView extends View {
           </a>
         </div>`;
 
-  renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, custom, isBookmarked = false) {
+  renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked = false) {
     this.UIEls.recipe.container.innerHTML = ``;
-    this.render(RecipeView.location, this.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, custom, isBookmarked));
+    this.render(RecipeView.location, this.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked));
+    this.UIEls.recipe.container.style.minHeight = window.getComputedStyle(this.UIEls.results.container).height;
   }
 
   removeCurrentRecipe = () => (this.UIEls.recipe.container.innerHTML = ``);
@@ -149,5 +168,6 @@ export default class RecipeView extends View {
   }
 
   slideIn = () => RecipeView.location.classList.add(`slide-in`);
+
   slideOut = () => RecipeView.location.classList.remove(`slide-in`);
 }

@@ -18,8 +18,10 @@ export default class View {
     element && container.removeChild(element);
   }
 
-  notificationMarkup = (message, error = false) => `
-  <div class="notification ${error ? `error` : ``}">
+  generateUniqueId = () => `id-${Date.now()}`;
+
+  notificationMarkup = (message, id, error = false) => `
+  <div class="notification ${id} ${error ? `error` : ``}">
     <p>${message}</p>
   </div>`;
 
@@ -49,15 +51,10 @@ export default class View {
   }
 
   renderNotification(message, milliseconds, isError = false) {
-    this.render(document.body, this.notificationMarkup(message, isError), `afterBegin`);
-    setTimeout(function () {
-      const notifications = document.getElementsByClassName(`notification`);
-      Array.from(notifications).forEach(function (n) {
-        if (n.querySelector(`p`).textContent === message) {
-          document.body.removeChild(n);
-          return;
-        }
-      });
-    }, milliseconds);
+    const id = this.generateUniqueId();
+    this.render(document.body, this.notificationMarkup(message, id, isError), `afterBegin`);
+    const notification = document.querySelector(`.notification.${id}`);
+    notification.style.animation = `notification ${Math.round(milliseconds / 1000)}s forwards`;
+    setTimeout(() => notification && document.body.removeChild(notification), milliseconds);
   }
 }

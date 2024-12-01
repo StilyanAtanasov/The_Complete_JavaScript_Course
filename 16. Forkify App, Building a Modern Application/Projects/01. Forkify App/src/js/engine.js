@@ -8,6 +8,8 @@ import CommunityRecipesController from "./controllers/communityRecipesController
 import NavController from "./controllers/navController";
 import RecipeFormController from "./controllers/recipeFormController";
 import ShoppingListController from "./controllers/shoppingListController";
+import LocationController from "./controllers/locationController";
+import VerifyController from "./controllers/verifyController";
 
 export default class Engine {
   #appState;
@@ -16,6 +18,7 @@ export default class Engine {
   #recipeController;
   #bookmarksController;
   #navController;
+  #locationController;
 
   constructor() {
     this.#appState = new AppState();
@@ -24,14 +27,17 @@ export default class Engine {
     this.#feedResultsController = new FeedResultsController(this.#appState);
     this.#bookmarksController = new BookmarksController(this.#appState);
     this.#navController = new NavController(this.#appState);
+    this.#locationController = new LocationController(this.#appState);
 
     new SearchResultsController(this.#appState);
     new CommunityRecipesController(this.#appState);
     new RecipeFormController(this.#appState);
     new ShoppingListController(this.#appState);
+    new VerifyController(this.#appState);
   }
 
   start() {
+    this.#locationController.init();
     this.#searchController.init();
     this.#recipeController.init();
     this.#feedResultsController.init();

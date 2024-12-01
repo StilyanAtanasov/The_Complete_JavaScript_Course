@@ -24,6 +24,20 @@ export default class RecipeModel extends Model {
     this.syncLocalStorage(newHistory.getQueue());
   }
 
+  updateCurrentRecipe = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, custom, directions, isBookmarked) =>
+    this.appState.updateState(`currentRecipe`, {
+      title,
+      cookingTime,
+      imageUrl,
+      ingredients,
+      publisher,
+      servings,
+      sourceUrl,
+      custom,
+      isBookmarked,
+      directions,
+    });
+
   async fetchRecipe(id) {
     try {
       const response = await Promise.race([

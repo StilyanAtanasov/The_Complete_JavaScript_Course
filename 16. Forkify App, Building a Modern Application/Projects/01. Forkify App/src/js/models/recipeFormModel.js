@@ -23,6 +23,7 @@ export default class RecipeFormModel extends Model {
     try {
       const ingredients = [];
       const recipe = { ...Object.fromEntries([...data]), source_url: `no-source` };
+      console.log(recipe);
 
       for (const key in recipe) {
         if (key.startsWith(`ingredient`)) {
@@ -32,14 +33,16 @@ export default class RecipeFormModel extends Model {
           if (!ingredients[ingredientIndex]) ingredients[ingredientIndex] = { description: ``, quantity: ``, unit: `` };
 
           if (field === `name`) ingredients[ingredientIndex].description = recipe[key];
-          if (field === `quantity`) ingredients[ingredientIndex].quantity = recipe[key];
-          if (field === `unit`) ingredients[ingredientIndex].unit = recipe[key];
+          else if (field === `quantity`) ingredients[ingredientIndex].quantity = recipe[key];
+          else if (field === `unit`) ingredients[ingredientIndex].unit = recipe[key];
 
+          delete recipe[key];
+        } else if (key === `cooking__directions`) {
+          ingredients.push({ description: `**directions** ${recipe[key]}`, quantity: ``, unit: `` });
           delete recipe[key];
         }
       }
 
-      if (!recipe.title.includes(`**custom**`)) recipe.title = `**custom** ${recipe.title}`;
       recipe.ingredients = ingredients;
       return recipe;
     } catch {

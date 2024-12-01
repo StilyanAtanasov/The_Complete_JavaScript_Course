@@ -15,6 +15,8 @@ export default class NavController extends Controller {
   }
 
   #controlNav(page) {
+    if (page === this.getState(`currentPage`)) return;
+
     this.#model.updateCurrentPage(page);
     this.eventBus.publish(`Open${page}`, null);
     this.eventBus.publish(`RecipeSlideOut`, null);

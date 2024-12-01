@@ -122,7 +122,7 @@
 
 .btn--tiny {
   height: 2rem;
-  width: 2rem;
+  max-width: 2rem;
   border: none;
   background: none;
   cursor: pointer;
@@ -234,17 +234,18 @@
   top: 3rem;
   left: 50%;
   transform: translateX(-50%);
+  text-align: center;
+  max-width: 45vw;
   border: 2px solid base.$color-primary;
-  border-radius: 20px;
-  color: base.$color-grey-light-2;
-  background-color: base.$color-grey-dark-2;
+  border-radius: 50px;
+  color: base.$color-contrast;
+  background: base.$gradient-2;
   font-size: 2.3rem;
   font-weight: 700;
   padding: 1.5rem 7rem;
-  animation: notification 6s forwards;
 
   &.error {
-    border: 2px solid base.$color-error;
+    border: 3px solid base.$color-error;
   }
 }
 

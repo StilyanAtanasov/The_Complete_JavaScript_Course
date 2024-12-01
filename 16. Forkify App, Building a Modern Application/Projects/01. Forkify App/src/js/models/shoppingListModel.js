@@ -6,6 +6,8 @@ export default class ShoppingListModel extends ResultsModel {
     super(appState);
   }
 
+  hasProducts = list => list.length > 0;
+
   addProducts(newProducts) {
     try {
       const shoppingList = this.appState.getState(`shoppingList`);

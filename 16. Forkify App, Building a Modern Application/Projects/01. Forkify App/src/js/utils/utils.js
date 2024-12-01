@@ -41,6 +41,8 @@ export const unitAbbreviation = {
 for (const [fullName, shortForm] of Object.entries(unitAbbreviation)) unitMap[fullName] = unitMap[shortForm];
 
 function gcd(a, b) {
+  if (!a || !b) return NaN;
+
   while (b !== 0) {
     let temp = b;
     b = a % b;
@@ -64,6 +66,7 @@ export function getPageBounds(page, pageLimit, totalResults) {
 
 export function formatFraction(number) {
   const fraction = fracty(number);
+  if (fraction.includes(`is not a number`)) return number;
   if (!fraction.includes(`/`)) return fraction;
 
   const [wholePart, fractionalPart] = fraction.includes(` `) ? fraction.split(` `) : [null, fraction];

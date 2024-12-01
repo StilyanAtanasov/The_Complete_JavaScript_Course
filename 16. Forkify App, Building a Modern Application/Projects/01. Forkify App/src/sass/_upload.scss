@@ -80,6 +80,11 @@
         background-color: base.$color-grey-light-1;
       }
     }
+
+    & .cooking__directions {
+      width: 70%;
+      height: 8rem;
+    }
   }
 
   &__row {

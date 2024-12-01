@@ -21,7 +21,10 @@ export default class BookmarksController extends ResultsController {
     this.#view.updateTitle();
     const response = this.#model.searchBookmarks();
 
-    if (!response) return; // FIX
+    if (!response) {
+      this.#view.renderNotification(`No bookmarks found!`, 4000);
+      return;
+    }
 
     const { results, currentPage, totalPages } = this.#model.buildResultsData(response);
 

@@ -17,6 +17,11 @@ export default class SearchResultsController extends ResultsController {
     this.#view.updateTitle(prompt);
     this.#view.hideSpinner();
 
+    if (!response) {
+      this.#view.renderNotification(`No results found!`, 4000);
+      return;
+    }
+
     const { results, currentPage, totalPages } = this.#model.buildResultsData(response);
 
     this.updateResults(results, currentPage, totalPages);

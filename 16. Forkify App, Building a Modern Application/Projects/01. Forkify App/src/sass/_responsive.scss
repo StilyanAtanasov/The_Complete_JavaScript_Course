@@ -18,6 +18,25 @@
   }
 }
 
+@media (min-width: 800px) {
+  ::-webkit-scrollbar {
+    width: 10px;
+
+    &-track {
+      background-color: transparent;
+    }
+
+    &-thumb {
+      background: base.$color-grey-dark-1;
+      border-radius: 10px;
+
+      &:hover {
+        background: darken(base.$color-grey-dark-1, 15%);
+      }
+    }
+  }
+}
+
 @media (max-width: 1450px) {
   .container {
     max-width: 90vw;
@@ -73,12 +92,15 @@
   html {
     font-size: 9px;
     overflow: hidden;
-    height: 100%;
+    min-height: 100vh;
+    overflow-y: scroll;
   }
 
   .body {
-    overflow-y: scroll;
     height: 100%;
+    position: absolute;
+    min-height: auto;
+    width: 100vw;
   }
 
   .container {
@@ -92,9 +114,11 @@
     top: 10rem;
     left: 0;
     transform: translateX(150vw);
+    scale: 0;
+    min-height: calc(100vh - 10rem);
 
     &.slide-in {
-      transform: translateX(0);
+      animation: slide-scale 400ms forwards;
     }
 
     & .return-back-btn {
@@ -150,6 +174,16 @@
     & .upload__btn {
       width: auto;
     }
+
+    & .cooking__directions {
+      width: 100%;
+    }
+  }
+
+  .notification {
+    min-width: 70vw;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
@@ -198,5 +232,20 @@
     &__info {
       font-size: 1.3rem;
     }
+  }
+}
+
+@keyframes slide-scale {
+  0% {
+    scale: 0;
+    transform: translateX(150vw);
+  }
+  67% {
+    scale: 0.6;
+    transform: translateX(150vw);
+  }
+  100% {
+    scale: 1;
+    transform: translateX(0);
   }
 }

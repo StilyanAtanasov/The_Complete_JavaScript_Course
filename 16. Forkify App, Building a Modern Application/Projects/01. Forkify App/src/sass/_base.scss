@@ -1,6 +1,7 @@
 $color-primary: #f38e82;
 $color-grad-1: #fbdb89;
 $color-grad-2: #f48982;
+$color-contrast: #a03527;
 
 $color-grey-light-1: #f9f5f3; // Light background
 $color-grey-light-2: #f2efee; // Light lines
@@ -10,6 +11,7 @@ $color-grey-dark-2: #918581; // Lighter text
 $color-error: rgb(235, 47, 47);
 
 $gradient: linear-gradient(to right bottom, $color-grad-1, $color-grad-2);
+$gradient-2: linear-gradient(to right bottom, $color-grad-1, darken($color-grad-1, 25%));
 
 * {
   margin: 0;
@@ -25,19 +27,6 @@ $gradient: linear-gradient(to right bottom, $color-grad-1, $color-grad-2);
 html {
   box-sizing: border-box;
   font-size: 10px;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: $color-grey-dark-1;
-  border-radius: 10px;
-
-  &:hover {
-    background: darken($color-grey-dark-1, 10%);
-  }
 }
 
 .body {

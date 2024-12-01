@@ -77,7 +77,10 @@ export default class ResultsView extends View {
     ResultsView.#resultsClickClaback = function (e) {
       const target = e.target.closest(`.preview__link`);
       if (!target) return;
-      handler();
+      const title = target.querySelector(`.preview__title`);
+      if (!title) return;
+
+      handler(title.textContent);
     };
 
     ResultsView.location.addEventListener(`click`, ResultsView.#resultsClickClaback);

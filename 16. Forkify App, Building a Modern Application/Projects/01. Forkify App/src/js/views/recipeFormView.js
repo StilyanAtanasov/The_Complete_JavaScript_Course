@@ -15,8 +15,8 @@ export default class RecipeFormView extends View {
       const target = e.target.closest(`.upload__btn`);
       if (!target) return;
 
+      console.log(new FormData(document.querySelector(`.upload`)));
       if (!document.querySelector(`.upload`).reportValidity()) return;
-
       handler(new FormData(document.querySelector(`.upload`)));
     });
 
@@ -74,6 +74,11 @@ export default class RecipeFormView extends View {
           </svg>
           <p>Add Ingredient</p>
         </div>
+        </section>
+
+        <h3 class="upload__heading">Directions</h3>
+        <section class="upload__column">
+        <textarea name="cooking__directions" class="cooking__directions" placeholder=" Write recipe directions here." required maxlength="5000"></textarea>
         </section>
       </form>
       <button class="btn upload__btn">
