@@ -1,5 +1,5 @@
 import Model from "./model";
-import { MAX_INGREDIENTS_COUNT } from "../config/config";
+import { MAX_INGREDIENTS_COUNT, MIN_INGREDIENTS_COUNT } from "../config/config";
 import { timeout } from "../utils/utils";
 
 export default class RecipeFormModel extends Model {
@@ -17,6 +17,13 @@ export default class RecipeFormModel extends Model {
     } catch (err) {
       throw new Error(err.message);
     }
+  }
+
+  removeIngredient() {
+    const currentIngredientsCount = +this.appState.getState(`uploadRecipe.ingredientsCount`);
+    if (currentIngredientsCount === MIN_INGREDIENTS_COUNT) throw new Error(`Recipe must have at least ${MIN_INGREDIENTS_COUNT} ingredient!`);
+
+    this.appState.updateState(`uploadRecipe.ingredientsCount`, currentIngredientsCount - 1);
   }
 
   createRecipe(data) {

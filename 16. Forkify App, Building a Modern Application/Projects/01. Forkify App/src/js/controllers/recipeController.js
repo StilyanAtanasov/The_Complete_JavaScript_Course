@@ -22,7 +22,7 @@ export default class ResultsController extends Controller {
     if (!id) return;
     const stored = this.#model.checkHistory(id);
     const recipe = stored ? stored : await this.#model.fetchRecipe(id);
-    console.log(sender, recipe, stored);
+
     if (sender) this.eventBus.publish(sender, recipe);
     else return recipe;
   }

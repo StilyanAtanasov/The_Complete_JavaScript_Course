@@ -27,13 +27,34 @@ export default class RecipeFormView extends View {
       handler();
     });
 
+  onRemoveIngredient = handler =>
+    document.querySelector(`#upload__ingredients`).addEventListener(`click`, function (e) {
+      const target = e.target;
+      if (!target.classList.contains(`btn--remove-ingredient`)) return;
+      const ingredientEl = target.closest(`.upload__ingredient`);
+      if (!ingredientEl) return;
+
+      handler(ingredientEl);
+    });
+
   overlayMarkup = () => `<div class="overlay"></div>`;
 
-  ingredientMarkup = number => `<label>Ingredient ${number}</label>
-          <div class="upload__row">
-          <input type="text" name="ingredient-${number}-quantity" placeholder="Quantity (Optional)" maxlength="8"/>
-          <input type="text" name="ingredient-${number}-unit" placeholder="Unit (Optional)" maxlength="10" />
-          <input type="text" required name="ingredient-${number}-name" placeholder="Ingredient Name" minlength="2"  maxlength="120" />
+  directionMarkup = number => `
+            <label>Step ${number}</label>
+            <div class="upload__row">
+              <button class="btn--remove-ingredient">&times;</button>
+              <textarea name="cooking__directions" class="cooking__directions" placeholder=" Write recipe directions here." required maxlength="5000"></textarea>
+            </div>`;
+
+  ingredientMarkup = number => `
+          <div class="upload__ingredient">
+            <label>Ingredient ${number}</label>
+            <div class="upload__row">
+            <button class="btn--remove-ingredient">&times;</button>
+              <input type="text" name="ingredient-${number}-quantity" placeholder="Quantity (Optional)" maxlength="8"/>
+              <input type="text" name="ingredient-${number}-unit" placeholder="Unit (Optional)" maxlength="10" />
+              <input type="text" required name="ingredient-${number}-name" placeholder="Ingredient Name" minlength="2"  maxlength="120" />
+            </div>
           </div>`;
 
   formMarkup = () => `<div class="add-recipe-window">
@@ -66,7 +87,7 @@ export default class RecipeFormView extends View {
         </section>
 
         <h3 class="upload__heading">Ingredients</h3>
-        <section class="upload__column">
+        <section id="upload__ingredients" class="upload__column">
         ${this.ingredientMarkup(1)}
         <div id="add-ingredient-btn" class="add-btn slim">
           <svg>
@@ -90,6 +111,10 @@ export default class RecipeFormView extends View {
     </div>`;
 
   addIngredient = number => this.render(document.querySelector(`#add-ingredient-btn`), this.ingredientMarkup(number), `beforeBegin`);
+
+  removeElement = target => document.querySelector(`#upload__ingredients`).removeChild(target);
+
+  removeAddIngredientsBtn = () => this.removeElement(document.querySelector(`#add-ingredient-btn`));
 
   renderForm() {
     this.render(document.body, this.formMarkup(), `beforeEnd`);

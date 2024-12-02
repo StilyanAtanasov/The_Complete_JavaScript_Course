@@ -20,6 +20,7 @@ export default class RecipeFormController extends Controller {
     this.#view.onCloseForm(this.handler(this.#controlCloseForm.bind(this)));
     this.#view.onSubmit(this.handler(this.#controlUploadRecipe.bind(this)));
     this.#view.onAddIngredient(this.handler(this.#controlAddIngredient.bind(this)));
+    this.#view.onRemoveIngredient(this.handler(this.#controlRemoveIngredient.bind(this)));
   }
 
   #controlUploadRecipe(data) {
@@ -30,4 +31,9 @@ export default class RecipeFormController extends Controller {
   #controlCloseForm = () => this.#view.removeForm();
 
   #controlAddIngredient = () => this.#model.updateIngredientsCount(1) && this.#view.addIngredient(this.getState(`uploadRecipe.ingredientsCount`));
+
+  #controlRemoveIngredient(target) {
+    this.#model.removeIngredient();
+    this.#view.removeElement(target);
+  }
 }
