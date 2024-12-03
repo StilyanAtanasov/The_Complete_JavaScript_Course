@@ -32,7 +32,6 @@ export default class SearchResultsController extends ResultsController {
   }
 
   #controlSortResults(results, currentPage, totalPages, index = this.getState(`results.currentSort`) + 1) {
-    console.log(11);
     const { name: sortMessage, func: sortFunc } = this.#model.getSortFunction(index);
 
     this.#view.removeCurrentPreviews();

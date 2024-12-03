@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "base";
 
 @media (min-width: 2560px) {
@@ -31,7 +32,7 @@
       border-radius: 10px;
 
       &:hover {
-        background: darken(base.$color-grey-dark-1, 15%);
+        background: color.adjust(base.$color-grey-dark-1, $lightness: -15%, $space: hsl);
       }
     }
   }

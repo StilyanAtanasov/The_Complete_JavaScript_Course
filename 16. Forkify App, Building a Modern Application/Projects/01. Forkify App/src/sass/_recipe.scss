@@ -101,7 +101,7 @@
   }
 
   &__verified {
-    background: darken(base.$color-grey-light-2, 2%);
+    background: color.adjust(base.$color-grey-light-2, $lightness: -2%, $space: hsl);
     display: flex;
     align-items: center;
     justify-content: center;

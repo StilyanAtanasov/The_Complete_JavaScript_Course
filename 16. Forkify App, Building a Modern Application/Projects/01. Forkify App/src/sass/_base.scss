@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $color-primary: #f38e82;
 $color-grad-1: #fbdb89;
 $color-grad-2: #f48982;
@@ -11,7 +13,7 @@ $color-grey-dark-2: #918581; // Lighter text
 $color-error: rgb(235, 47, 47);
 
 $gradient: linear-gradient(to right bottom, $color-grad-1, $color-grad-2);
-$gradient-2: linear-gradient(to right bottom, $color-grad-1, darken($color-grad-1, 25%));
+$gradient-2: linear-gradient(to right bottom, $color-grad-1, color.adjust($color-grad-1, $lightness: -25%));
 
 * {
   margin: 0;

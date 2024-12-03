@@ -21,17 +21,18 @@ export default class ShoppingListModel extends ResultsModel {
         }
 
         if (!existingProduct) {
-          shoppingList.push({ description, quantity, unit });
+          shoppingList.push({ description, quantity: +quantity, unit });
           continue;
         }
 
         if (!existingProduct.unit) {
-          existingProduct.quantity += quantity;
+          existingProduct.quantity += +quantity;
           continue;
         }
-
+        console.log(unitMap[existingProduct.unit], unit);
+        console.log(unitAbbreviation[unit]);
         const tryConvert = unitMap[existingProduct.unit]?.[unit] || unitMap[existingProduct.unit]?.[unitAbbreviation[unit]];
-        tryConvert ? (existingProduct.quantity += quantity * tryConvert) : shoppingList.push({ description, quantity, unit });
+        tryConvert ? (existingProduct.quantity += +quantity * tryConvert) : shoppingList.push({ description, quantity, unit });
       }
 
       this.updateShoppingList(shoppingList);

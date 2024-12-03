@@ -35,7 +35,6 @@ export const unitAbbreviation = {
   tablespoons: `tbsp`,
   tbsps: `tbsp`,
   cup: `cups`,
-  cups: `cups`,
 };
 
 for (const [fullName, shortForm] of Object.entries(unitAbbreviation)) unitMap[fullName] = unitMap[shortForm];
@@ -66,7 +65,7 @@ export function getPageBounds(page, pageLimit, totalResults) {
 
 export function formatFraction(number) {
   const fraction = fracty(number);
-  if (fraction.includes(`is not a number`)) return number;
+  if (typeof fraction !== `number`) return number;
   if (!fraction.includes(`/`)) return fraction;
 
   const [wholePart, fractionalPart] = fraction.includes(` `) ? fraction.split(` `) : [null, fraction];
