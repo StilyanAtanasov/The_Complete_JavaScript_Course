@@ -29,6 +29,7 @@ export default class RecipeFormView extends View {
 
   onRemoveIngredient = handler =>
     document.querySelector(`#upload__ingredients`).addEventListener(`click`, function (e) {
+      e.preventDefault();
       const target = e.target;
       if (!target.classList.contains(`btn--remove-ingredient`)) return;
       const ingredientEl = target.closest(`.upload__ingredient`);
@@ -114,7 +115,12 @@ export default class RecipeFormView extends View {
 
   removeElement = target => document.querySelector(`#upload__ingredients`).removeChild(target);
 
-  removeAddIngredientsBtn = () => this.removeElement(document.querySelector(`#add-ingredient-btn`));
+  toggleAddIngredientsBtn = force => document.querySelector(`#add-ingredient-btn`).classList.toggle(`hidden`, force);
+
+  shiftIngredientsIndexes() {
+    const ingredients = document.querySelectorAll(`.upload__ingredient`);
+    for (let i = 0; i < ingredients.length; ) ingredients[i].querySelector(`label`).textContent = `Ingredient ${++i}`;
+  }
 
   renderForm() {
     this.render(document.body, this.formMarkup(), `beforeEnd`);

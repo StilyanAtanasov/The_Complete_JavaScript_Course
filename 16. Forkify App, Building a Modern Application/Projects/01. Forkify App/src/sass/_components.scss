@@ -211,6 +211,11 @@
     width: 55%;
   }
 
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
   &:hover {
     background-color: base.$color-grey-light-2;
     color: base.$color-grad-2;

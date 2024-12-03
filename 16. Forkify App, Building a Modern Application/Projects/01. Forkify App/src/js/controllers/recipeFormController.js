@@ -30,10 +30,14 @@ export default class RecipeFormController extends Controller {
 
   #controlCloseForm = () => this.#view.removeForm();
 
-  #controlAddIngredient = () => this.#model.updateIngredientsCount(1) && this.#view.addIngredient(this.getState(`uploadRecipe.ingredientsCount`));
+  #controlAddIngredient() {
+    if (this.#model.updateIngredientsCount(1)) this.#view.toggleAddIngredientsBtn(true);
+    this.#view.addIngredient(this.getState(`uploadRecipe.ingredientsCount`));
+  }
 
   #controlRemoveIngredient(target) {
-    this.#model.removeIngredient();
+    if (this.#model.removeIngredient()) this.#view.toggleAddIngredientsBtn(false);
     this.#view.removeElement(target);
+    this.#view.shiftIngredientsIndexes();
   }
 }

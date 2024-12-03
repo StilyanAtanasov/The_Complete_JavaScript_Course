@@ -13,7 +13,7 @@ export default class RecipeFormModel extends Model {
       if (newIngredientsCount > MAX_INGREDIENTS_COUNT) throw new Error(`Recipe could consist of maximum ${MAX_INGREDIENTS_COUNT} ingredients`);
 
       this.appState.updateState(`uploadRecipe.ingredientsCount`, newIngredientsCount);
-      return true;
+      return newIngredientsCount === MAX_INGREDIENTS_COUNT;
     } catch (err) {
       throw new Error(err.message);
     }
@@ -24,6 +24,7 @@ export default class RecipeFormModel extends Model {
     if (currentIngredientsCount === MIN_INGREDIENTS_COUNT) throw new Error(`Recipe must have at least ${MIN_INGREDIENTS_COUNT} ingredient!`);
 
     this.appState.updateState(`uploadRecipe.ingredientsCount`, currentIngredientsCount - 1);
+    return currentIngredientsCount === MAX_INGREDIENTS_COUNT;
   }
 
   createRecipe(data) {

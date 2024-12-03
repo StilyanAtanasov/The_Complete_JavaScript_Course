@@ -17,7 +17,8 @@
   transition: all 0.5s;
   animation: 350ms ease-in-out forwards fade-in;
 
-  .btn--close-modal {
+  .btn--close-modal,
+  .btn--remove-ingredient {
     font-family: inherit;
     color: inherit;
     position: absolute;
@@ -27,6 +28,11 @@
     cursor: pointer;
     border: none;
     background: none;
+  }
+
+  .btn--remove-ingredient {
+    top: -1rem;
+    right: 1rem;
   }
 }
 
@@ -122,6 +128,8 @@
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
+    width: 100%;
+    position: relative;
   }
 }
 
