@@ -12,7 +12,7 @@ export default class ResultsController extends Controller {
     this.#view = new ResultsView();
   }
 
-  updateResults(results, currentPage, totalPages) {
+  updateResults(results, currentPage, totalPages, resultsCleanFunc = this.#view.removeCurrentResults) {
     try {
       this.#view.removeListeners();
 
@@ -23,8 +23,8 @@ export default class ResultsController extends Controller {
 
       this.#view.onPaginationClick(
         function (changeBy) {
-          this.#view.removeCurrentResults();
-          this.updateResults(results, currentPage + changeBy, totalPages);
+          resultsCleanFunc();
+          this.updateResults(results, currentPage + changeBy, totalPages, resultsCleanFunc);
         }.bind(this)
       );
 

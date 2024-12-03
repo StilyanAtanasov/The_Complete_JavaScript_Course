@@ -17,6 +17,35 @@
   overflow: hidden;
 }
 
+.sort-results--box {
+  padding: 0.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 90%;
+  cursor: pointer;
+
+  & svg {
+    stroke: base.$color-primary;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  & button {
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: base.$color-grey-dark-1;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  & span {
+    font-size: 1.7rem;
+  }
+}
+
 .search__results--results {
   list-style: none;
   margin-bottom: 2rem;

@@ -1,10 +1,13 @@
-import { RECIPE_HISTORY_LENGTH, SEARCH_HISTORY_LENGTH } from "./config/config";
+import { RECIPE_HISTORY_LENGTH, SEARCH_HISTORY_LENGTH, DEFAULT_SORT_FUNCTION } from "./config/config";
 import FixedQueue from "./utils/fixedQueue";
 
 export default class AppState {
   #appState;
   constructor() {
     this.#appState = {
+      results: {
+        currentSort: DEFAULT_SORT_FUNCTION,
+      },
       currentRecipe: {
         id: ``,
         title: ``,

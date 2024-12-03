@@ -21,7 +21,7 @@ async function searchRecipes(event) {
     const filtered = data.data.recipes.map(({ id, image_url, key, publisher, title }) => ({
       id,
       image_url,
-      custom: key ? true : false,
+      verified: key ? false : true,
       publisher,
       title,
     }));

@@ -12,7 +12,7 @@ export default class ResultsView extends View {
   showSpinner = () => this.renderSpinner(this.UIEls.results.title);
   hideSpinner = () => this.remove(this.UIEls.results.container, `.spinner`);
 
-  previewMarkup = (id, imgUrl, title, publisher, custom = false) => `<a class="preview__link" href="#${id}">
+  previewMarkup = (id, imgUrl, title, publisher, verified = false) => `<a class="preview__link" href="#${id}">
               <figure class="preview__fig">
                 <img src="${imgUrl}" alt="${title} img" />
               </figure>
@@ -20,7 +20,7 @@ export default class ResultsView extends View {
                 <h4 class="preview__title">${title}</h4>
                 <p class="preview__publisher">${publisher}</p>
                 ${
-                  !custom
+                  verified
                     ? `<div class="preview__verified">
                   <svg>
                     <use href="${this.icons}#icon-check" />
@@ -48,7 +48,7 @@ export default class ResultsView extends View {
   renderResults(results, start, end) {
     for (let i = start; i <= end; i++) {
       const result = results[i];
-      this.render(this.UIEls.results.resultsList, this.previewMarkup(result.id, result.image_url, result.title, result.publisher, result.custom), `beforeend`);
+      this.render(this.UIEls.results.resultsList, this.previewMarkup(result.id, result.image_url, result.title, result.publisher, result.verified), `beforeend`);
     }
   }
 
@@ -94,5 +94,6 @@ export default class ResultsView extends View {
   removeCurrentResults() {
     this.UIEls.results.resultsList.innerHTML = this.UIEls.results.paginationContainer.innerHTML = ``;
     this.remove(this.UIEls.results.container, `.add-btn`);
+    this.remove(this.UIEls.results.container, `.sort-results--box`);
   }
 }

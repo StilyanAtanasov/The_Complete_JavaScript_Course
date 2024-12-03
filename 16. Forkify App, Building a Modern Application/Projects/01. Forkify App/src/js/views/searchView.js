@@ -22,5 +22,6 @@ export default class SearchView extends View {
   removeCurrentResults() {
     this.UIEls.results.resultsList.innerHTML = this.UIEls.results.paginationContainer.innerHTML = ``;
     this.remove(this.UIEls.results.container, `.add-btn`);
+    this.remove(this.UIEls.results.container, `.sort-results--box`);
   }
 }
