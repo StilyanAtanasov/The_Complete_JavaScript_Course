@@ -24,8 +24,9 @@ export default class RecipeModel extends Model {
     this.syncLocalStorage(newHistory.getQueue());
   }
 
-  updateCurrentRecipe = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, custom, directions, isBookmarked) =>
+  updateCurrentRecipe = (id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked) =>
     this.appState.updateState(`currentRecipe`, {
+      id,
       title,
       cookingTime,
       imageUrl,
@@ -33,7 +34,7 @@ export default class RecipeModel extends Model {
       publisher,
       servings,
       sourceUrl,
-      custom,
+      verified,
       isBookmarked,
       directions,
     });

@@ -10,15 +10,16 @@ export default class ResultsController extends Controller {
     super(appState);
 
     this.#view = new ResultsView();
+    this.eventBus.subscribe(`RecipeRequested`, this.handler(this.#controlUpdateCurrentPreview.bind(this)));
   }
 
-  updateResults(results, currentPage, totalPages, resultsCleanFunc = this.#view.removeCurrentResults) {
+  updateResults(results, currentPage, totalPages, resultsCleanFunc = this.#view.removeCurrentResults.bind(this.#view)) {
     try {
       this.#view.removeListeners();
 
       const pageBounds = getPageBounds(currentPage, PAGE_RESULTS_LIMIT, results.length);
 
-      this.#view.renderResults(results, pageBounds.start, pageBounds.end);
+      this.#view.renderResults(results, pageBounds.start, pageBounds.end, this.getState(`currentRecipe.id`));
       this.#view.renderPagination(currentPage, totalPages);
 
       this.#view.onPaginationClick(
@@ -34,4 +35,6 @@ export default class ResultsController extends Controller {
       throw new Error(`Error updating results!`);
     }
   }
+
+  #controlUpdateCurrentPreview = id => this.#view.changeCurrentRecipe(id);
 }

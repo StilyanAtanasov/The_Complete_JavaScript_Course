@@ -25,7 +25,7 @@ export default class View {
     <p>${message}</p>
   </div>`;
 
-  renderSpinner = (container, position = `afterEnd`) =>
+  renderSpinner(container, position = `afterEnd`, global = false) {
     this.render(
       container,
       `<div class="spinner">
@@ -35,6 +35,19 @@ export default class View {
          </div> `,
       position
     );
+
+    if (global && window.innerWidth <= 800) {
+      this.render(
+        document.querySelector(`.container`),
+        `<div class="spinner global">
+             <svg>
+               <use href="${this.icons}#icon-loader"></use>
+             </svg>
+           </div> `,
+        `beforeEnd`
+      );
+    }
+  }
 
   update(markup) {
     const newElements = Array.from(document.createRange().createContextualFragment(markup).querySelectorAll(`*`));

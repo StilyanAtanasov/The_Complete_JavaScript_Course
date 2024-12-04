@@ -12,7 +12,8 @@ export default class ResultsView extends View {
   showSpinner = () => this.renderSpinner(this.UIEls.results.title);
   hideSpinner = () => this.remove(this.UIEls.results.container, `.spinner`);
 
-  previewMarkup = (id, imgUrl, title, publisher, verified = false) => `<a class="preview__link" href="#${id}">
+  previewMarkup = (id, imgUrl, title, publisher, verified = false, current = false) => `
+            <a class="preview__link ${current ? `preview__link--active` : ``}" href="#${id}">
               <figure class="preview__fig">
                 <img src="${imgUrl}" alt="${title} img" />
               </figure>
@@ -45,11 +46,21 @@ export default class ResultsView extends View {
 
   currentPageMarkup = (currentPage, totalPages) => `<span class="current-page">Page ${currentPage}/${totalPages}</span>`;
 
-  renderResults(results, start, end) {
+  renderResults(results, start, end, customId) {
     for (let i = start; i <= end; i++) {
       const result = results[i];
-      this.render(this.UIEls.results.resultsList, this.previewMarkup(result.id, result.image_url, result.title, result.publisher, result.verified), `beforeend`);
+      this.render(this.UIEls.results.resultsList, this.previewMarkup(result.id, result.image_url, result.title, result.publisher, result.verified, customId === result.id), `beforeend`);
     }
+  }
+
+  changeCurrentRecipe(currentId) {
+    const results = document.querySelectorAll(`.preview__link`);
+    const id = `#${currentId}`;
+
+    results.forEach(function (r) {
+      r.classList.contains(`preview__link--active`) && r.classList.remove(`preview__link--active`);
+      r.getAttribute(`href`) === id && r.classList.add(`preview__link--active`);
+    });
   }
 
   renderPagination(currentPage, totalPages) {

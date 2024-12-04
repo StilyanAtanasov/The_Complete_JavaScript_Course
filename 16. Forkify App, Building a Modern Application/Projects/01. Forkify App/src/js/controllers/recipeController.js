@@ -34,12 +34,10 @@ export default class ResultsController extends Controller {
     this.#view.removeCurrentRecipe();
     this.#view.showSpinner();
 
-    const recipe = await this.#controlFetchRecipe({ sender: null, id: recipeId });
-
-    const { id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions } = recipe;
+    const { id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions } = await this.#controlFetchRecipe({ sender: null, id: recipeId });
     const isBookmarked = this.#isBookmarked(id);
     this.#view.renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked);
-    this.#model.updateCurrentRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked); // TODO
+    this.#model.updateCurrentRecipe(id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked); // TODO
     this.#controlSlideRecipe();
 
     this.#view.onReturnBack(() => this.#controlSlideRecipe(false));
@@ -62,7 +60,7 @@ export default class ResultsController extends Controller {
           title: this.getState(`currentRecipe.title`),
           image_url: this.getState(`currentRecipe.imageUrl`),
           publisher: this.getState(`currentRecipe.publisher`),
-          custom: this.getState(`currentRecipe.custom`),
+          verified: this.getState(`currentRecipe.verified`),
         })).bind(this)
     );
   }

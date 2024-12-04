@@ -8,7 +8,8 @@ export default class RecipeView extends View {
     super(RecipeView.location);
   }
 
-  showSpinner = () => this.renderSpinner(this.UIEls.recipe.container, `afterBegin`);
+  showSpinner = () => this.renderSpinner(this.UIEls.recipe.container, `afterBegin`, true);
+  removeSpinner = () => window.innerWidth <= 800 && this.remove(document.querySelector(`.container`), `.spinner.global`);
 
   onBookmark = handler =>
     document.querySelector(`.bookmark-btn`).addEventListener(
@@ -154,6 +155,7 @@ export default class RecipeView extends View {
     this.UIEls.recipe.container.innerHTML = ``;
     this.render(RecipeView.location, this.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked));
     this.UIEls.recipe.container.style.minHeight = window.getComputedStyle(this.UIEls.results.container).height;
+    this.removeSpinner();
   }
 
   removeCurrentRecipe = () => (this.UIEls.recipe.container.innerHTML = ``);
