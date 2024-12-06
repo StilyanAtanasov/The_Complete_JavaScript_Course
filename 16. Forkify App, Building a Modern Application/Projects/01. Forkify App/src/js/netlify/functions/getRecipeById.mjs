@@ -13,21 +13,30 @@ async function getRecipeById(event) {
     const recipeId = JSON.parse(event.body).id;
     if (!recipeId) throw new Error(`Invalid recipe id!`);
 
-    const data = await request(`${API_URL}/${recipeId}`);
+    const { result: realId } = await request(`${process.env.URL}/.netlify/functions/criptography`, {
+      method: `POST`,
+      headers: {
+        "Content-Type": `application/json`,
+        accessKey: process.env.FUNCTIONS_KEY,
+      },
+      body: JSON.stringify({ action: `decrypt`, text: recipeId }),
+    });
 
-    const { title, id, image_url, cooking_time, servings, ingredients, publisher, source_url, key } = data.data.recipe;
+    const data = await request(`${API_URL}/${realId}`);
+
+    const { title, image_url, cooking_time, servings, ingredients, publisher, source_url, key } = data.data.recipe;
     const ingredientsOnly = ingredients.filter(i => !i.description.includes(`**directions**`));
     const directions = ingredients.find(i => i.description.includes(`**directions**`))?.description.replaceAll(`**directions**`, ``);
     const filtered = {
-      title,
-      id,
+      title: title.replaceAll(`**verified**`, ``),
+      id: recipeId,
       imageUrl: image_url,
       cookingTime: cooking_time,
       servings,
       ingredients: ingredientsOnly,
       publisher,
       sourceUrl: source_url,
-      verified: key ? false : true,
+      verified: title.includes(`**verified**`) ? true : key ? false : true,
       directions: directions || null,
     };
 

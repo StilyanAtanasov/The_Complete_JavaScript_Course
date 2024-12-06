@@ -9,11 +9,12 @@ import NavController from "./controllers/navController";
 import RecipeFormController from "./controllers/recipeFormController";
 import ShoppingListController from "./controllers/shoppingListController";
 import LocationController from "./controllers/locationController";
-import VerifyController from "./controllers/verifyController";
+import AdminController from "./controllers/adminController";
 
 export default class Engine {
   #appState;
   #feedResultsController;
+  #communityResultsController;
   #searchController;
   #recipeController;
   #bookmarksController;
@@ -28,12 +29,12 @@ export default class Engine {
     this.#bookmarksController = new BookmarksController(this.#appState);
     this.#navController = new NavController(this.#appState);
     this.#locationController = new LocationController(this.#appState);
+    this.#communityResultsController = new CommunityRecipesController(this.#appState);
 
     new SearchResultsController(this.#appState);
-    new CommunityRecipesController(this.#appState);
     new RecipeFormController(this.#appState);
     new ShoppingListController(this.#appState);
-    new VerifyController(this.#appState);
+    new AdminController(this.#appState);
   }
 
   start() {
@@ -43,5 +44,6 @@ export default class Engine {
     this.#feedResultsController.init();
     this.#bookmarksController.init();
     this.#navController.init();
+    this.#communityResultsController.init();
   }
 }

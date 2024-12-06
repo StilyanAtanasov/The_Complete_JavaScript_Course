@@ -18,13 +18,27 @@ export default class ResultsController extends Controller {
     this.eventBus.subscribe(`FetchRecipe`, this.handler(this.#controlFetchRecipe.bind(this)));
   }
 
-  async #controlFetchRecipe({ sender, id }) {
-    if (!id) return;
-    const stored = this.#model.checkHistory(id);
-    const recipe = stored ? stored : await this.#model.fetchRecipe(id);
+  async #controlFetchRecipe({ sender, id, alwaysFetch = false }) {
+    try {
+      if (!id) return;
 
-    if (sender) this.eventBus.publish(sender, recipe);
-    else return recipe;
+      let recipe;
+      if (alwaysFetch) recipe = await this.#model.fetchRecipe(id);
+      else {
+        const stored = this.#model.checkHistory(id);
+        recipe = stored ? stored : await this.#model.fetchRecipe(id);
+      }
+
+      if (sender) this.eventBus.publish(sender, recipe);
+      else return recipe;
+    } catch (err) {
+      if (sender) {
+        this.eventBus.publish(sender, { err: err.message });
+        return;
+      }
+
+      throw new Error(err.message);
+    }
   }
 
   async #controlRecipe(hash) {
@@ -37,32 +51,23 @@ export default class ResultsController extends Controller {
     const { id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions } = await this.#controlFetchRecipe({ sender: null, id: recipeId });
     const isBookmarked = this.#isBookmarked(id);
     this.#view.renderRecipe(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked);
-    this.#model.updateCurrentRecipe(id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked); // TODO
+    this.#model.updateCurrentRecipe(id, title, ingredients, servings);
     this.#controlSlideRecipe();
 
     this.#view.onReturnBack(() => this.#controlSlideRecipe(false));
 
-    this.#view.onAddAllProducts(() => this.eventBus.publish(`AddProduct`, this.getState(`currentRecipe`)?.ingredients));
+    this.#view.onAddAllProducts(() => this.eventBus.publish(`AddProduct`, this.getState(`currentRecipe.ingredients`)));
     this.#view.onAddProduct((quantity, unit, description) => this.eventBus.publish(`AddProduct`, [{ quantity, unit, description }]));
 
     this.#view.onUpdateServings(
       function (arg) {
         this.#model.updateServings(arg);
-        const { title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked } = this.getState(`currentRecipe`);
+        const { title, ingredients, servings } = this.getState(`currentRecipe`);
         this.#view.update(this.#view.recipeMarkup(title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked));
       }.bind(this)
     );
 
-    this.#view.onBookmark(
-      (() =>
-        this.eventBus.publish(`bookmark`, {
-          id: this.getState(`currentRecipe.id`),
-          title: this.getState(`currentRecipe.title`),
-          image_url: this.getState(`currentRecipe.imageUrl`),
-          publisher: this.getState(`currentRecipe.publisher`),
-          verified: this.getState(`currentRecipe.verified`),
-        })).bind(this)
-    );
+    this.#view.onBookmark((() => this.eventBus.publish(`bookmark`, { id, title, image_url: imageUrl, publisher, verified })).bind(this));
   }
 
   #controlSlideRecipe = (slideIn = true) => (slideIn ? this.#view.slideIn() : this.#view.slideOut());

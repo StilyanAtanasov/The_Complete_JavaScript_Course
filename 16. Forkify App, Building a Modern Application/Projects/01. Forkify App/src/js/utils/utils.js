@@ -10,7 +10,7 @@ export const unitMap = {
   l: { ml: 1000, l: 1, tsp: 202.884, tbsp: 67.628, cup: 4.227, oz: 33.814 },
   tsp: { tsp: 1, tbsp: 0.333333, cup: 0.0208333, ml: 4.92892, oz: 0.166667 },
   tbsp: { tsp: 3, tbsp: 1, cup: 0.0625, ml: 14.7868, oz: 0.5 },
-  cups: { tsp: 48, tbsp: 16, cup: 1, ml: 236.588, oz: 8 },
+  cup: { tsp: 48, tbsp: 16, cup: 1, ml: 236.588, oz: 8 },
 };
 
 export const unitAbbreviation = {
@@ -34,7 +34,7 @@ export const unitAbbreviation = {
   tablespoon: `tbsp`,
   tablespoons: `tbsp`,
   tbsps: `tbsp`,
-  cup: `cups`,
+  cups: `cup`,
 };
 
 for (const [fullName, shortForm] of Object.entries(unitAbbreviation)) unitMap[fullName] = unitMap[shortForm];
@@ -83,10 +83,10 @@ export function formatFraction(number) {
   return wholePart ? `${wholePart} ${simplifiedFraction}` : simplifiedFraction;
 }
 
-export async function request(url, options = {}) {
+export async function request(url, options = {}, bodyExpected = true) {
   const response = await Promise.race([fetch(url, options), timeout(5000, `Request took too long!`)]);
   if (!response.ok) throw new Error(`API call failed with status ${response.status}`);
-  return await response.json();
+  return bodyExpected ? await response.json() : true;
 }
 
 export const requestMultipleQueries = async queries =>

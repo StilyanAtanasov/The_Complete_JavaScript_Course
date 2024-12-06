@@ -23,6 +23,8 @@ async function publishRecipe(event) {
       body: recipe,
     });
 
+    const title = data.data.recipe.title;
+
     return {
       statusCode: 200,
       body: JSON.stringify({
@@ -35,7 +37,8 @@ async function publishRecipe(event) {
           publisher: data.data.recipe.publisher,
           servings: data.data.recipe.servings,
           sourceUrl: data.data.recipe.source_url,
-          title: data.data.recipe.title,
+          title: title.replaceAll(`**verified**`, ``),
+          verified: title.includes(`**verified**`) ? true : false,
         },
       }),
     };

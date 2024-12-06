@@ -18,10 +18,17 @@ export default class LocationView extends View {
         });
 
         const href = window.location.href;
-        if (href.endsWith(`verify`)) {
+        if (href.endsWith(`admin`)) {
           handler({
-            request: `VerifyRecipe`,
-            data: id,
+            request: `OpenAdminPanel`,
+            data: null,
+          });
+        }
+
+        if (!href.includes(`admin`)) {
+          handler({
+            request: `CloseAdminPanel`,
+            data: null,
           });
         }
       })

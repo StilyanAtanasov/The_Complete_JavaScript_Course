@@ -24,20 +24,7 @@ export default class RecipeModel extends Model {
     this.syncLocalStorage(newHistory.getQueue());
   }
 
-  updateCurrentRecipe = (id, title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked) =>
-    this.appState.updateState(`currentRecipe`, {
-      id,
-      title,
-      cookingTime,
-      imageUrl,
-      ingredients,
-      publisher,
-      servings,
-      sourceUrl,
-      verified,
-      isBookmarked,
-      directions,
-    });
+  updateCurrentRecipe = (id, title, ingredients, servings) => this.appState.updateState(`currentRecipe`, { id, title, ingredients, servings });
 
   async fetchRecipe(id) {
     try {

@@ -28,4 +28,6 @@ export default class BookmarksController extends ResultsController {
 
     this.#view.onUploadBtnClick(() => this.eventBus.publish(`OpenRecipeForm`, null));
   }
+
+  init = () => this.#model.getStoredFeed();
 }

@@ -17,16 +17,17 @@ export default class CommunityRecipesModel extends ResultsModel {
     this.syncLocalStorage(communityData);
   }
 
-  chackValidFeed = communityData => (Date.now() - communityData.ellapsedMilliseconds < COMMUNITY_UPDATE_MILLISECONDS ? true : false);
+  chackValidFeed = communityData => (communityData && Date.now() - communityData.ellapsedMilliseconds < COMMUNITY_UPDATE_MILLISECONDS ? true : false);
 
   async generateCommunityFeed() {
     try {
       const response = await requestMultipleQueries(getRadomQueries(COMMUNITY_MAX_TOPICS, popularQueries));
+      console.log(response);
 
       const recipes = response
-        .filter(result => result.status === "fulfilled" && result.value?.data?.data?.recipes)
-        .flatMap(result => result.value.data.data.recipes)
-        .filter(r => r.custom === true);
+        .filter(result => result.status === `fulfilled` && result.value?.data)
+        .flatMap(result => result.value.data)
+        .filter(r => !r.verified);
       const randomised = shuffleArray(recipes).slice(0, FEED_MAX_RESULTS);
 
       const communityData = {

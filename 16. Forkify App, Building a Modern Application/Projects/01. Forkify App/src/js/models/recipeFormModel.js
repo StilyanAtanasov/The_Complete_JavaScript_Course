@@ -76,8 +76,7 @@ export default class RecipeFormModel extends Model {
 
       return data;
     } catch (err) {
-      console.log(err.message);
-      throw new Error(err.message); // TODO
+      throw new Error(err.message);
     }
   }
 }

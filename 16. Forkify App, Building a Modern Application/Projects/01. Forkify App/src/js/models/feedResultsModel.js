@@ -26,7 +26,7 @@ export default class FeedResultsModel extends ResultsModel {
     try {
       const response = await requestMultipleQueries(getRadomQueries(FEED_MAX_TOPICS, popularQueries));
 
-      const recipes = response.filter(result => result.status === "fulfilled" && result.value?.data).flatMap(result => result.value.data);
+      const recipes = response.filter(result => result.status === `fulfilled` && result.value?.data).flatMap(result => result.value.data);
       const randomised = shuffleArray(recipes).slice(0, FEED_MAX_RESULTS);
 
       const feedData = {

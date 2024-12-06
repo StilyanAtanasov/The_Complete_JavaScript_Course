@@ -2,6 +2,9 @@ import { elements as UIEls } from "../utils/elements";
 import icons from "url:../../img/icons.svg";
 
 export default class View {
+  static #overlayRendered = true;
+  static #overlayOnQueue = 0;
+
   constructor(location) {
     this.location = location;
 
@@ -20,7 +23,9 @@ export default class View {
 
   generateUniqueId = () => `id-${Date.now()}`;
 
-  notificationMarkup = (message, id, error = false) => `
+  #overlayMarkup = zIndex => `<div class="overlay" style="z-index: ${zIndex}"></div>`;
+
+  #notificationMarkup = (message, id, error = false) => `
   <div class="notification ${id} ${error ? `error` : ``}">
     <p>${message}</p>
   </div>`;
@@ -65,9 +70,29 @@ export default class View {
 
   renderNotification(message, milliseconds, isError = false) {
     const id = this.generateUniqueId();
-    this.render(document.body, this.notificationMarkup(message, id, isError), `afterBegin`);
+    this.render(document.body, this.#notificationMarkup(message, id, isError), `afterBegin`);
     const notification = document.querySelector(`.notification.${id}`);
     notification.style.animation = `notification ${Math.round(milliseconds / 1000)}s forwards`;
     setTimeout(() => notification && document.body.removeChild(notification), milliseconds);
+  }
+
+  renderOverlay(zIndex) {
+    if (View.#overlayRendered) {
+      this.removeOverlay();
+      View.#overlayOnQueue++;
+    }
+
+    this.render(document.body, this.#overlayMarkup(zIndex), `beforeEnd`);
+    View.#overlayRendered = true;
+  }
+
+  removeOverlay() {
+    this.remove(document.body, `.overlay`);
+    View.#overlayRendered = false;
+
+    if (View.#overlayOnQueue > 0) {
+      this.renderOverlay();
+      View.#overlayOnQueue--;
+    }
   }
 }

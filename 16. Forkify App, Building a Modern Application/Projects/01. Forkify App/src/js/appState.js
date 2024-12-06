@@ -11,13 +11,8 @@ export default class AppState {
       currentRecipe: {
         id: ``,
         title: ``,
-        imageUrl: ``,
-        publisher: ``,
-        cookingTime: 0,
         ingredients: [],
         servings: 0,
-        sourceUrl: ``,
-        custom: false,
       },
       uploadRecipe: {
         ingredientsCount: 1,

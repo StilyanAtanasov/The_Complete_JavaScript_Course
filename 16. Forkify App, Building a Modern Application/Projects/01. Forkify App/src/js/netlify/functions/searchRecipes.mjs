@@ -1,5 +1,6 @@
 import { API_URL } from "../../config/config.js";
 import { request } from "../../utils/utils.js";
+import crypto from "crypto";
 
 async function searchRecipes(event) {
   if (event.httpMethod !== `POST`) {
@@ -18,13 +19,26 @@ async function searchRecipes(event) {
 
     const data = await request(`${API_URL}?search=${searchQuery}&key=${API_KEY}`);
 
-    const filtered = data.data.recipes.map(({ id, image_url, key, publisher, title }) => ({
-      id,
-      image_url,
-      verified: key ? false : true,
-      publisher,
-      title,
-    }));
+    const filtered = await Promise.all(
+      data.data.recipes.map(async ({ id, image_url, key, publisher, title }) => {
+        const { result: encryptedId } = await request(`${process.env.URL}/.netlify/functions/criptography`, {
+          method: `POST`,
+          headers: {
+            "Content-Type": `application/json`,
+            accessKey: process.env.FUNCTIONS_KEY,
+          },
+          body: JSON.stringify({ action: `encrypt`, text: id }),
+        });
+
+        return {
+          id: encryptedId,
+          image_url,
+          verified: title.includes(`**verified**`) ? true : key ? false : true,
+          publisher,
+          title: title.replaceAll(`**verified**`, ``),
+        };
+      })
+    );
 
     return {
       statusCode: 200,
@@ -36,7 +50,7 @@ async function searchRecipes(event) {
   } catch (err) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: err.message, stack: err.stack, response }),
+      body: JSON.stringify({ message: err.message, stack: err.stack }),
     };
   }
 }

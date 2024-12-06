@@ -25,6 +25,7 @@ export default class RecipeFormController extends Controller {
 
   #controlUploadRecipe(data) {
     this.#model.submitRecipe(this.#model.createRecipe(data));
+    this.#view.renderNotification(`Recipe published!`, 4500);
     this.#controlCloseForm();
   }
 

@@ -38,8 +38,6 @@ export default class RecipeFormView extends View {
       handler(ingredientEl);
     });
 
-  overlayMarkup = () => `<div class="overlay"></div>`;
-
   directionMarkup = number => `
             <label>Step ${number}</label>
             <div class="upload__row">
@@ -123,12 +121,12 @@ export default class RecipeFormView extends View {
   }
 
   renderForm() {
+    this.renderOverlay();
     this.render(document.body, this.formMarkup(), `beforeEnd`);
-    this.render(document.body, this.overlayMarkup(), `beforeEnd`);
   }
 
   removeForm() {
     this.remove(document.body, `.add-recipe-window`);
-    this.remove(document.body, `.overlay`);
+    this.removeOverlay();
   }
 }
