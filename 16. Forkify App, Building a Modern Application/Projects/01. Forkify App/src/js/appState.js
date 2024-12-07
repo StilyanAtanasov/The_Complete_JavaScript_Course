@@ -16,6 +16,7 @@ export default class AppState {
       },
       uploadRecipe: {
         ingredientsCount: 1,
+        stepsCount: 1,
       },
       feed: {},
       community: {},

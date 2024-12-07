@@ -42,6 +42,7 @@ export default class RecipeModel extends Model {
       if (!response.ok) throw new Error(`Error fetching recipe: ${(await response.json()).message}`);
 
       const data = await response.json();
+      console.log(data);
       if (!data) throw new Error();
 
       const recipe = data.data;

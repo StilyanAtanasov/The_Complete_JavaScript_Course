@@ -64,6 +64,12 @@ export default class RecipeView extends View {
               </button>
             </li>`;
 
+  stepMarkup = (text, number = ``) => `
+            <article class="recipe__directions--step">
+              <h2>Step ${number}</h2>
+              <p>${text}</p>
+            </article>`;
+
   recipeMarkup = (title, cookingTime, imageUrl, ingredients, publisher, servings, sourceUrl, verified, directions, isBookmarked) => `
         <div class="return-back-btn">
           <svg>
@@ -131,18 +137,17 @@ export default class RecipeView extends View {
             </svg>
           </div>
           <h2 class="heading--2">Recipe ingredients</h2>
-          <ul class="recipe__ingredient-list">${ingredients.reduce((acc, i) => acc + this.ingredientMarkup(i.description, i.quantity, i.unit), ``)}</ul>
+          <ul class="recipe__ingredient-list">${ingredients.reduce((acc, i) => i && acc + this.ingredientMarkup(i.description, i.quantity, i.unit), ``)}</ul>
         </div>
 
         <div class="recipe__directions">
           <h2 class="heading--2">How to cook it</h2>
-          <p class="recipe__directions-text">
           ${
-            directions ||
-            `This recipe was carefully designed and tested by
+            directions
+              ? directions.reduce((acc, d, i) => d && acc + this.stepMarkup(d, i + 1), ``)
+              : `This recipe was carefully designed and tested by
             <span class="recipe__publisher">${publisher}</span>. Please check out directions at their website.`
           }
-          </p>
           <a class="btn--small recipe__btn" href="${sourceUrl}" target="_blank">
             <span>Directions</span>
             <svg class="search__icon">

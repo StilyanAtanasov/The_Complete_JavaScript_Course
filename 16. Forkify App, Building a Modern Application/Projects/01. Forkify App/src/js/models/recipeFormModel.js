@@ -1,5 +1,5 @@
 import Model from "./model";
-import { MAX_INGREDIENTS_COUNT, MIN_INGREDIENTS_COUNT } from "../config/config";
+import { MAX_INGREDIENTS_COUNT, MAX_STEPS_COUNT, MIN_INGREDIENTS_COUNT, MIN_STEPS_COUNT } from "../config/config";
 import { timeout } from "../utils/utils";
 
 export default class RecipeFormModel extends Model {
@@ -27,11 +27,30 @@ export default class RecipeFormModel extends Model {
     return currentIngredientsCount === MAX_INGREDIENTS_COUNT;
   }
 
+  updateStepsCount(incrementBy) {
+    try {
+      const newStepsCount = this.appState.getState(`uploadRecipe.stepsCount`) + incrementBy;
+      if (newStepsCount > MAX_STEPS_COUNT) throw new Error(`Recipe could consist of maximum ${MAX_INGREDIENTS_COUNT} steps`);
+
+      this.appState.updateState(`uploadRecipe.stepsCount`, newStepsCount);
+      return newStepsCount === MAX_STEPS_COUNT;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+
+  removeStep() {
+    const currentStepsCount = +this.appState.getState(`uploadRecipe.stepsCount`);
+    if (currentStepsCount === MIN_STEPS_COUNT) throw new Error(`Recipe must have at least ${MIN_INGREDIENTS_COUNT} step!`);
+
+    this.appState.updateState(`uploadRecipe.stepsCount`, currentStepsCount - 1);
+    return currentStepsCount === MAX_STEPS_COUNT;
+  }
+
   createRecipe(data) {
     try {
       const ingredients = [];
       const recipe = { ...Object.fromEntries([...data]), source_url: `no-source` };
-      console.log(recipe);
 
       for (const key in recipe) {
         if (key.startsWith(`ingredient`)) {
@@ -45,8 +64,8 @@ export default class RecipeFormModel extends Model {
           else if (field === `unit`) ingredients[ingredientIndex].unit = recipe[key];
 
           delete recipe[key];
-        } else if (key === `cooking__directions`) {
-          ingredients.push({ description: `**directions** ${recipe[key]}`, quantity: ``, unit: `` });
+        } else if (key.includes(`direction`)) {
+          ingredients.push({ description: `**direction** ${recipe[key]}`, quantity: ``, unit: `` });
           delete recipe[key];
         }
       }

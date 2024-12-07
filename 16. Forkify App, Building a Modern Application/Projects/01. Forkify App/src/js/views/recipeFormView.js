@@ -38,18 +38,46 @@ export default class RecipeFormView extends View {
       handler(ingredientEl);
     });
 
+  onAddStep = handler =>
+    document.querySelector(`#add-step-btn`).addEventListener(`click`, function (e) {
+      const target = e.target.closest(`#add-step-btn`);
+      if (!target) return;
+      handler();
+    });
+
+  onRemoveStep = handler =>
+    document.querySelector(`#upload__steps`).addEventListener(`click`, function (e) {
+      e.preventDefault();
+      const target = e.target;
+      if (!target.classList.contains(`btn--remove-step`)) return;
+      const ingredientEl = target.closest(`.upload__step`);
+      if (!ingredientEl) return;
+
+      handler(ingredientEl);
+    });
+
+  addBtnMarkup = (id, text) => `
+        <div id="${id}" class="add-btn slim">
+          <svg>
+            <use href="${this.icons}#icon-plus-circle" ></use>
+          </svg>
+          <p>${text}</p>
+        </div>`;
+
   directionMarkup = number => `
-            <label>Step ${number}</label>
-            <div class="upload__row">
-              <button class="btn--remove-ingredient">&times;</button>
-              <textarea name="cooking__directions" class="cooking__directions" placeholder=" Write recipe directions here." required maxlength="5000"></textarea>
+            <div class="upload__step">
+              <label>Step ${number}</label>
+              <div class="upload__row">
+                <button class="btn--remove btn--remove-step">&times;</button>
+                <textarea name="direction-${number}" class="cooking__direction" placeholder=" Write recipe direction here." required maxlength="500"></textarea>
+              </div>
             </div>`;
 
   ingredientMarkup = number => `
           <div class="upload__ingredient">
             <label>Ingredient ${number}</label>
             <div class="upload__row">
-            <button class="btn--remove-ingredient">&times;</button>
+            <button class="btn--remove btn--remove-ingredient">&times;</button>
               <input type="text" name="ingredient-${number}-quantity" placeholder="Quantity (Optional)" maxlength="8"/>
               <input type="text" name="ingredient-${number}-unit" placeholder="Unit (Optional)" maxlength="10" />
               <input type="text" required name="ingredient-${number}-name" placeholder="Ingredient Name" minlength="2"  maxlength="120" />
@@ -57,7 +85,7 @@ export default class RecipeFormView extends View {
           </div>`;
 
   formMarkup = () => `<div class="add-recipe-window">
-      <button class="btn--close-modal">&times;</button>
+      <button class="btn--remove btn--close-modal">&times;</button>
 
       <h2 class="upload__title">Upload Recipe Form</h2>
       <form class="upload">
@@ -88,17 +116,13 @@ export default class RecipeFormView extends View {
         <h3 class="upload__heading">Ingredients</h3>
         <section id="upload__ingredients" class="upload__column">
         ${this.ingredientMarkup(1)}
-        <div id="add-ingredient-btn" class="add-btn slim">
-          <svg>
-            <use href="${this.icons}#icon-plus-circle" ></use>
-          </svg>
-          <p>Add Ingredient</p>
-        </div>
+        ${this.addBtnMarkup(`add-ingredient-btn`, `Add Ingredient`)}
         </section>
 
         <h3 class="upload__heading">Directions</h3>
-        <section class="upload__column">
-        <textarea name="cooking__directions" class="cooking__directions" placeholder=" Write recipe directions here." required maxlength="5000"></textarea>
+        <section  id="upload__steps" class="upload__column">
+        ${this.directionMarkup(1)}
+        ${this.addBtnMarkup(`add-step-btn`, `Add Step`)}
         </section>
       </form>
       <button class="btn upload__btn">
@@ -111,13 +135,40 @@ export default class RecipeFormView extends View {
 
   addIngredient = number => this.render(document.querySelector(`#add-ingredient-btn`), this.ingredientMarkup(number), `beforeBegin`);
 
-  removeElement = target => document.querySelector(`#upload__ingredients`).removeChild(target);
+  addStep = number => this.render(document.querySelector(`#add-step-btn`), this.directionMarkup(number), `beforeBegin`);
+
+  removeIngredient = target => document.querySelector(`#upload__ingredients`).removeChild(target);
+
+  removeStep = target => document.querySelector(`#upload__steps`).removeChild(target);
 
   toggleAddIngredientsBtn = force => document.querySelector(`#add-ingredient-btn`).classList.toggle(`hidden`, force);
 
+  toggleAddStepsBtn = force => document.querySelector(`#add-steps-btn`).classList.toggle(`hidden`, force);
+
   shiftIngredientsIndexes() {
     const ingredients = document.querySelectorAll(`.upload__ingredient`);
-    for (let i = 0; i < ingredients.length; ) ingredients[i].querySelector(`label`).textContent = `Ingredient ${++i}`;
+    ingredients.forEach((ingredient, index) => {
+      const newIndex = index + 1;
+      ingredient.querySelector(`label`).textContent = `Ingredient ${newIndex}`;
+
+      const inputs = ingredient.querySelectorAll(`input`);
+      inputs.forEach(input => {
+        const nameParts = input.name.split(`-`);
+        const field = nameParts[nameParts.length - 1];
+        input.name = `ingredient-${newIndex}-${field}`;
+      });
+    });
+  }
+
+  shiftStepsIndexes() {
+    const steps = document.querySelectorAll(`.upload__step`);
+    steps.forEach((step, index) => {
+      const newIndex = index + 1;
+      step.querySelector(`label`).textContent = `Ingredient ${newIndex}`;
+
+      const textarea = step.querySelector(`textarea`);
+      textarea.name = `direction-${newIndex}`;
+    });
   }
 
   renderForm() {

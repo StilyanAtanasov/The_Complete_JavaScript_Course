@@ -25,8 +25,8 @@ async function getRecipeById(event) {
     const data = await request(`${API_URL}/${realId}`);
 
     const { title, image_url, cooking_time, servings, ingredients, publisher, source_url, key } = data.data.recipe;
-    const ingredientsOnly = ingredients.filter(i => !i.description.includes(`**directions**`));
-    const directions = ingredients.find(i => i.description.includes(`**directions**`))?.description.replaceAll(`**directions**`, ``);
+    const ingredientsOnly = ingredients.filter(i => !i?.description?.includes(`**direction**`));
+    const directions = ingredients.filter(i => i?.description?.includes(`**direction**`)).map(({ description }) => description.replaceAll(`**direction**`, ``));
     const filtered = {
       title: title.replaceAll(`**verified**`, ``),
       id: recipeId,

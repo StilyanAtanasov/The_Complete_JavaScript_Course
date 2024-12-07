@@ -17,8 +17,7 @@
   transition: all 0.5s;
   animation: 350ms ease-in-out forwards fade-in;
 
-  .btn--close-modal,
-  .btn--remove-ingredient {
+  .btn--remove {
     font-family: inherit;
     color: inherit;
     position: absolute;
@@ -30,7 +29,8 @@
     background: none;
   }
 
-  .btn--remove-ingredient {
+  .btn--remove-ingredient,
+  .btn--remove-step {
     top: -1rem;
     right: 1rem;
   }
@@ -87,7 +87,7 @@
       }
     }
 
-    & .cooking__directions {
+    & .cooking__direction {
       width: 70%;
       height: 8rem;
     }
@@ -123,13 +123,18 @@
     margin-top: 3rem;
   }
 
-  &__ingredient {
+  &__ingredient,
+  &__step {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
     width: 100%;
     position: relative;
+  }
+
+  &__step .upload__row {
+    justify-content: center;
   }
 }
 
