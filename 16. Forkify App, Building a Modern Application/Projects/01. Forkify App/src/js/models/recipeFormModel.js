@@ -7,45 +7,29 @@ export default class RecipeFormModel extends Model {
     super(appState);
   }
 
-  updateIngredientsCount(incrementBy) {
-    try {
-      const newIngredientsCount = this.appState.getState(`uploadRecipe.ingredientsCount`) + incrementBy;
-      if (newIngredientsCount > MAX_INGREDIENTS_COUNT) throw new Error(`Recipe could consist of maximum ${MAX_INGREDIENTS_COUNT} ingredients`);
+  updateCount(key, incrementBy, max) {
+    const newCount = this.appState.getState(key) + incrementBy;
 
-      this.appState.updateState(`uploadRecipe.ingredientsCount`, newIngredientsCount);
-      return newIngredientsCount === MAX_INGREDIENTS_COUNT;
-    } catch (err) {
-      throw new Error(err.message);
-    }
+    if (newCount > max) throw new Error(`Cannot exceed maximum count of ${max}.`);
+    this.appState.updateState(key, newCount);
+    return newCount === max;
   }
 
-  removeIngredient() {
-    const currentIngredientsCount = +this.appState.getState(`uploadRecipe.ingredientsCount`);
-    if (currentIngredientsCount === MIN_INGREDIENTS_COUNT) throw new Error(`Recipe must have at least ${MIN_INGREDIENTS_COUNT} ingredient!`);
+  removeCount(key, min, max) {
+    const currentCount = this.appState.getState(key);
 
-    this.appState.updateState(`uploadRecipe.ingredientsCount`, currentIngredientsCount - 1);
-    return currentIngredientsCount === MAX_INGREDIENTS_COUNT;
+    if (currentCount === min) throw new Error(`Cannot go below minimum count of ${min}.`);
+    this.appState.updateState(key, currentCount - 1);
+    return currentCount === max;
   }
 
-  updateStepsCount(incrementBy) {
-    try {
-      const newStepsCount = this.appState.getState(`uploadRecipe.stepsCount`) + incrementBy;
-      if (newStepsCount > MAX_STEPS_COUNT) throw new Error(`Recipe could consist of maximum ${MAX_INGREDIENTS_COUNT} steps`);
+  updateIngredientsCount = incrementBy => this.updateCount(`uploadRecipe.ingredientsCount`, incrementBy, MAX_INGREDIENTS_COUNT);
 
-      this.appState.updateState(`uploadRecipe.stepsCount`, newStepsCount);
-      return newStepsCount === MAX_STEPS_COUNT;
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  }
+  removeIngredient = () => this.removeCount(`uploadRecipe.ingredientsCount`, MIN_INGREDIENTS_COUNT, MAX_INGREDIENTS_COUNT);
 
-  removeStep() {
-    const currentStepsCount = +this.appState.getState(`uploadRecipe.stepsCount`);
-    if (currentStepsCount === MIN_STEPS_COUNT) throw new Error(`Recipe must have at least ${MIN_INGREDIENTS_COUNT} step!`);
+  updateStepsCount = incrementBy => this.updateCount(`uploadRecipe.stepsCount`, incrementBy, MAX_STEPS_COUNT);
 
-    this.appState.updateState(`uploadRecipe.stepsCount`, currentStepsCount - 1);
-    return currentStepsCount === MAX_STEPS_COUNT;
-  }
+  removeStep = () => this.removeCount(`uploadRecipe.stepsCount`, MIN_STEPS_COUNT, MAX_STEPS_COUNT);
 
   createRecipe(data) {
     try {

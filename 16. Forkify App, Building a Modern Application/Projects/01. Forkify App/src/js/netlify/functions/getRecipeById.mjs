@@ -37,7 +37,7 @@ async function getRecipeById(event) {
       publisher,
       sourceUrl: source_url,
       verified: title.includes(`**verified**`) ? true : key ? false : true,
-      directions: directions || null,
+      directions: directions.length > 0 ? directions : null,
     };
 
     return {

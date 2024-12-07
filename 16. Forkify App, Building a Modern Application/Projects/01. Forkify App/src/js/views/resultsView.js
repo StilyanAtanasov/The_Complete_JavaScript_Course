@@ -101,10 +101,4 @@ export default class ResultsView extends View {
     this.UIEls.results.paginationContainer.removeEventListener(`click`, ResultsView.#paginationClickCallback);
     ResultsView.location.removeEventListener(`click`, ResultsView.#resultsClickClaback);
   }
-
-  removeCurrentResults() {
-    this.UIEls.results.resultsList.innerHTML = this.UIEls.results.paginationContainer.innerHTML = ``;
-    this.remove(this.UIEls.results.container, `.add-btn`);
-    this.remove(this.UIEls.results.container, `.sort-results--box`);
-  }
 }

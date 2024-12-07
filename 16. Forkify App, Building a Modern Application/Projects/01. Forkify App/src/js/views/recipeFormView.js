@@ -20,41 +20,31 @@ export default class RecipeFormView extends View {
       handler(new FormData(document.querySelector(`.upload`)));
     });
 
-  onAddIngredient = handler =>
-    document.querySelector(`#add-ingredient-btn`).addEventListener(`click`, function (e) {
-      const target = e.target.closest(`#add-ingredient-btn`);
+  onAddItem = (type, handler) =>
+    document.querySelector(`#add-${type}-btn`).addEventListener(`click`, e => {
+      const target = e.target.closest(`#add-${type}-btn`);
       if (!target) return;
       handler();
     });
 
-  onRemoveIngredient = handler =>
-    document.querySelector(`#upload__ingredients`).addEventListener(`click`, function (e) {
+  onRemoveItem = (type, handler) =>
+    document.querySelector(`#upload__${type}s`).addEventListener(`click`, e => {
       e.preventDefault();
       const target = e.target;
-      if (!target.classList.contains(`btn--remove-ingredient`)) return;
-      const ingredientEl = target.closest(`.upload__ingredient`);
-      if (!ingredientEl) return;
+      if (!target.classList.contains(`btn--remove-${type}`)) return;
+      const itemEl = target.closest(`.upload__${type}`);
+      if (!itemEl) return;
 
-      handler(ingredientEl);
+      handler(itemEl);
     });
 
-  onAddStep = handler =>
-    document.querySelector(`#add-step-btn`).addEventListener(`click`, function (e) {
-      const target = e.target.closest(`#add-step-btn`);
-      if (!target) return;
-      handler();
-    });
+  onAddIngredient = handler => this.onAddItem(`ingredient`, handler);
 
-  onRemoveStep = handler =>
-    document.querySelector(`#upload__steps`).addEventListener(`click`, function (e) {
-      e.preventDefault();
-      const target = e.target;
-      if (!target.classList.contains(`btn--remove-step`)) return;
-      const ingredientEl = target.closest(`.upload__step`);
-      if (!ingredientEl) return;
+  onRemoveIngredient = handler => this.onRemoveItem(`ingredient`, handler);
 
-      handler(ingredientEl);
-    });
+  onAddStep = handler => this.onAddItem(`step`, handler);
+
+  onRemoveStep = handler => this.onRemoveItem(`step`, handler);
 
   addBtnMarkup = (id, text) => `
         <div id="${id}" class="add-btn slim">
@@ -164,7 +154,7 @@ export default class RecipeFormView extends View {
     const steps = document.querySelectorAll(`.upload__step`);
     steps.forEach((step, index) => {
       const newIndex = index + 1;
-      step.querySelector(`label`).textContent = `Ingredient ${newIndex}`;
+      step.querySelector(`label`).textContent = `Step ${newIndex}`;
 
       const textarea = step.querySelector(`textarea`);
       textarea.name = `direction-${newIndex}`;

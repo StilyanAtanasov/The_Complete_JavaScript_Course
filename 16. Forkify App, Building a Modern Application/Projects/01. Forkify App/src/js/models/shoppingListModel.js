@@ -29,16 +29,14 @@ export default class ShoppingListModel extends ResultsModel {
           existingProduct.quantity += +quantity;
           continue;
         }
-        console.log(unitMap[existingProduct.unit], unit);
-        console.log(unitAbbreviation[unit]);
+
         const tryConvert = unitMap[existingProduct.unit]?.[unit] || unitMap[existingProduct.unit]?.[unitAbbreviation[unit]];
         tryConvert ? (existingProduct.quantity += +quantity * tryConvert) : shoppingList.push({ description, quantity, unit });
       }
 
       this.updateShoppingList(shoppingList);
       return true;
-    } catch (err) {
-      console.error(err);
+    } catch {
       throw new Error(`Error adding products!`);
     }
   }

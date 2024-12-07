@@ -63,13 +63,11 @@ export default class SearchModel extends Model {
 
       const recipes = data.data;
 
-      if (recipes.length === 0) return null; // FIX
-
+      if (recipes.length === 0) return null;
       this.updateHistory(searchPrompt, recipes);
 
       return recipes;
-    } catch (err) {
-      console.error(err.message);
+    } catch {
       throw new Error(`Error searching for: ${searchPrompt}! Please, try again later!`);
     }
   }

@@ -42,7 +42,6 @@ export default class RecipeModel extends Model {
       if (!response.ok) throw new Error(`Error fetching recipe: ${(await response.json()).message}`);
 
       const data = await response.json();
-      console.log(data);
       if (!data) throw new Error();
 
       const recipe = data.data;
@@ -51,8 +50,7 @@ export default class RecipeModel extends Model {
       this.updateHistory(recipe);
 
       return recipe;
-    } catch (err) {
-      console.log(err);
+    } catch {
       throw new Error(`Error finding desired recipe!`);
     }
   }

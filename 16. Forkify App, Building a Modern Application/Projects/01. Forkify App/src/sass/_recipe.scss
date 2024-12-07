@@ -198,6 +198,13 @@
         color: base.$color-grey-dark-2;
       }
     }
+
+    &-text {
+      font-size: 1.7rem;
+      text-align: center;
+      margin-bottom: 3.5rem;
+      color: base.$color-grey-dark-2;
+    }
   }
 
   &__publisher {

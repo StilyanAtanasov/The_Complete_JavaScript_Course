@@ -19,7 +19,6 @@ export default class Controller {
       try {
         return await fn(...args);
       } catch (err) {
-        console.error(err);
         this.#view.renderNotification(err.message, 6000, true);
       }
     };
