@@ -15,7 +15,16 @@ async function deleteRecipe(event) {
 
     const API_KEY = process.env.API_KEY;
 
-    await request(`${API_URL}/${id}?key=${API_KEY}`, { method: `DELETE` }, false);
+    const { result: realId } = await request(`${process.env.URL}/.netlify/functions/criptography`, {
+      method: `POST`,
+      headers: {
+        "Content-Type": `application/json`,
+        accessKey: process.env.FUNCTIONS_KEY,
+      },
+      body: JSON.stringify({ action: `decrypt`, text: id }),
+    });
+
+    await request(`${API_URL}/${realId}?key=${API_KEY}`, { method: `DELETE` }, false);
 
     return {
       statusCode: 200,

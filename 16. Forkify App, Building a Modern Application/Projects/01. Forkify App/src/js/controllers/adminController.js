@@ -30,6 +30,7 @@ export default class AdminController extends Controller {
     const formData = this.#controlGetData();
     if (!(await this.#controlCredentialsValidation(formData))) return;
 
+    console.log(formData);
     const id = formData.id;
 
     const response = await this.#assureVerified(id, `Cannot delete verified recipe!`);

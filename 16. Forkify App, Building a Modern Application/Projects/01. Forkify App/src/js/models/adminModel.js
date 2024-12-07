@@ -21,7 +21,6 @@ export default class AdminModel extends Model {
 
       if (!response.ok) throw new Error();
       const data = await response.json();
-
       return data.valid;
     } catch (err) {
       throw new Error(`Error validating credentials!`);
@@ -41,8 +40,9 @@ export default class AdminModel extends Model {
         timeout(5000, `Delete request took too long!`),
       ]);
 
-      if (!response.ok) throw new Error();
+      // if (!response.ok) throw new Error();
       const data = await response.json();
+      console.log(data);
 
       return data.message;
     } catch {
