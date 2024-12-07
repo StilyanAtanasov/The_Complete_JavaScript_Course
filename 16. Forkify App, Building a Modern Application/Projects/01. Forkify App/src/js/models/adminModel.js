@@ -52,27 +52,34 @@ export default class AdminModel extends Model {
 
   assureCustom = recipe => !recipe.verified;
 
-  #recipeVerification(recipe) {
+  #prepareRecipe(recipeInput) {
+    const recipe = structuredClone(recipeInput);
     recipe.title += `**verified**`;
+
+    recipe.cooking_time = recipe.cookingTime;
+    recipe.image_url = recipe.imageUrl;
+    recipe.source_url = recipe.sourceUrl;
+
+    recipe.directions &&
+      recipe.directions.forEach(d => {
+        recipe.ingredients.push({ description: `**direction** ${d}` });
+      });
+
+    delete recipe.directions;
+
     return recipe;
   }
 
   async verifyRecipe(recipe) {
     try {
-      const cloned = structuredClone(recipe);
-      const newRecipe = this.#recipeVerification(cloned);
+      const newRecipe = this.#prepareRecipe(recipe);
       const response = await Promise.race([
         fetch(`.netlify/functions/publishRecipe`, {
           method: `POST`,
           headers: {
             "Content-Type": `application/json`,
           },
-          body: JSON.stringify({
-            ...newRecipe,
-            cooking_time: newRecipe.cookingTime,
-            image_url: newRecipe.imageUrl,
-            source_url: newRecipe.sourceUrl,
-          }),
+          body: JSON.stringify(newRecipe),
         }),
         timeout(5000),
       ]);

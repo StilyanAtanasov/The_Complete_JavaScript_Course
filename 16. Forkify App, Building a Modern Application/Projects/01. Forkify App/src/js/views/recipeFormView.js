@@ -15,7 +15,6 @@ export default class RecipeFormView extends View {
       const target = e.target.closest(`.upload__btn`);
       if (!target) return;
 
-      console.log(new FormData(document.querySelector(`.upload`)));
       if (!document.querySelector(`.upload`).reportValidity()) return;
       handler(new FormData(document.querySelector(`.upload`)));
     });
