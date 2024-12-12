@@ -27,7 +27,7 @@ const elements = {
 
 const errorMessages = {
   unableToLoadMap: {
-    title: `Error fetching the map!`,
+    title: `Error fetching map!`,
     message: `We couldn't load the map. This may be due to a denied geolocation request, or an issue with your internet connection. Please check your settings and try again. Page may need to be refreshed!`,
   },
   invalidWorkoutData: {

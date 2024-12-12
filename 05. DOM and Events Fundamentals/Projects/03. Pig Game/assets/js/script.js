@@ -118,7 +118,7 @@ elements.btnHold.addEventListener(`click`, function () {
   if (gameRunning) {
     scores[`player${currentPlayer}`] += currentScore;
     elements[`player${currentPlayer}Score`].textContent = scores[`player${currentPlayer}`];
-    if (scores[`player${currentPlayer}`] >= 20) return handleWin();
+    if (scores[`player${currentPlayer}`] >= 100) return handleWin();
 
     switchPlayers();
   }

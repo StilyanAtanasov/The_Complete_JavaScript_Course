@@ -1,6 +1,5 @@
 import { API_URL } from "../../config/config.js";
 import { request } from "../../utils/utils.js";
-import crypto from "crypto";
 
 async function searchRecipes(event) {
   if (event.httpMethod !== `POST`) {

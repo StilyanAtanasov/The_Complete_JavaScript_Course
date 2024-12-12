@@ -92,16 +92,13 @@ export async function request(url, options = {}, bodyExpected = true) {
 export const requestMultipleQueries = async queries =>
   await Promise.allSettled(
     queries.map(q =>
-      Promise.race([
-        fetch(`.netlify/functions/searchRecipes`, {
-          method: `POST`,
-          headers: {
-            "Content-Type": `application/json`,
-          },
-          body: JSON.stringify({ searchQuery: q }),
-        }).then(res => res.json()),
-        timeout(5000, `Request took too long!`),
-      ])
+      request(`.netlify/functions/searchRecipes`, {
+        method: `POST`,
+        headers: {
+          "Content-Type": `application/json`,
+        },
+        body: JSON.stringify({ searchQuery: q }),
+      })
     )
   );
 
