@@ -82,3 +82,35 @@ function findTempAmplitudeWith2Arrays(tempsArr1, tempsArr2) {
 }
 
 console.log(findTempAmplitudeWith2Arrays([3, 5, 1], [9, 0, 5]));
+
+// ----- Solving CHALLENGE #2 With AI -----
+
+// --- PROBLEM: ---
+// Let's say you're building a time tracking application for freelancers. At some point in building this app, you need a function that receives daily work hours for a certain week, and returns:
+// 1. Total hours worked
+// 2. Average daily hours
+// 3. The day with the most hours worked
+// 4. Number of days worked
+// 5. Whether the week was full-time (worked 35 hours or more)
+
+// TEST DATA: [7.5, 8, 6.5, 0, 8.5, 4, 0]
+
+function analyzeWorkWeek(hours) {
+  const totalHours = hours.reduce((sum, h) => sum + h, 0);
+  const daysWorked = hours.filter(h => h > 0).length;
+  const averageDailyHours = daysWorked > 0 ? totalHours / daysWorked : 0;
+  const maxHours = Math.max(...hours);
+  const mostWorkedDay = hours.indexOf(maxHours);
+  const isFullTime = totalHours >= 35;
+
+  return {
+    totalHours,
+    averageDailyHours,
+    mostWorkedDay,
+    daysWorked,
+    isFullTime,
+  };
+}
+
+const testHours = [7.5, 8, 6.5, 0, 8.5, 4, 0];
+console.log(analyzeWorkWeek(testHours));
